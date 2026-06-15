@@ -24,12 +24,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             const Text('로그인 페이지'),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => notifier.socialLogin(SocialLoginType.google),
+              onPressed: () => notifier.socialLogin(context, SocialLoginType.google),
               child: const Text('구글 로그인'),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => notifier.socialLogin(SocialLoginType.kakao),
+              onPressed: () => notifier.socialLogin(context, SocialLoginType.kakao),
               child: const Text('카카오 로그인'),
             ),
           ],),

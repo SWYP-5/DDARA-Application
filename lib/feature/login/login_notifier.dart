@@ -1,5 +1,7 @@
+import 'package:ddara/core/auth/provider/auth_provider.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/feature/login/util/login_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
@@ -12,10 +14,12 @@ class LoginNotifier extends Notifier<LoginState> {
     return const LoginState();
   }
 
-  Future<void> socialLogin(SocialLoginType social) async {
+  Future<void> socialLogin(BuildContext context, SocialLoginType social) async {
+    final googleAuthService = ref.read(googleAuthProvider);
+
     switch(social){
       case SocialLoginType.google:
-        null;
+        googleAuthService.signInWithGoogle(context, (token) => _login(token, social));
       case SocialLoginType.kakao:
         try {
           OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
