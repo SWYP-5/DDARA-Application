@@ -3,7 +3,6 @@ import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/feature/login/util/login_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import '../../core/exception/login_exception.dart';
 import '../../domain/provider/use_case_provider.dart';
@@ -16,17 +15,13 @@ class LoginNotifier extends Notifier<LoginState> {
 
   Future<void> socialLogin(BuildContext context, SocialLoginType social) async {
     final googleAuthService = ref.read(googleAuthProvider);
+    final kakaoAuthService = ref.read(kakaoAuthProvider);
 
     switch(social){
       case SocialLoginType.google:
         googleAuthService.signInWithGoogle(context, (token) => _login(token, social));
       case SocialLoginType.kakao:
-        try {
-          OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-          _login(token.accessToken, social);
-        } catch (error) {
-          print('카카오톡으로 로그인 실패 $error');
-        }
+        kakaoAuthService.signInWithKakao((token) => _login(token, social));
     }
   }
 
