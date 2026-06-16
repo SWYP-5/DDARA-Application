@@ -1,11 +1,15 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class LoginState {}
 
-part 'login_state.freezed.dart';
+final class Idle extends LoginState {}
 
-@freezed
-abstract class LoginState with _$LoginState {
-  const factory LoginState({
-    @Default(false) bool isLoading,
-    String? errorMessage,
-  }) = _LoginState;
+final class LoginLoading extends LoginState {}
+
+final class LoginSuccess extends LoginState {}
+
+final class SignupRequired extends LoginState {}
+
+final class LoginFail extends LoginState {
+  final String message;
+
+  LoginFail(this.message);
 }

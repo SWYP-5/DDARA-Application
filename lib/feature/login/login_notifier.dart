@@ -10,7 +10,7 @@ import '../../domain/provider/use_case_provider.dart';
 class LoginNotifier extends Notifier<LoginState> {
   @override
   LoginState build() {
-    return const LoginState();
+    return Idle();
   }
 
   Future<void> socialLogin(BuildContext context, SocialLoginType social) async {
@@ -27,24 +27,20 @@ class LoginNotifier extends Notifier<LoginState> {
 
   Future<void> _login(String token, SocialLoginType social) async {
     try {
-      state = state.copyWith(isLoading: true, errorMessage: null);
+      state = LoginLoading();
 
       final login = await ref.read(loginUseCaseProvider)(token, social);
 
-      state = state.copyWith(isLoading: false);
-
       if(login.isNewUser){
-        //todo 회원가입 진행
-        print('신규 회원입니다. 회원가입을 진행해주세요.');
+        state = SignupRequired();
       } else {
-        //todo 로그인 진행
-        print('기존 회원입니다. 로그인을 진행해주세요.');
+        state = LoginSuccess();
       }
 
     } on UnauthorizedException {
-      state = state.copyWith(isLoading: false, errorMessage: 'Unauthorized');
+      state = LoginFail('Unauthorized');
     } on NetworkException {
-      state = state.copyWith(isLoading: false, errorMessage: 'Network error');
+      state = LoginFail('Network error');
     }
   }
 }
