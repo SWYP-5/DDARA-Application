@@ -25,13 +25,15 @@ final routerProvider = Provider<GoRouter>((ref) {
   final initialRoute = ref.read(initialRouteProvider);
   final auth = ref.watch(authStateProvider);
 
-  return GoRouter(
-    initialLocation: initialRoute,
-    redirect: (context, state) {
-      final isLoggedIn = auth.valueOrNull ?? false;
-      final goingToLogin = state.matchedLocation == RoutePath.login;
+  // 네이티브 스플래시가 유지되는 동안 main 에서 authStateProvider 를 미리
+  // 확정하므로, 라우터가 만들어질 때 인증 상태는 이미 결정되어 있다.
+  final isLoggedIn = auth.valueOrNull ?? false;
 
-      if (isLoggedIn && goingToLogin) {
+  return GoRouter(
+    initialLocation: isLoggedIn ? RoutePath.home : initialRoute,
+    redirect: (context, state) {
+      // 로그인 상태에서 로그인 화면으로 가려 하면 홈으로 보낸다.
+      if (isLoggedIn && state.matchedLocation == RoutePath.login) {
         return RoutePath.home;
       }
 
