@@ -27,7 +27,7 @@ class SignUpUseCase {
       SocialLoginType.google => await _googleAuthService.getGoogleAccessToken(),
     };
 
-    await _authRepository.signUp(
+    final response = await _authRepository.signUp(
       SignUpCommand(
         provider: type.value,
         accessToken: token!,
@@ -36,5 +36,8 @@ class SignUpUseCase {
         nickname: nickName,
       ),
     );
+
+    await _authRepository.saveAccessToken(response.accessToken);
+    await _authRepository.saveRefreshToken(response.refreshToken);
   }
 }

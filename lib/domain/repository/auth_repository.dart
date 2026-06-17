@@ -7,4 +7,12 @@ abstract interface class AuthRepository {
   Future<Login> login(String token, SocialLoginType social);
 
   Future<Login> signUp(SignUpCommand signUp);
+
+  Future<void> saveAccessToken(String? token);
+
+  Future<void> saveRefreshToken(String? token);
+
+  Future<String?> getAccessToken();
+
+  Future<String?> getRefreshToken();
 }
