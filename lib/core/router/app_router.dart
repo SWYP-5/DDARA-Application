@@ -12,7 +12,7 @@ final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
 final authStateProvider = FutureProvider<bool>((ref) async {
   final repo = ref.read(authRepositoryProvider);
   final refreshToken = await repo.getRefreshToken();
-  print("refreshToken: $refreshToken");
+
   if(refreshToken == null) return false;
 
   final accessToken = await repo.refreshAccessToken(refreshToken);
