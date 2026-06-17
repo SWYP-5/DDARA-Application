@@ -40,6 +40,7 @@ dependencies:
   http: ^1.2.0
 
   flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.3.0
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
 
