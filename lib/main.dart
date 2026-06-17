@@ -17,7 +17,7 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
-      overrides: [initialRouteProvider.overrideWithValue(RoutePath.login)],
+      //overrides: [initialRouteProvider.overrideWithValue(RoutePath.login)],
       child: const MyApp(),
     ),
   );

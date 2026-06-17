@@ -1,5 +1,6 @@
 import 'package:ddara/core/local/storage_key.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
+import 'package:ddara/core/network/dto/auth/refresh_access_token_response.dart';
 import 'package:ddara/core/network/dto/auth/sign_up_request.dart';
 import 'package:dio/dio.dart';
 
@@ -11,6 +12,18 @@ class AuthRemoteDataSource {
 
   final Dio _dio;
   final FlutterSecureStorage _storage;
+
+  Future<RefreshAccessTokenResponse> refreshAccessToken(String refreshToken) async {
+    try {
+      final response = await _dio.post(
+        '/api/auth/refresh',
+        data: { 'refreshToken': refreshToken },
+      );
+      return RefreshAccessTokenResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
 
   Future<LoginResponse> signUp(SignUpRequest signUp) async {
     try {

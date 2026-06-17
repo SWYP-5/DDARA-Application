@@ -72,4 +72,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> saveRefreshToken(String? token) async {
     await _authRemoteDataSource.saveRefreshToken(token);
   }
+
+  @override
+  Future<String> refreshAccessToken(String refreshToken) async {
+    final response = await _authRemoteDataSource.refreshAccessToken(refreshToken);
+
+    return response.accessToken;
+  }
 }

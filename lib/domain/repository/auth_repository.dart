@@ -15,4 +15,6 @@ abstract interface class AuthRepository {
   Future<String?> getAccessToken();
 
   Future<String?> getRefreshToken();
+
+  Future<String> refreshAccessToken(String refreshToken);
 }
