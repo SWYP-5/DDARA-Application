@@ -1,4 +1,5 @@
 import 'package:ddara/core/model/auth/social_login_type.dart';
+import 'package:ddara/core/network/dto/auth/sign_up_request.dart';
 import 'package:dio/dio.dart';
 
 import '../../../core/network/dto/auth/login_response.dart';
@@ -7,6 +8,18 @@ class AuthRemoteDataSource {
   AuthRemoteDataSource(this._dio);
 
   final Dio _dio;
+
+  Future<LoginResponse> signUp(SignUpRequest signUp) async {
+    try {
+      final response = await _dio.post(
+        '/api/auth/signup',
+        data: signUp.toJson(),
+      );
+      return LoginResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
 
   Future<LoginResponse> login(String token, SocialLoginType social) async {
     try {

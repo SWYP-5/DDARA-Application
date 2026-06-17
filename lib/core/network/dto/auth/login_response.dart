@@ -22,7 +22,7 @@ abstract class UserResponse with _$UserResponse {
   const factory UserResponse({
     required int id,
     required String nickname,
-    required String profileImageUrl,
+    required String? profileImageUrl,
   }) = _UserResponse;
 
   factory UserResponse.fromJson(

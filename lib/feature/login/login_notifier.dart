@@ -32,7 +32,7 @@ class LoginNotifier extends Notifier<LoginState> {
       final login = await ref.read(loginUseCaseProvider)(token, social);
 
       if(login.isNewUser){
-        state = SignupRequired();
+        state = SignupRequired(social);
       } else {
         state = LoginSuccess();
       }

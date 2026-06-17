@@ -311,7 +311,7 @@ $UserResponseCopyWith<$Res>? get user {
 /// @nodoc
 mixin _$UserResponse {
 
- int get id; String get nickname; String get profileImageUrl;
+ int get id; String get nickname; String? get profileImageUrl;
 /// Create a copy of UserResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -344,7 +344,7 @@ abstract mixin class $UserResponseCopyWith<$Res>  {
   factory $UserResponseCopyWith(UserResponse value, $Res Function(UserResponse) _then) = _$UserResponseCopyWithImpl;
 @useResult
 $Res call({
- int id, String nickname, String profileImageUrl
+ int id, String nickname, String? profileImageUrl
 });
 
 
@@ -361,12 +361,12 @@ class _$UserResponseCopyWithImpl<$Res>
 
 /// Create a copy of UserResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? profileImageUrl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? profileImageUrl = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImageUrl: null == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
-as String,
+as String,profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -451,7 +451,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String nickname,  String profileImageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String nickname,  String? profileImageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserResponse() when $default != null:
 return $default(_that.id,_that.nickname,_that.profileImageUrl);case _:
@@ -472,7 +472,7 @@ return $default(_that.id,_that.nickname,_that.profileImageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String nickname,  String profileImageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String nickname,  String? profileImageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _UserResponse():
 return $default(_that.id,_that.nickname,_that.profileImageUrl);case _:
@@ -492,7 +492,7 @@ return $default(_that.id,_that.nickname,_that.profileImageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String nickname,  String profileImageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String nickname,  String? profileImageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _UserResponse() when $default != null:
 return $default(_that.id,_that.nickname,_that.profileImageUrl);case _:
@@ -512,7 +512,7 @@ class _UserResponse implements UserResponse {
 
 @override final  int id;
 @override final  String nickname;
-@override final  String profileImageUrl;
+@override final  String? profileImageUrl;
 
 /// Create a copy of UserResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -547,7 +547,7 @@ abstract mixin class _$UserResponseCopyWith<$Res> implements $UserResponseCopyWi
   factory _$UserResponseCopyWith(_UserResponse value, $Res Function(_UserResponse) _then) = __$UserResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String nickname, String profileImageUrl
+ int id, String nickname, String? profileImageUrl
 });
 
 
@@ -564,12 +564,12 @@ class __$UserResponseCopyWithImpl<$Res>
 
 /// Create a copy of UserResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? profileImageUrl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? profileImageUrl = freezed,}) {
   return _then(_UserResponse(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImageUrl: null == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
-as String,
+as String,profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

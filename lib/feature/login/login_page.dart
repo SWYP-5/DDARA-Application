@@ -24,7 +24,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           context.go(RoutePath.home);
 
         case SignupRequired():
-          context.push(RoutePath.signup);
+          context.push(RoutePath.signup, extra: next.social);
 
         case LoginFail(message: final message):
           ScaffoldMessenger.of(context).showSnackBar(
