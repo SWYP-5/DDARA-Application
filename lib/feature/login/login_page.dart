@@ -1,6 +1,7 @@
+import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/feature/login/provider/notifier_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -13,26 +14,126 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(loginNotifierProvider);
     final notifier = ref.read(loginNotifierProvider.notifier);
 
-    return Scaffold(
-      body: Center(
+    return CupertinoPageScaffold(
+      child: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('로그인 페이지'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => notifier.socialLogin(context, SocialLoginType.google),
-              child: const Text('구글 로그인'),
+            // 브랜딩 영역
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    Text(
+                      'ddara.',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 46,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '우리끼리 따라찍기',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 16,
+                        fontFamily: 'Pretendard',
+                        fontWeight: FontWeight.w700,
+                        height: 1.50,
+                        letterSpacing: -0.16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => notifier.socialLogin(context, SocialLoginType.kakao),
-              child: const Text('카카오 로그인'),
+
+            // 소셜 로그인 영역
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 10,
+                children: [
+                  _SocialLoginButton(
+                    label: '카카오로 시작하기',
+                    backgroundColor: const Color(0xFFFEE500),
+                    foregroundColor: const Color(0xFF000000),
+                    onPressed: () =>
+                        notifier.socialLogin(context, SocialLoginType.kakao),
+                  ),
+                  _SocialLoginButton(
+                    label: 'Google로 시작하기',
+                    backgroundColor: AppColors.textPrimary,
+                    foregroundColor: const Color(0xFF000000),
+                    onPressed: () =>
+                        notifier.socialLogin(context, SocialLoginType.google),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    '이용약관과 개인정보 처리방침 확인',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 12,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w400,
+                      height: 1.30,
+                      letterSpacing: -0.12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 소셜 로그인 버튼. (브랜드 색 기반 · 전체폭)
+class _SocialLoginButton extends StatelessWidget {
+  const _SocialLoginButton({
+    required this.label,
+    required this.backgroundColor,
+    required this.foregroundColor,
+    required this.onPressed,
+  });
+
+  final String label;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(12),
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: foregroundColor,
+          fontSize: 16,
+          fontFamily: 'Pretendard',
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.16,
+        ),
       ),
     );
   }
