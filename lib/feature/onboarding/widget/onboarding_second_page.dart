@@ -1,7 +1,7 @@
+import 'package:ddara/core/widget/app_title.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_brand.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_description.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_page_indicator.dart';
-import 'package:ddara/feature/onboarding/widget/onboarding_title.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingSecondPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class OnboardingSecondPage extends StatelessWidget {
         children: [
           const OnboardingBrand(),
           const SizedBox(width: 1, height: 60),
-          const OnboardingTitle('제일 비슷하게 찍은 친구가 우승'),
+          const AppTitle('제일 비슷하게 찍은 친구가 우승', textAlign: TextAlign.center),
           const OnboardingDescription(
             '인증샷이 끝나면\n베스트 따라쟁이를 투표해요.\n우승한 친구가 다음 인증샷을 열어요.',
           ),
