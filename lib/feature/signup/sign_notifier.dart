@@ -14,6 +14,10 @@ class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {
     state = state.copyWith(step: state.step + 1);
   }
 
+  void termsAgreedChanged(bool agreed) {
+    state = state.copyWith(termsAgreed: agreed);
+  }
+
   void backButtonClicked() {
     state = state.copyWith(step: state.step - 1);
   }

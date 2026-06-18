@@ -4,6 +4,7 @@ import 'package:ddara/feature/signup/provider/notifier_provider.dart';
 import 'package:ddara/feature/signup/step/birth_page.dart';
 import 'package:ddara/feature/signup/step/nick_name_page.dart';
 import 'package:ddara/feature/signup/step/terms_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,9 +27,18 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       final errorMessage = next.errorMessage;
 
       if (errorMessage != null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(errorMessage)));
+        showCupertinoDialog(
+          context: context,
+          builder: (dialogContext) => CupertinoAlertDialog(
+            content: Text(errorMessage),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text('확인'),
+              ),
+            ],
+          ),
+        );
       }
     });
 
@@ -36,10 +46,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       context.go(RoutePath.home);
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        leading: CupertinoButton(
+          padding: EdgeInsets.zero,
           onPressed: () {
             if (state.step > 1) {
               notifier.backButtonClicked();
@@ -47,28 +57,34 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               context.pop();
             }
           },
-        ),
-        title: LinearProgressIndicator(
-          value: state.step / 3,
-          minHeight: 6,
-          borderRadius: BorderRadius.circular(999),
+          child: const Icon(CupertinoIcons.back, color: Colors.white,),
         ),
       ),
-      body: switch (state.step) {
-        1 => TermsPage(onNextButtonClicked: notifier.nextButtonClicked),
-        2 => BirthPage(
-          onNextButtonClicked: notifier.nextButtonClicked,
-          onChanged: (birth) {
-            notifier.birthDayOnChanged(birth);
+      child: SafeArea(
+        // birth/nickname 스텝이 아직 Material 위젯(TextField/ElevatedButton)을
+        // 사용하므로 Material ancestor 를 제공한다. 해당 스텝 Cupertino 전환 시 제거 가능.
+        child: Material(
+          type: MaterialType.transparency,
+          child: switch (state.step) {
+            1 => TermsPage(
+              onNextButtonClicked: notifier.nextButtonClicked,
+              onAgreementChanged: notifier.termsAgreedChanged,
+            ),
+            2 => BirthPage(
+              onNextButtonClicked: notifier.nextButtonClicked,
+              onChanged: (birth) {
+                notifier.birthDayOnChanged(birth);
+              },
+            ),
+            _ => NicknamePage(
+              onSignUpButtonClicked: notifier.signUp,
+              onChanged: (nickName) {
+                notifier.nickNameOnChanged(nickName);
+              },
+            ),
           },
         ),
-        _ => NicknamePage(
-          onSignUpButtonClicked: notifier.signUp,
-          onChanged: (nickName) {
-            notifier.nickNameOnChanged(nickName);
-          },
-        ),
-      },
+      ),
     );
   }
 }

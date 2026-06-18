@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/widget/app_description.dart';
+import 'package:ddara/core/widget/app_title.dart';
+import 'package:flutter/cupertino.dart';
 
 class NicknamePage extends StatelessWidget {
   final ValueChanged<String> onChanged;
+
   final VoidCallback onSignUpButtonClicked;
 
   const NicknamePage({
@@ -10,25 +15,79 @@ class NicknamePage extends StatelessWidget {
     required this.onSignUpButtonClicked,
   });
 
+  static const _hintStyle = TextStyle(
+    color: AppColors.textTertiary,
+    fontSize: 14,
+    fontFamily: 'Pretendard',
+    fontWeight: FontWeight.w400,
+    height: 1.55,
+    letterSpacing: -0.14,
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      padding: const EdgeInsets.only(top: 8, left: 20, right: 20, bottom: 16),
+      clipBehavior: Clip.antiAlias,
+      decoration: const BoxDecoration(),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('닉네임 입력 페이지'),
-          TextField(
-            maxLength: 20,
-            textInputAction: TextInputAction.done,
-            onChanged: onChanged,
-            decoration: const InputDecoration(
-              hintText: '닉네임을 입력해주세요',
-              counterText: '',
-            ),
+          // 콘텐츠
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 24,
+            children: [
+              // 헤더
+              const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12,
+                children: [
+                  AppTitle('어떻게 불러드릴까요?'),
+                  AppDescription('친구들에게 보여질 이름이에요'),
+                ],
+              ),
+
+              // 닉네임 입력 필드
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: ShapeDecoration(
+                  color: AppColors.bgSurface,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      width: 1,
+                      color: AppColors.borderDefault,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: CupertinoTextField(
+                  onChanged: onChanged,
+                  maxLength: 10,
+                  textInputAction: TextInputAction.done,
+                  padding: EdgeInsets.zero,
+                  decoration: null,
+                  placeholder: '닉네임 (2~10자)',
+                  placeholderStyle: _hintStyle,
+                  style: _hintStyle.copyWith(color: AppColors.textPrimary),
+                  cursorColor: AppColors.accentDefault,
+                ),
+              ),
+            ],
           ),
-          ElevatedButton(
+
+          const Spacer(),
+
+          AppButton(
+            label: '시작하기',
             onPressed: onSignUpButtonClicked,
-            child: const Text('회원가입'),
           ),
         ],
       ),
