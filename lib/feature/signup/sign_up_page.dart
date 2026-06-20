@@ -24,6 +24,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     final notifier = ref.read(signNotifierProvider(social).notifier);
 
     ref.listen(signNotifierProvider(social), (prev, next) {
+      if (prev?.isSuccess == false && next.isSuccess) {
+        context.go(RoutePath.home);
+        return;
+      }
+
       final errorMessage = next.errorMessage;
 
       if (errorMessage.isNotEmpty) {
@@ -41,10 +46,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         );
       }
     });
-
-    if (state.isSuccess) {
-      context.go(RoutePath.home);
-    }
 
     return PopScope(
       canPop: false,
