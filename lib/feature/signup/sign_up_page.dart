@@ -46,43 +46,55 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       context.go(RoutePath.home);
     }
 
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
-            if (state.step > 1) {
-              notifier.backButtonClicked();
-            } else {
-              context.pop();
-            }
-          },
-          child: const Icon(CupertinoIcons.back, color: Colors.white,),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+
+        if (state.step > 1) {
+          notifier.backButtonClicked();
+        } else {
+          context.pop();
+        }
+      },
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          leading: CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              if (state.step > 1) {
+                notifier.backButtonClicked();
+              } else {
+                context.pop();
+              }
+            },
+            child: const Icon(CupertinoIcons.back, color: Colors.white),
+          ),
         ),
-      ),
-      child: SafeArea(
-        // birth/nickname 스텝이 아직 Material 위젯(TextField/ElevatedButton)을
-        // 사용하므로 Material ancestor 를 제공한다. 해당 스텝 Cupertino 전환 시 제거 가능.
-        child: Material(
-          type: MaterialType.transparency,
-          child: switch (state.step) {
-            1 => TermsPage(
-              onNextButtonClicked: notifier.nextButtonClicked,
-              onAgreementChanged: notifier.termsAgreedChanged,
-            ),
-            2 => BirthPage(
-              onNextButtonClicked: notifier.nextButtonClicked,
-              onChanged: (birth) {
-                notifier.birthDayOnChanged(birth);
-              },
-            ),
-            _ => NicknamePage(
-              onSignUpButtonClicked: notifier.signUp,
-              onChanged: (nickName) {
-                notifier.nickNameOnChanged(nickName);
-              },
-            ),
-          },
+        child: SafeArea(
+          // birth/nickname 스텝이 아직 Material 위젯(TextField/ElevatedButton)을
+          // 사용하므로 Material ancestor 를 제공한다. 해당 스텝 Cupertino 전환 시 제거 가능.
+          child: Material(
+            type: MaterialType.transparency,
+            child: switch (state.step) {
+              1 => TermsPage(
+                onNextButtonClicked: notifier.nextButtonClicked,
+                onAgreementChanged: notifier.termsAgreedChanged,
+              ),
+              2 => BirthPage(
+                onNextButtonClicked: notifier.nextButtonClicked,
+                onChanged: (birth) {
+                  notifier.birthDayOnChanged(birth);
+                },
+              ),
+              _ => NicknamePage(
+                onSignUpButtonClicked: notifier.signUp,
+                onChanged: (nickName) {
+                  notifier.nickNameOnChanged(nickName);
+                },
+              ),
+            },
+          ),
         ),
       ),
     );
