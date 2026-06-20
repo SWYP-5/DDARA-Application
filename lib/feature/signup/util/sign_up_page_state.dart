@@ -8,7 +8,7 @@ class SignUpPageState {
   final String nickName;
   final bool isLoading;
   final bool isSuccess;
-  final String? errorMessage;
+  final String errorMessage;
 
   const SignUpPageState({
     required this.social,
@@ -18,7 +18,7 @@ class SignUpPageState {
     this.nickName = '',
     this.isLoading = false,
     this.isSuccess = false,
-    this.errorMessage,
+    this.errorMessage = "",
   });
 
   SignUpPageState copyWith({

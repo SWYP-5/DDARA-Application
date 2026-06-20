@@ -11,10 +11,14 @@ class TermsPage extends StatefulWidget {
   /// 필수 약관 전체 동의 여부가 바뀔 때 호출. (둘 다 동의해야 true)
   final ValueChanged<bool> onAgreementChanged;
 
+  /// 뒤로가기로 다시 들어왔을 때 복원할 기존 동의 상태.
+  final bool initialAgreed;
+
   const TermsPage({
     super.key,
     required this.onNextButtonClicked,
     required this.onAgreementChanged,
+    this.initialAgreed = false,
   });
 
   @override
@@ -22,8 +26,8 @@ class TermsPage extends StatefulWidget {
 }
 
 class _TermsPageState extends State<TermsPage> {
-  bool _termsOfService = false;
-  bool _privacyPolicy = false;
+  late bool _termsOfService = widget.initialAgreed;
+  late bool _privacyPolicy = widget.initialAgreed;
 
   bool get _allAgreed => _termsOfService && _privacyPolicy;
 

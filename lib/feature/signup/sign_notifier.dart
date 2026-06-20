@@ -47,7 +47,7 @@ class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {
     } on UnauthorizedTokenException {
       state = state.copyWith(errorMessage: "소셜 토큰이 만료 또는 무효 상태입니다.");
     } finally {
-      state = state.copyWith(errorMessage: null);
+      state = state.copyWith(errorMessage: "");
     }
   }
 }

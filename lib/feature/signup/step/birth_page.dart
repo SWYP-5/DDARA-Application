@@ -1,21 +1,32 @@
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
 import 'package:ddara/feature/signup/step/util/birthday_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-class BirthPage extends StatelessWidget {
+class BirthPage extends StatefulWidget {
+  /// 뒤로가기로 다시 들어왔을 때 복원할 기존 입력값.
+  final String initialValue;
   final ValueChanged<String> onChanged;
-
   final VoidCallback onNextButtonClicked;
 
   const BirthPage({
     super.key,
+    required this.initialValue,
     required this.onChanged,
     required this.onNextButtonClicked,
   });
+
+  @override
+  State<BirthPage> createState() => _BirthPageState();
+}
+
+class _BirthPageState extends State<BirthPage> {
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.initialValue,
+  );
 
   static const _hintStyle = TextStyle(
     color: AppColors.textTertiary,
@@ -25,6 +36,12 @@ class BirthPage extends StatelessWidget {
     height: 1.55,
     letterSpacing: -0.14,
   );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +88,8 @@ class BirthPage extends StatelessWidget {
                   ),
                 ),
                 child: CupertinoTextField(
-                  onChanged: onChanged,
+                  controller: _controller,
+                  onChanged: widget.onChanged,
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -91,10 +109,7 @@ class BirthPage extends StatelessWidget {
           const Spacer(),
 
           // 하단 버튼
-          AppButton(
-            label: '다음',
-            onPressed: onNextButtonClicked,
-          ),
+          AppButton(label: '다음', onPressed: widget.onNextButtonClicked),
         ],
       ),
     );

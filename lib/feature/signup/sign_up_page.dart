@@ -26,7 +26,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     ref.listen(signNotifierProvider(social), (prev, next) {
       final errorMessage = next.errorMessage;
 
-      if (errorMessage != null) {
+      if (errorMessage.isNotEmpty) {
         showCupertinoDialog(
           context: context,
           builder: (dialogContext) => CupertinoAlertDialog(
@@ -78,16 +78,19 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
             type: MaterialType.transparency,
             child: switch (state.step) {
               1 => TermsPage(
+                initialAgreed: state.termsAgreed,
                 onNextButtonClicked: notifier.nextButtonClicked,
                 onAgreementChanged: notifier.termsAgreedChanged,
               ),
               2 => BirthPage(
+                initialValue: state.birthDay,
                 onNextButtonClicked: notifier.nextButtonClicked,
                 onChanged: (birth) {
                   notifier.birthDayOnChanged(birth);
                 },
               ),
               _ => NicknamePage(
+                initialValue: state.nickName,
                 onSignUpButtonClicked: notifier.signUp,
                 onChanged: (nickName) {
                   notifier.nickNameOnChanged(nickName);

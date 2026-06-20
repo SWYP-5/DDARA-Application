@@ -1,19 +1,30 @@
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
 import 'package:flutter/cupertino.dart';
 
-class NicknamePage extends StatelessWidget {
+class NicknamePage extends StatefulWidget {
+  /// 뒤로가기로 다시 들어왔을 때 복원할 기존 입력값.
+  final String initialValue;
   final ValueChanged<String> onChanged;
-
   final VoidCallback onSignUpButtonClicked;
 
   const NicknamePage({
     super.key,
+    required this.initialValue,
     required this.onChanged,
     required this.onSignUpButtonClicked,
   });
+
+  @override
+  State<NicknamePage> createState() => _NicknamePageState();
+}
+
+class _NicknamePageState extends State<NicknamePage> {
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.initialValue,
+  );
 
   static const _hintStyle = TextStyle(
     color: AppColors.textTertiary,
@@ -23,6 +34,12 @@ class NicknamePage extends StatelessWidget {
     height: 1.55,
     letterSpacing: -0.14,
   );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +86,8 @@ class NicknamePage extends StatelessWidget {
                   ),
                 ),
                 child: CupertinoTextField(
-                  onChanged: onChanged,
+                  controller: _controller,
+                  onChanged: widget.onChanged,
                   maxLength: 10,
                   textInputAction: TextInputAction.done,
                   padding: EdgeInsets.zero,
@@ -85,10 +103,7 @@ class NicknamePage extends StatelessWidget {
 
           const Spacer(),
 
-          AppButton(
-            label: '시작하기',
-            onPressed: onSignUpButtonClicked,
-          ),
+          AppButton(label: '시작하기', onPressed: widget.onSignUpButtonClicked),
         ],
       ),
     );
