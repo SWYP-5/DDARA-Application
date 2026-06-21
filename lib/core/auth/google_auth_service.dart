@@ -24,7 +24,26 @@ class GoogleAuthService {
 
   GoogleSignInAccount? get currentUser => _currentUser;
 
-  Future<bool> signInWithGoogle(BuildContext context, Function(String) login) async {
+  Future<String?> getGoogleAccessToken() async {
+    final user = _googleSignIn.currentUser;
+
+    if (user != null) {
+      final auth = await user.authentication;
+      return auth.accessToken;
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool> isLogin() async {
+    final user = _googleSignIn.currentUser;
+    return user != null;
+  }
+
+  Future<bool> signInWithGoogle(
+    BuildContext context,
+    Function(String) login,
+  ) async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 

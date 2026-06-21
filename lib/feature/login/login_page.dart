@@ -1,8 +1,12 @@
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
+import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/login/provider/notifier_provider.dart';
+import 'package:ddara/feature/login/util/login_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +19,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(loginNotifierProvider.notifier);
+
+    ref.listen(loginNotifierProvider, (previous, next) {
+      switch (next) {
+        case LoginSuccess():
+          context.go(RoutePath.home);
+
+        case SignupRequired():
+          context.push(RoutePath.signup, extra: next.social);
+
+        case LoginFail(message: final message):
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
+
+        default:
+          break;
+      }
+    });
 
     return CupertinoPageScaffold(
       child: SafeArea(

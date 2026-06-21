@@ -28,7 +28,7 @@ _UserResponse _$UserResponseFromJson(Map<String, dynamic> json) =>
     _UserResponse(
       id: (json['id'] as num).toInt(),
       nickname: json['nickname'] as String,
-      profileImageUrl: json['profileImageUrl'] as String,
+      profileImageUrl: json['profileImageUrl'] as String?,
     );
 
 Map<String, dynamic> _$UserResponseToJson(_UserResponse instance) =>

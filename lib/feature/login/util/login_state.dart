@@ -1,11 +1,21 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:ddara/core/model/auth/social_login_type.dart';
 
-part 'login_state.freezed.dart';
+sealed class LoginState {}
 
-@freezed
-abstract class LoginState with _$LoginState {
-  const factory LoginState({
-    @Default(false) bool isLoading,
-    String? errorMessage,
-  }) = _LoginState;
+final class Idle extends LoginState {}
+
+final class LoginLoading extends LoginState {}
+
+final class LoginSuccess extends LoginState {}
+
+final class SignupRequired extends LoginState {
+  final SocialLoginType social;
+
+  SignupRequired(this.social);
+}
+
+final class LoginFail extends LoginState {
+  final String message;
+
+  LoginFail(this.message);
 }
