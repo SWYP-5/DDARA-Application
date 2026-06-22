@@ -1,5 +1,5 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,13 +26,8 @@ class _NicknamePageState extends State<NicknamePage> {
     text: widget.initialValue,
   );
 
-  static const _hintStyle = TextStyle(
+  static final _hintStyle = AppTypography.body.copyWith(
     color: AppColors.textTertiary,
-    fontSize: 14,
-    fontFamily: 'Pretendard',
-    fontWeight: FontWeight.w400,
-    height: 1.55,
-    letterSpacing: -0.14,
   );
 
   @override

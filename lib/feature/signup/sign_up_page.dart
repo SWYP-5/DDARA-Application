@@ -60,8 +60,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       },
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
+          padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
           leading: CupertinoButton(
             padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
             onPressed: () {
               if (state.step > 1) {
                 notifier.backButtonClicked();
