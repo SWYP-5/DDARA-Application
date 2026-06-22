@@ -12,12 +12,18 @@ import 'package:go_router/go_router.dart';
 class PermissionPage extends ConsumerWidget {
   const PermissionPage({super.key});
 
-  /// 확인 버튼: 카메라부터 순차로 권한을 요청하고,
-  /// 모든 요청이 끝난 뒤 카메라가 허용 상태면 홈으로 이동한다.
+  /// 확인 버튼: 카메라부터 순차로 권한을 요청한다.
+  /// - 허용 → 홈
+  /// - 이번 요청에서 프롬프트가 떴고 거부됨 → 필수 권한 안내 페이지
+  /// - 이미 영구 거부라 프롬프트가 안 뜨는 경우 → 설정 안내 다이얼로그('취소' 시 필수 권한 안내)
   Future<void> _onConfirm(BuildContext context, WidgetRef ref) async {
     final permission = ref.read(permissionServiceProvider);
 
-    // 1. 카메라 → 알림 → 저장공간 순차 요청
+    // 요청 '전' 상태로 프롬프트가 뜰지 판단한다.
+    // (iOS 는 첫 거부에도 결과가 permanentlyDenied 로 와서, 결과만으론 구분 불가)
+    final wasBlocked = await permission.isCameraPermanentlyDenied();
+
+    // 카메라 → 알림 → 저장공간 순차 요청
     final cameraResult = await permission.requestCamera();
     await permission.requestNotification();
     await permission.requestPhotos();
@@ -31,15 +37,15 @@ class PermissionPage extends ConsumerWidget {
       return;
     }
 
-    // 카메라 영구 거부 → 설정 안내 다이얼로그.
-    // '설정으로 이동' 선택 시 머무르고, '취소' 선택 시 필수 권한 안내 페이지로 이동.
-    if (cameraResult == PermissionResult.permanentlyDenied) {
+    // 이미 영구 거부라 프롬프트가 안 뜨는 경우에만 설정 안내.
+    // '설정으로 이동' 시 머무르고, '취소' 시 필수 권한 안내 페이지로 이동.
+    if (wasBlocked) {
       final goSettings = await _showSettingsDialog(context, permission, '카메라');
       if (goSettings == true) return;
       if (!context.mounted) return;
     }
 
-    // 그 외 비허용(또는 다이얼로그에서 취소) → 필수 권한 안내 페이지
+    // 프롬프트가 떴고 거부됐거나, 설정 다이얼로그에서 취소 → 필수 권한 안내 페이지
     context.go(RoutePath.requiredPermission);
   }
 

@@ -27,6 +27,12 @@ class PermissionHandlerService implements PermissionService {
   }
 
   @override
+  Future<bool> isCameraPermanentlyDenied() async {
+    final status = await Permission.camera.status;
+    return status.isPermanentlyDenied || status.isRestricted;
+  }
+
+  @override
   Future<PermissionResult> requestCamera() async {
     final status = await Permission.camera.request();
     return _toResult(status);
