@@ -135,10 +135,18 @@ jobs:
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
           cp "$PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/"
 
-      - name: ExportOptions 에 Team ID 주입
+      - name: 수동 서명 설정 주입 (ExportOptions + Release.xcconfig)
         env:
           IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
-        run: sed -i '' "s/__IOS_TEAM_ID__/$IOS_TEAM_ID/" ios/ExportOptions.plist
+        run: |
+          # export 단계용: ExportOptions.plist 의 Team ID 치환
+          sed -i '' "s/__IOS_TEAM_ID__/$IOS_TEAM_ID/" ios/ExportOptions.plist
+          # archive 단계용: 수동 서명 설정을 Release.xcconfig 에 주입 (pbxproj 미변경)
+          {
+            echo "CODE_SIGN_STYLE = Manual"
+            echo "DEVELOPMENT_TEAM = $IOS_TEAM_ID"
+            echo "PROVISIONING_PROFILE_SPECIFIER = ddara-team3"
+          } >> ios/Flutter/Release.xcconfig
 
       - name: 의존성 설치
         run: flutter pub get
