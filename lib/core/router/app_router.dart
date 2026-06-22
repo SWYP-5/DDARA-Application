@@ -1,3 +1,4 @@
+import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import '../../feature/home/home_page.dart';
 import '../../feature/login/login_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
+import '../../feature/permission/permission_page.dart';
 import '../../feature/signup/sign_up_page.dart';
 
 final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
@@ -39,10 +41,22 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: initialLocation,
-    redirect: (context, state) {
+    redirect: (context, state) async {
       // 로그인 상태에서 로그인 화면으로 가려 하면 홈으로 보낸다.
       if (isLoggedIn && state.matchedLocation == RoutePath.login) {
         return RoutePath.home;
+      }
+
+      // 홈 진입 직전, 카메라 권한이 없으면 권한 안내 화면으로 우회시킨다.
+      // 로그인/회원가입 직후는 물론, 앱 실행 시 홈으로 분기되는 경우(자동 로그인)
+      // 까지 이 한 곳에서 게이트가 동작한다.
+      if (state.matchedLocation == RoutePath.home) {
+        // 이번 실행에서 이미 안내를 본 경우엔 통과시킨다.
+        if (ref.read(cameraNoticeAcknowledgedProvider)) return null;
+
+        final granted =
+            await ref.read(permissionServiceProvider).isCameraGranted();
+        if (!granted) return RoutePath.permission;
       }
 
       return null;
@@ -55,6 +69,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: RoutePath.login, builder: (_, _) => const LoginPage()),
       GoRoute(path: RoutePath.home, builder: (_, _) => const HomePage()),
       GoRoute(path: RoutePath.signup, builder: (_, _) => const SignUpPage()),
+      GoRoute(
+        path: RoutePath.permission,
+        builder: (_, _) => const PermissionPage(),
+      ),
     ],
   );
 });
