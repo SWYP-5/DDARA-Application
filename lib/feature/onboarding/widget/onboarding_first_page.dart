@@ -1,6 +1,6 @@
+import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
-import 'package:ddara/feature/onboarding/widget/onboarding_brand.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_page_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class OnboardingFirstPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 14,
         children: [
-          const OnboardingBrand(),
+          const LogoLarge(),
           const SizedBox(width: 1, height: 60),
           const AppTitle('한 장 찍으면 인증샷이 시작돼', textAlign: TextAlign.center),
           const AppDescription(

@@ -1,8 +1,9 @@
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
-import 'package:ddara/feature/onboarding/widget/onboarding_brand.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_page_indicator.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/designsystem/component/logo.dart';
 
 class OnboardingSecondPage extends StatelessWidget {
   const OnboardingSecondPage({super.key});
@@ -21,7 +22,7 @@ class OnboardingSecondPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 14,
         children: [
-          const OnboardingBrand(),
+          const LogoLarge(),
           const SizedBox(width: 1, height: 60),
           const AppTitle('제일 비슷하게 찍은 친구가 우승', textAlign: TextAlign.center),
           const AppDescription(
