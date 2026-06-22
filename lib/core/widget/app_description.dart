@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/designsystem/theme/app_typography.dart';
 import 'package:flutter/widgets.dart';
 
 class AppDescription extends StatelessWidget {
@@ -12,14 +13,7 @@ class AppDescription extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      style: const TextStyle(
-        color: AppColors.textSecondary,
-        fontSize: 14,
-        fontFamily: 'Pretendard',
-        fontWeight: FontWeight.w400,
-        height: 1.55,
-        letterSpacing: -0.14,
-      ),
+      style: AppTypography.body.copyWith(color: AppColors.textSecondary),
     );
   }
 }

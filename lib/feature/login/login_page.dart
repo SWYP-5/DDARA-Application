@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../core/designsystem/theme/app_typography.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -50,31 +53,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(),
-                child: const Column(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   spacing: 10,
                   children: [
-                    Text(
-                      'ddara.',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 46,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    const LogoLarge(),
                     Text(
                       '우리끼리 따라찍기',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: AppTypography.title.copyWith(
                         color: AppColors.textSecondary,
-                        fontSize: 16,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w700,
-                        height: 1.50,
-                        letterSpacing: -0.16,
                       ),
                     ),
                   ],
@@ -105,16 +95,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         notifier.socialLogin(context, SocialLoginType.google),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     '이용약관과 개인정보 처리방침 확인',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: AppTypography.caption.copyWith(
                       color: AppColors.textTertiary,
-                      fontSize: 12,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w400,
-                      height: 1.30,
-                      letterSpacing: -0.12,
                     ),
                   ),
                 ],
