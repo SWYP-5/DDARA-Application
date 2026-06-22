@@ -19,8 +19,8 @@ class Logo extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: 20,
-        fontFamily: 'Pretendard',
-        fontWeight: FontWeight.w700,
+        fontFamily: 'Poppins',
+        fontWeight: FontWeight.w600,
         height: 1.4,
         letterSpacing: 20 * -0.01,
       ),
