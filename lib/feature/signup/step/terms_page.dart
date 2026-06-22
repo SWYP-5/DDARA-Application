@@ -1,5 +1,5 @@
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_checkbox.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
@@ -84,7 +84,10 @@ class _TermsPageState extends State<TermsPage> {
               // 동의 목록 카드
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
                 clipBehavior: Clip.antiAlias,
                 decoration: ShapeDecoration(
                   color: AppColors.bgSurface,
@@ -109,16 +112,11 @@ class _TermsPageState extends State<TermsPage> {
                             onChanged: _toggleAll,
                             size: 22,
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Text(
                               '전체 동의',
-                              style: TextStyle(
+                              style: AppTypography.label.copyWith(
                                 color: AppColors.textPrimary,
-                                fontSize: 14,
-                                fontFamily: 'Pretendard',
-                                fontWeight: FontWeight.w600,
-                                height: 1.35,
-                                letterSpacing: -0.28,
                               ),
                             ),
                           ),
@@ -155,10 +153,7 @@ class _TermsPageState extends State<TermsPage> {
           const Spacer(),
 
           // 하단 버튼
-          AppButton(
-            label: '다음',
-            onPressed: widget.onNextButtonClicked,
-          ),
+          AppButton(label: '다음', onPressed: widget.onNextButtonClicked),
         ],
       ),
     );
@@ -189,13 +184,8 @@ class _TermItem extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(
+              style: AppTypography.body.copyWith(
                 color: AppColors.textSecondary,
-                fontSize: 14,
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.w400,
-                height: 1.55,
-                letterSpacing: -0.14,
               ),
             ),
           ),

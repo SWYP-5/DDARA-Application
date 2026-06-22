@@ -6,6 +6,8 @@ import 'package:ddara/feature/signup/step/util/birthday_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/designsystem/theme/app_typography.dart';
+
 class BirthPage extends StatefulWidget {
   /// 뒤로가기로 다시 들어왔을 때 복원할 기존 입력값.
   final String initialValue;
@@ -28,13 +30,8 @@ class _BirthPageState extends State<BirthPage> {
     text: widget.initialValue,
   );
 
-  static const _hintStyle = TextStyle(
+  static final _hintStyle = AppTypography.body.copyWith(
     color: AppColors.textTertiary,
-    fontSize: 14,
-    fontFamily: 'Pretendard',
-    fontWeight: FontWeight.w400,
-    height: 1.55,
-    letterSpacing: -0.14,
   );
 
   @override
