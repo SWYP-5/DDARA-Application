@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  flutter build ipa --export-options-plist=ios/ExportOptions.plist 에서 사용.
+  Apple Distribution 이 막혀 Apple Development(개발용) 서명으로 빌드한다.
+
+  teamID 는 레포에 하드코딩하지 않고 __IOS_TEAM_ID__ 플레이스홀더로 둔다.
+  CI(빌드 전)에서 GitHub Secret 으로 치환:
+    sed -i '' "s/__IOS_TEAM_ID__/$IOS_TEAM_ID/" ios/ExportOptions.plist
+  (로컬 Mac 빌드 시에는 직접 Team ID 로 치환 후 빌드)
+
+  provisioningProfiles 값은 프로파일 "이름"(UUID 아님). 비밀 아님 → 그대로 둠.
+-->
+<plist version="1.0">
+<dict>
+	<key>method</key>
+	<string>development</string>
+
+	<key>teamID</key>
+	<string>__IOS_TEAM_ID__</string>
+
+	<key>signingStyle</key>
+	<string>manual</string>
+
+	<key>signingCertificate</key>
+	<string>Apple Development</string>
+
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.swyp.ddara</key>
+		<string>ddara-team3</string>
+	</dict>
+
+	<key>compileBitcode</key>
+	<false/>
+
+	<key>uploadSymbols</key>
+	<true/>
+</dict>
+</plist>
