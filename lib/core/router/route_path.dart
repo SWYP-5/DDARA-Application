@@ -4,4 +4,5 @@ class RoutePath {
   static const home = '/home';
   static const signup = '/signup';
   static const permission = '/permission';
+  static const requiredPermission = '/required-permission';
 }

@@ -22,20 +22,25 @@ class PermissionPage extends ConsumerWidget {
     await permission.requestNotification();
     await permission.requestPhotos();
 
-    // 2. 카메라가 허용 상태면 홈으로 이동
+    if (!context.mounted) return;
+
+    // 카메라 허용 → 홈
     if (cameraResult == PermissionResult.granted) {
       ref.read(cameraNoticeAcknowledgedProvider.notifier).state = true;
-
-      if (!context.mounted) return;
       context.go(RoutePath.home);
       return;
     }
 
-    // 카메라가 영구 거부 상태면 설정 이동을 안내한다.
+    // 카메라 영구 거부 → 설정 안내 다이얼로그.
+    // '설정으로 이동' 선택 시 머무르고, '취소' 선택 시 필수 권한 안내 페이지로 이동.
     if (cameraResult == PermissionResult.permanentlyDenied) {
+      final goSettings = await _showSettingsDialog(context, permission, '카메라');
+      if (goSettings == true) return;
       if (!context.mounted) return;
-      await _showSettingsDialog(context, permission, '카메라');
     }
+
+    // 그 외 비허용(또는 다이얼로그에서 취소) → 필수 권한 안내 페이지
+    context.go(RoutePath.requiredPermission);
   }
 
   /// 권한을 요청하고, 영구 거부 상태면 설정 이동 안내를 띄운다.
@@ -53,25 +58,26 @@ class PermissionPage extends ConsumerWidget {
   }
 
   /// 영구 거부 상태에서 앱 설정으로 이동하도록 안내하는 다이얼로그.
-  Future<void> _showSettingsDialog(
+  /// '설정으로 이동' 선택 시 true, '취소' 선택 시 false 를 반환한다.
+  Future<bool?> _showSettingsDialog(
     BuildContext context,
     PermissionService permission,
     String permissionName,
   ) {
-    return showCupertinoDialog<void>(
+    return showCupertinoDialog<bool>(
       context: context,
       builder: (dialogContext) => CupertinoAlertDialog(
         title: Text('$permissionName 권한이 필요해요'),
         content: const Text('설정 > 권한에서 직접 허용해 주세요.'),
         actions: [
           CupertinoDialogAction(
-            onPressed: () => Navigator.of(dialogContext).pop(),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text('취소'),
           ),
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () {
-              Navigator.of(dialogContext).pop();
+              Navigator.of(dialogContext).pop(true);
               permission.openSettings();
             },
             child: const Text('설정으로 이동'),

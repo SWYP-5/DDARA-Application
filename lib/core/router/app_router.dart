@@ -9,6 +9,7 @@ import '../../feature/login/login_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
 import '../../feature/permission/permission_page.dart';
+import '../../feature/permission/required_permission_page.dart';
 import '../../feature/signup/sign_up_page.dart';
 
 final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
@@ -72,6 +73,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.permission,
         builder: (_, _) => const PermissionPage(),
+      ),
+      GoRoute(
+        path: RoutePath.requiredPermission,
+        builder: (_, _) => const RequiredPermissionPage(),
       ),
     ],
   );
