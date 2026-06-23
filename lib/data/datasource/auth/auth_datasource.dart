@@ -20,7 +20,7 @@ class AuthRemoteDataSource {
         data: { 'refreshToken': refreshToken },
       );
       return RefreshAccessTokenResponse.fromJson(response.data);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -32,7 +32,7 @@ class AuthRemoteDataSource {
         data: signUp.toJson(),
       );
       return LoginResponse.fromJson(response.data);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -45,7 +45,7 @@ class AuthRemoteDataSource {
       };
 
       return LoginResponse.fromJson(response.data);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
