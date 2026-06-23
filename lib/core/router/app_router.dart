@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
+import '../../feature/group/create/group_create_page.dart';
 import '../../feature/home/home_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
@@ -78,6 +79,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.requiredPermission,
         builder: (_, _) => const RequiredPermissionPage(),
+      ),
+      GoRoute(
+        path: RoutePath.groupCreate,
+        builder: (_, _) => const GroupCreatePage(),
       ),
     ],
   );

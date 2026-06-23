@@ -1,0 +1,107 @@
+import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/app_description.dart';
+import 'package:ddara/core/widget/app_title.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
+
+/// 참여한 모임이 하나도 없을 때 보여주는 빈 상태 화면.
+class EmptyGroupPage extends StatelessWidget {
+  const EmptyGroupPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      // 콘텐츠 영역을 전체폭으로 펴서 자식들이 화면 가로 중앙에 오도록 한다.
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const AppTitle('아직 참여한 모임이 없어요', textAlign: TextAlign.center),
+              const AppDescription(
+                '첫 판을 시작해 친구들에게 보내보세요',
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppSpacing.s3),
+              Image.asset(
+                'assets/images/photo_image.png',
+                width: 160,
+                fit: BoxFit.contain,
+              ),
+            ],
+          ),
+        ),
+
+        // 하단 액션 영역
+        Padding(
+          // 하단 여백은 s6, 항목 사이 간격은 s3.
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, AppSpacing.s6),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: AppSpacing.s3,
+            children: [
+              AppButton(
+                label: '모임 만들기',
+                onPressed: () => context.push(RoutePath.groupCreate),
+              ),
+              _OutlineButton(
+                label: '모임 참여하기',
+                onPressed: () {
+                  // TODO: 모임 참여하기 화면 이동
+                },
+              ),
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                minimumSize: Size.zero,
+                onPressed: () {
+                  // TODO: 나중에 추가 처리
+                },
+                child: Text(
+                  '나중에 추가할게요',
+                  style: AppTypography.caption.copyWith(
+                    color: AppColors.textTertiary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 배경은 투명하고 테두리·글자색만 강조색인 보조 버튼. ([AppButton] 과 동일 치수)
+class _OutlineButton extends StatelessWidget {
+  const _OutlineButton({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: onPressed,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(color: AppColors.accentDefault),
+          ),
+          child: Text(
+            label,
+            style: AppTypography.title.copyWith(color: AppColors.accentDefault),
+          ),
+        ),
+      ),
+    );
+  }
+}
