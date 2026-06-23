@@ -18,11 +18,11 @@ on:
       platform:
         description: '빌드 대상'
         type: choice
-        options: [all, android, ios]
+        options: [ all, android, ios ]
         default: all
-  # 안정화 후 주석 해제 → dev 머지 시 자동 빌드
-  # push:
-  #   branches: [dev]
+
+  push:
+    branches: [ dev ]
 
 concurrency:
   group: build-debug-${{ github.ref }}
