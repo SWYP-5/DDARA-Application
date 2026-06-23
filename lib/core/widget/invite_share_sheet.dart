@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/share/kakao_share_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,9 +32,32 @@ class InviteShareSheet extends StatelessWidget {
     );
   }
 
-  void _onKakaoShare(BuildContext context) {
-    Navigator.of(context).pop();
-    // TODO: 카카오톡 공유 (kakao_flutter_sdk_share) — 공유 구현 단계에서 연결.
+  Future<void> _onKakaoShare(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    try {
+      await KakaoShareService().shareInvite(inviteCode);
+      navigator.pop();
+    } catch (_) {
+      // 공유 실패(미설치 폴백 실패 등) → 시트는 유지하고 안내.
+      if (!context.mounted) return;
+      _showShareError(context);
+    }
+  }
+
+  void _showShareError(BuildContext context) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (dialogContext) => CupertinoAlertDialog(
+        title: const Text('공유하지 못했어요'),
+        content: const Text('잠시 후 다시 시도하거나 초대코드를 복사해 전달해주세요.'),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('확인'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _onCopyCode(BuildContext context) {

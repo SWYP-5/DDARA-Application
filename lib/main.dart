@@ -10,9 +10,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/deeplink/deep_link_service.dart';
 import 'core/designsystem/theme/app_theme.dart';
 import 'core/local/provider/local_provider.dart';
 import 'core/router/app_router.dart';
+import 'core/router/route_path.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -56,11 +58,39 @@ Future<void> main() async {
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  late final DeepLinkService _deepLink;
+
+  @override
+  void initState() {
+    super.initState();
+    _deepLink = DeepLinkService(onInvite: _onInvite);
+    // 라우터가 초기 위치를 잡은 뒤 딥링크를 처리하도록 첫 프레임 이후 초기화.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _deepLink.init());
+  }
+
+  /// 딥링크에서 받은 초대코드로 모임 참여 화면을 띄운다.
+  void _onInvite(String inviteCode) {
+    ref
+        .read(routerProvider)
+        .push('${RoutePath.groupJoin}?code=$inviteCode');
+  }
+
+  @override
+  void dispose() {
+    _deepLink.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
 
     return CupertinoApp.router(
