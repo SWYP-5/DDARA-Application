@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/feature/group/detail/widget/body/record.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -49,6 +50,9 @@ class GroupPage extends StatelessWidget {
                   // TODO: 스타터(첫 따라찍기) 시작 화면으로 이동.
                 },
               ),
+              const AppTitle('기록'),
+              // TODO: 통계 값은 모임 조회 API 응답으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
+              const Record(ddaraCount: 0, photoCount: 0),
             ],
           ),
         ),
