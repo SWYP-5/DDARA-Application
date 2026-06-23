@@ -1,9 +1,9 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
-import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,9 +15,6 @@ class GroupCreatePage extends StatefulWidget {
 }
 
 class _GroupCreatePageState extends State<GroupCreatePage> {
-  // TODO: 모임 생성 API 응답의 inviteCode 로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
-  static const _dummyInviteCode = 'A82TSJXk2';
-
   final _nameController = TextEditingController();
   final _introController = TextEditingController();
 
@@ -93,11 +90,9 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
                 label: '만들기',
                 onPressed: _canSubmit
                     ? () {
-                        // TODO: 모임 생성 API 호출 → 응답 inviteCode 로 시트 오픈.
-                        InviteShareSheet.show(
-                          context,
-                          inviteCode: _dummyInviteCode,
-                        );
+                        // TODO: 모임 생성 API 호출 후 이동. (현재 백엔드 스펙 대기)
+                        // 생성 화면은 스택에서 제거하고 그 아래 home 위에 모임 화면을 쌓는다.
+                        context.pushReplacement(RoutePath.group);
                       }
                     : null,
               ),

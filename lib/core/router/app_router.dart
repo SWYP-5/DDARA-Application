@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
+import '../../feature/group/group_page.dart';
 import '../../feature/group/join/group_join_page.dart';
 import '../../feature/home/home_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
@@ -81,6 +82,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RoutePath.requiredPermission,
         builder: (_, _) => const RequiredPermissionPage(),
       ),
+      GoRoute(path: RoutePath.group, builder: (_, _) => const GroupPage()),
       GoRoute(
         path: RoutePath.groupCreate,
         builder: (_, _) => const GroupCreatePage(),
