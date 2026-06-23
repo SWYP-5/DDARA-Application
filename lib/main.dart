@@ -1,6 +1,6 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/designsystem/theme/app_theme.dart';
 import 'core/local/provider/local_provider.dart';
 import 'core/router/app_router.dart';
-import 'core/router/route_path.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -19,9 +18,7 @@ Future<void> main() async {
 
   await dotenv.load(fileName: '.env');
 
-  KakaoSdk.init(
-    nativeAppKey: dotenv.get("KAKAO_NATIVE_APP_KEY"),
-  );
+  KakaoSdk.init(nativeAppKey: dotenv.get("KAKAO_NATIVE_APP_KEY"));
 
   SystemChrome.setSystemUIOverlayStyle(AppTheme.systemOverlayStyle);
 
@@ -40,12 +37,7 @@ Future<void> main() async {
 
   FlutterNativeSplash.remove();
 
-  runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const MyApp(),
-    ),
-  );
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
