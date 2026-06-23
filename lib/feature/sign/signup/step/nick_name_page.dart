@@ -22,16 +22,25 @@ class NicknamePage extends StatefulWidget {
 }
 
 class _NicknamePageState extends State<NicknamePage> {
+  /// 가입 가능한 최소 닉네임 길이. (상한은 [CupertinoTextField.maxLength] 가 담당)
+  static const _minLength = 2;
+
   late final TextEditingController _controller = TextEditingController(
     text: widget.initialValue,
-  );
+  )..addListener(_onTextChanged);
 
   static final _hintStyle = AppTypography.body.copyWith(
     color: AppColors.textTertiary,
   );
 
+  void _onTextChanged() => setState(() {});
+
+  /// 2자 이상 입력 시에만 가입 가능. (앞뒤 공백은 길이에서 제외)
+  bool get _isValid => _controller.text.trim().length >= _minLength;
+
   @override
   void dispose() {
+    _controller.removeListener(_onTextChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -98,7 +107,10 @@ class _NicknamePageState extends State<NicknamePage> {
 
           const Spacer(),
 
-          AppButton(label: '시작하기', onPressed: widget.onSignUpButtonClicked),
+          AppButton(
+            label: '시작하기',
+            onPressed: _isValid ? widget.onSignUpButtonClicked : null,
+          ),
         ],
       ),
     );
