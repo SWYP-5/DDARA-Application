@@ -1,7 +1,7 @@
 import 'package:ddara/core/exception/sign_up_exception.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';
-import 'package:ddara/feature/signup/util/sign_up_page_state.dart';
+import 'package:ddara/feature/sign/signup/util/sign_up_page_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {

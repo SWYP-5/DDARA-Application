@@ -1,9 +1,9 @@
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/feature/signup/provider/notifier_provider.dart';
-import 'package:ddara/feature/signup/step/birth_page.dart';
-import 'package:ddara/feature/signup/step/nick_name_page.dart';
-import 'package:ddara/feature/signup/step/terms_page.dart';
+import 'package:ddara/feature/sign/signup/provider/notifier_provider.dart';
+import 'package:ddara/feature/sign/signup/step/birth_page.dart';
+import 'package:ddara/feature/sign/signup/step/nick_name_page.dart';
+import 'package:ddara/feature/sign/signup/step/terms_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

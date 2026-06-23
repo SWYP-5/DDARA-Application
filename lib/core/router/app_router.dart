@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
 import '../../feature/home/home_page.dart';
-import '../../feature/login/login_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
 import '../../feature/permission/permission_page.dart';
 import '../../feature/permission/required_permission_page.dart';
-import '../../feature/signup/sign_up_page.dart';
+import '../../feature/sign/login/login_page.dart';
+import '../../feature/sign/signup/sign_up_page.dart';
 
 final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
 
@@ -18,7 +18,7 @@ final authStateProvider = FutureProvider<bool>((ref) async {
   final repo = ref.read(authRepositoryProvider);
   final refreshToken = await repo.getRefreshToken();
 
-  if(refreshToken == null) return false;
+  if (refreshToken == null) return false;
 
   final accessToken = await repo.refreshAccessToken(refreshToken);
   await repo.saveAccessToken(accessToken);
@@ -55,8 +55,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         // 이번 실행에서 이미 안내를 본 경우엔 통과시킨다.
         if (ref.read(cameraNoticeAcknowledgedProvider)) return null;
 
-        final granted =
-            await ref.read(permissionServiceProvider).isCameraGranted();
+        final granted = await ref
+            .read(permissionServiceProvider)
+            .isCameraGranted();
         if (!granted) return RoutePath.permission;
       }
 

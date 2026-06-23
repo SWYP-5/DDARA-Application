@@ -2,11 +2,11 @@ import 'package:ddara/core/designsystem/component/app_button.dart';
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
-import 'package:ddara/feature/signup/step/util/birthday_input_formatter.dart';
+import 'package:ddara/feature/sign/signup/step/util/birthday_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-import '../../../core/designsystem/theme/app_typography.dart';
+import '../../../../core/designsystem/theme/app_typography.dart';
 
 class BirthPage extends StatefulWidget {
   /// 뒤로가기로 다시 들어왔을 때 복원할 기존 입력값.

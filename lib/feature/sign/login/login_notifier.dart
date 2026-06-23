@@ -1,11 +1,11 @@
 import 'package:ddara/core/auth/provider/auth_provider.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
-import 'package:ddara/feature/login/util/login_state.dart';
+import 'package:ddara/feature/sign/login/util/login_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/exception/login_exception.dart';
-import '../../domain/provider/use_case_provider.dart';
+import '../../../core/exception/login_exception.dart';
+import '../../../domain/provider/use_case_provider.dart';
 
 class LoginNotifier extends Notifier<LoginState> {
   @override
