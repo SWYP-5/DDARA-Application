@@ -1,5 +1,8 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/feature/group/detail/widget/body/history.dart';
+import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
+import 'package:ddara/feature/group/detail/widget/body/members.dart';
 import 'package:ddara/feature/group/detail/widget/body/record.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +36,9 @@ class GroupPage extends StatelessWidget {
       ),
       // imageUri 를 넘기지 않으면 GroupHeader 가 EmptyHeader(빈 상태)를 보여준다.
       child: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
+          // 끝에서 더 당겨지는 바운스(overscroll)를 막고 가장자리에서 멈춘다.
+          physics: const ClampingScrollPhysics(),
           // 상하 s6, 좌우 s5 여백.
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.s5,
@@ -53,6 +58,13 @@ class GroupPage extends StatelessWidget {
               const AppTitle('기록'),
               // TODO: 통계 값은 모임 조회 API 응답으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
               const Record(ddaraCount: 0, photoCount: 0),
+              const SizedBox(height: AppSpacing.s3),
+              const AppTitle('사람들'),
+              const Members(),
+              const SizedBox(height: AppSpacing.s3),
+              const AppTitle('지난 따라찍기'),
+              const History(),
+              const HistoryPhotos()
             ],
           ),
         ),
