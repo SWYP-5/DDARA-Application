@@ -22,6 +22,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(loginNotifierProvider.notifier);
+    final isLoading = ref.watch(loginNotifierProvider) is LoginLoading;
 
     ref.listen(loginNotifierProvider, (previous, next) {
       switch (next) {
@@ -42,71 +43,92 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     });
 
     return CupertinoPageScaffold(
-      child: SafeArea(
-        child: Column(
-          children: [
-            // 브랜딩 영역
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    const LogoLarge(),
-                    Text(
-                      '우리끼리 따라찍기',
-                      textAlign: TextAlign.center,
-                      style: AppTypography.title.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+      child: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                // 브랜딩 영역
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 10,
+                      children: [
+                        const LogoLarge(),
+                        Text(
+                          '우리끼리 따라찍기',
+                          textAlign: TextAlign.center,
+                          style: AppTypography.title.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            // 소셜 로그인 영역
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: 10,
-                children: [
-                  _SocialLoginButton(
-                    label: '카카오로 시작하기',
-                    backgroundColor: const Color(0xFFFEE500),
-                    foregroundColor: const Color(0xFF000000),
-                    onPressed: () =>
-                        notifier.socialLogin(context, SocialLoginType.kakao),
+                // 소셜 로그인 영역
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: 10,
+                    children: [
+                      _SocialLoginButton(
+                        label: '카카오로 시작하기',
+                        backgroundColor: const Color(0xFFFEE500),
+                        foregroundColor: const Color(0xFF000000),
+                        onPressed: isLoading
+                            ? null
+                            : () => notifier.socialLogin(
+                                context,
+                                SocialLoginType.kakao,
+                              ),
+                      ),
+                      _SocialLoginButton(
+                        label: 'Google로 시작하기',
+                        backgroundColor: AppColors.textPrimary,
+                        foregroundColor: const Color(0xFF000000),
+                        onPressed: isLoading
+                            ? null
+                            : () => notifier.socialLogin(
+                                context,
+                                SocialLoginType.google,
+                              ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '이용약관과 개인정보 처리방침 확인',
+                        textAlign: TextAlign.center,
+                        style: AppTypography.caption.copyWith(
+                          color: AppColors.textTertiary,
+                        ),
+                      ),
+                    ],
                   ),
-                  _SocialLoginButton(
-                    label: 'Google로 시작하기',
-                    backgroundColor: AppColors.textPrimary,
-                    foregroundColor: const Color(0xFF000000),
-                    onPressed: () =>
-                        notifier.socialLogin(context, SocialLoginType.google),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '이용약관과 개인정보 처리방침 확인',
-                    textAlign: TextAlign.center,
-                    style: AppTypography.caption.copyWith(
-                      color: AppColors.textTertiary,
-                    ),
-                  ),
-                ],
+                ),
+              ],
+            ),
+          ),
+
+          // 로그인 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
+          if (isLoading)
+            const Positioned.fill(
+              child: ColoredBox(
+                color: Color(0x66000000),
+                child: Center(child: CupertinoActivityIndicator(radius: 16)),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -124,7 +146,7 @@ class _SocialLoginButton extends StatelessWidget {
   final String label;
   final Color backgroundColor;
   final Color foregroundColor;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
