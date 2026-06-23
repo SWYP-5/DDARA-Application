@@ -1,0 +1,190 @@
+import 'package:ddara/core/designsystem/component/logo.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/auth/social_login_type.dart';
+import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/feature/sign/login/provider/notifier_provider.dart';
+import 'package:ddara/feature/sign/login/util/login_state.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+
+class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  ConsumerState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends ConsumerState<LoginPage> {
+  @override
+  Widget build(BuildContext context) {
+    final notifier = ref.read(loginNotifierProvider.notifier);
+    final isLoading = ref.watch(loginNotifierProvider) is LoginLoading;
+
+    ref.listen(loginNotifierProvider, (previous, next) {
+      switch (next) {
+        case LoginSuccess():
+          context.go(RoutePath.home);
+
+        case SignupRequired():
+          context.push(RoutePath.signup, extra: next.social);
+
+        case LoginFail(message: final message):
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
+
+        default:
+          break;
+      }
+    });
+
+    return CupertinoPageScaffold(
+      child: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                // 브랜딩 영역
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 10,
+                      children: [
+                        const LogoLarge(),
+                        Text(
+                          '우리끼리 따라찍기',
+                          textAlign: TextAlign.center,
+                          style: AppTypography.title.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // 소셜 로그인 영역
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: AppSpacing.s3,
+                    children: [
+                      _SocialLoginButton(
+                        label: '카카오 로그인',
+                        iconPath: 'assets/images/ic_kakao.svg',
+                        backgroundColor: const Color(0xFFFEE500),
+                        foregroundColor: const Color(0xFF000000),
+                        onPressed: isLoading
+                            ? null
+                            : () => notifier.socialLogin(
+                                context,
+                                SocialLoginType.kakao,
+                              ),
+                      ),
+                      _SocialLoginButton(
+                        label: 'Google 로그인',
+                        iconPath: 'assets/images/ic_google.svg',
+                        backgroundColor: AppColors.textPrimary,
+                        foregroundColor: const Color(0xFF000000),
+                        onPressed: isLoading
+                            ? null
+                            : () => notifier.socialLogin(
+                                context,
+                                SocialLoginType.google,
+                              ),
+                      ),
+                      Text(
+                        '이용약관과 개인정보 처리방침 확인',
+                        textAlign: TextAlign.center,
+                        style: AppTypography.caption.copyWith(
+                          color: AppColors.textTertiary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.s4),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // 로그인 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
+          if (isLoading)
+            const Positioned.fill(
+              child: ColoredBox(
+                color: Color(0x66000000),
+                child: Center(
+                  child: CupertinoActivityIndicator(radius: AppRadius.md),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 소셜 로그인 버튼. (브랜드 색 기반 · 전체폭 · 좌측 브랜드 아이콘)
+class _SocialLoginButton extends StatelessWidget {
+  const _SocialLoginButton({
+    required this.label,
+    required this.iconPath,
+    required this.backgroundColor,
+    required this.foregroundColor,
+    required this.onPressed,
+  });
+
+  /// 브랜드 아이콘 한 변 크기.
+  static const double _iconSize = 20;
+
+  final String label;
+
+  /// 좌측에 표시할 브랜드 아이콘 SVG 에셋 경로.
+  final String iconPath;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(AppRadius.sm),
+      onPressed: onPressed,
+      // 아이콘은 왼쪽 끝(버튼 패딩 16 안쪽)에 고정, 라벨은 버튼 정중앙.
+      child: Row(
+        children: [
+          SvgPicture.asset(iconPath, width: _iconSize, height: _iconSize),
+          Expanded(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: foregroundColor,
+                fontSize: 16,
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.16,
+              ),
+            ),
+          ),
+          // 아이콘 폭만큼 우측을 비워 라벨이 버튼 정중앙에 오도록 보정.
+          const SizedBox(width: _iconSize),
+        ],
+      ),
+    );
+  }
+}

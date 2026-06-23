@@ -35,15 +35,35 @@ dependencies:
   go_router: ^16.0.0
   flutter_riverpod: ^2.5.1
 
+  kakao_flutter_sdk_user: ^1.9.5
+  google_sign_in: ^6.2.1
+  http: ^1.2.0
+
+  flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.3.0
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+
+  permission_handler: ^11.3.1
+
+  dio: ^5.9.0
+
+  flutter_native_splash: ^2.4.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   firebase_core: ^4.11.0
   firebase_crashlytics: ^5.2.4
+  flutter_svg: ^2.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  freezed: ^3.0.0
+  build_runner: ^2.4.0
+  json_serializable: ^6.9.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -112,3 +132,16 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# 네이티브(시스템) 스플래시 설정.
+# 변경 후 `dart run flutter_native_splash:create` 로 네이티브 리소스를 재생성한다.
+# 배경색은 디자인 시스템 bg.base (AppColors.bgBase = #16171b) 와 동일하게 맞춘다.
+flutter_native_splash:
+  color: "#16171b"
+  # 로고 이미지가 준비되면 아래 주석을 해제하고 경로를 지정한다.
+  # image: assets/images/splash_logo.png
+
+  # Android 12+ 는 별도 스플래시 API 를 사용하므로 색을 따로 지정한다.
+  android_12:
+    color: "#16171b"
+    # image: assets/images/splash_logo.png
