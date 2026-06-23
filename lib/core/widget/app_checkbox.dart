@@ -1,6 +1,8 @@
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../designsystem/foundation/app_radius.dart';
+
 /// 원형 체크박스. 탭하면 [onChanged] 로 토글된 값을 전달한다.
 class AppCheckbox extends StatelessWidget {
   const AppCheckbox({
@@ -29,7 +31,7 @@ class AppCheckbox extends StatelessWidget {
             side: value
                 ? BorderSide.none
                 : const BorderSide(width: 1.5, color: AppColors.borderStrong),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppRadius.xs),
           ),
         ),
         child: value
