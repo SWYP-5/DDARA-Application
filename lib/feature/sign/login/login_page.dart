@@ -1,5 +1,5 @@
 import 'package:ddara/core/designsystem/component/logo.dart';
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/sign/login/provider/notifier_provider.dart';
@@ -8,8 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../core/designsystem/theme/app_typography.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -81,7 +79,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: 10,
+                    spacing: AppSpacing.s3,
                     children: [
                       _SocialLoginButton(
                         label: '카카오로 시작하기',
@@ -105,7 +103,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 SocialLoginType.google,
                               ),
                       ),
-                      const SizedBox(height: 10),
                       Text(
                         '이용약관과 개인정보 처리방침 확인',
                         textAlign: TextAlign.center,
@@ -113,6 +110,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           color: AppColors.textTertiary,
                         ),
                       ),
+                      const SizedBox(height: AppSpacing.s4),
                     ],
                   ),
                 ),
@@ -125,7 +123,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             const Positioned.fill(
               child: ColoredBox(
                 color: Color(0x66000000),
-                child: Center(child: CupertinoActivityIndicator(radius: 16)),
+                child: Center(
+                  child: CupertinoActivityIndicator(radius: AppRadius.md),
+                ),
               ),
             ),
         ],
