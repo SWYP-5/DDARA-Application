@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/sign/signup/provider/notifier_provider.dart';
@@ -79,27 +80,42 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           // 사용하므로 Material ancestor 를 제공한다. 해당 스텝 Cupertino 전환 시 제거 가능.
           child: Material(
             type: MaterialType.transparency,
-            child: switch (state.step) {
-              1 => TermsPage(
-                initialAgreed: state.termsAgreed,
-                onNextButtonClicked: notifier.nextButtonClicked,
-                onAgreementChanged: notifier.termsAgreedChanged,
-              ),
-              2 => BirthPage(
-                initialValue: state.birthDay,
-                onNextButtonClicked: notifier.nextButtonClicked,
-                onChanged: (birth) {
-                  notifier.birthDayOnChanged(birth);
+            child: Stack(
+              children: [
+                switch (state.step) {
+                  1 => TermsPage(
+                    initialAgreed: state.termsAgreed,
+                    onNextButtonClicked: notifier.nextButtonClicked,
+                    onAgreementChanged: notifier.termsAgreedChanged,
+                  ),
+                  2 => BirthPage(
+                    initialValue: state.birthDay,
+                    onNextButtonClicked: notifier.nextButtonClicked,
+                    onChanged: (birth) {
+                      notifier.birthDayOnChanged(birth);
+                    },
+                  ),
+                  _ => NicknamePage(
+                    initialValue: state.nickName,
+                    onSignUpButtonClicked: notifier.signUp,
+                    onChanged: (nickName) {
+                      notifier.nickNameOnChanged(nickName);
+                    },
+                  ),
                 },
-              ),
-              _ => NicknamePage(
-                initialValue: state.nickName,
-                onSignUpButtonClicked: notifier.signUp,
-                onChanged: (nickName) {
-                  notifier.nickNameOnChanged(nickName);
-                },
-              ),
-            },
+
+                // 회원가입 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
+                if (state.isLoading)
+                  const Positioned.fill(
+                    child: ColoredBox(
+                      color: AppColors.overlayScrim,
+                      child: Center(
+                        child: CupertinoActivityIndicator(radius: 16),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

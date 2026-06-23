@@ -31,6 +31,11 @@ class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {
   }
 
   Future<void> signUp() async {
+    // 처리 중 재진입(중복 제출) 방지.
+    if (state.isLoading) return;
+
+    state = state.copyWith(isLoading: true);
+
     try {
       await ref.read(signUpUseCaseProvider)(
         state.social,
@@ -47,7 +52,7 @@ class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {
     } on UnauthorizedTokenException {
       state = state.copyWith(errorMessage: "소셜 토큰이 만료 또는 무효 상태입니다.");
     } finally {
-      state = state.copyWith(errorMessage: "");
+      state = state.copyWith(isLoading: false, errorMessage: "");
     }
   }
 }
