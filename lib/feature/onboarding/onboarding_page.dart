@@ -1,6 +1,10 @@
+import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/logo.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/onboarding/provider/onboarding_provider.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_first_page.dart';
+import 'package:ddara/feature/onboarding/widget/onboarding_page_indicator.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_second_page.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_third_page.dart';
 import 'package:flutter/material.dart';
@@ -49,31 +53,46 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       body: SafeArea(
         child: Column(
           children: [
+            // 로고·텍스트·인디케이터를 한 덩어리로 화면 중앙에 모은다.
             Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: _pageCount,
-                onPageChanged: (index) => setState(() => _index = index),
-                itemBuilder: (_, index) {
-                  switch (index) {
-                    case 0:
-                      return const OnboardingFirstPage();
-                    case 1:
-                      return const OnboardingSecondPage();
-                    default:
-                      return const OnboardingThirdPage();
-                  }
-                },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // 페이지가 바뀌어도 고정되는 로고
+                  const LogoLarge(),
+                  const SizedBox(height: AppSpacing.s6),
+                  // 제목·설명만 좌우로 스와이프되는 영역 (고정 높이)
+                  SizedBox(
+                    height: 120,
+                    child: PageView.builder(
+                      controller: _controller,
+                      // 스와이프 비활성화 → 버튼으로만 페이지 이동.
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _pageCount,
+                      onPageChanged: (index) => setState(() => _index = index),
+                      itemBuilder: (_, index) {
+                        switch (index) {
+                          case 0:
+                            return const OnboardingFirstPage();
+                          case 1:
+                            return const OnboardingSecondPage();
+                          default:
+                            return const OnboardingThirdPage();
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.s6),
+                  // 페이지가 바뀌어도 고정되며, 활성 점만 애니메이션으로 전환되는 인디케이터
+                  OnboardingPageIndicator(currentIndex: _index),
+                ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: isLastPage ? _start : _goNext,
-                  child: Text(isLastPage ? '시작하기' : '다음'),
-                ),
+              child: AppButton(
+                label: isLastPage ? '시작하기' : '다음',
+                onPressed: isLastPage ? _start : _goNext,
               ),
             ),
           ],
