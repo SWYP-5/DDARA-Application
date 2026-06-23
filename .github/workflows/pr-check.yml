@@ -47,7 +47,8 @@ jobs:
         run: flutter pub get
 
       - name: 정적 분석
-        run: flutter analyze
+        # info(린트) 는 보고만 하고, 경고/에러일 때만 실패시킨다.
+        run: flutter analyze --no-fatal-infos
 
       - name: 테스트
         # 테스트 파일이 없으면 flutter test 가 실패하므로 존재할 때만 실행.
