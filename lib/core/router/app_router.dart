@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
-import '../../feature/group/group_page.dart';
+import '../../feature/group/detail/group_page.dart';
 import '../../feature/group/join/group_join_page.dart';
 import '../../feature/home/home_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
