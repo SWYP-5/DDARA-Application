@@ -46,6 +46,12 @@ jobs:
       - name: 의존성 설치
         run: flutter pub get
 
+      - name: .env 플레이스홀더 생성
+        # pubspec 에 .env 가 에셋으로 선언돼 있어, 없으면 분석에서
+        # asset_does_not_exist 경고(=실패)가 난다. 분석은 존재만 확인하므로
+        # 빈 파일로 충분(시크릿 불필요 → fork PR 도 안전).
+        run: touch .env
+
       - name: 정적 분석
         # info(린트) 는 보고만 하고, 경고/에러일 때만 실패시킨다.
         run: flutter analyze --no-fatal-infos
