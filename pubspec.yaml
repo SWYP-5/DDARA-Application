@@ -56,6 +56,9 @@ dependencies:
   firebase_core: ^4.11.0
   firebase_crashlytics: ^5.2.4
   flutter_svg: ^2.3.0
+  kakao_flutter_sdk_share: ^1.10.0
+  url_launcher: ^6.3.2
+  app_links: ^7.1.2
 
 dev_dependencies:
   flutter_test:
