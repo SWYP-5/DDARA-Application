@@ -152,8 +152,11 @@ class _TermsPageState extends State<TermsPage> {
 
           const Spacer(),
 
-          // 하단 버튼
-          AppButton(label: '다음', onPressed: widget.onNextButtonClicked),
+          // 하단 버튼 (필수 약관 전체 동의 시에만 활성화)
+          AppButton(
+            label: '동의하고 계속',
+            onPressed: _allAgreed ? widget.onNextButtonClicked : null,
+          ),
         ],
       ),
     );
