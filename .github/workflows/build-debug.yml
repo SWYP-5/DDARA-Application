@@ -67,7 +67,8 @@ jobs:
         run: flutter pub get
 
       - name: APK 빌드 (debug)
-        run: flutter build apk --debug
+        # 빌드 번호를 run_number 로 주입해 실행마다 자동 증가. (pubspec 은 변경 안 함)
+        run: flutter build apk --debug --build-number=${{ github.run_number }}
 
       - name: Firebase 서비스 계정 복원 (base64 → JSON 파일)
         env:
@@ -158,7 +159,8 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           retry_wait_seconds: 20
-          command: flutter build ipa --export-options-plist=ios/ExportOptions.plist
+          # 빌드 번호를 run_number 로 주입해 실행마다 자동 증가. (pubspec 은 변경 안 함)
+          command: flutter build ipa --build-number=${{ github.run_number }} --export-options-plist=ios/ExportOptions.plist
 
       - name: IPA 경로 탐색
         run: echo "IPA_PATH=$(ls build/ios/ipa/*.ipa | head -n1)" >> "$GITHUB_ENV"
@@ -206,3 +208,29 @@ jobs:
             "$UPLOAD" -gsp ios/Runner/GoogleService-Info.plist -p ios "$DSYMS" \
               || echo "::warning::dSYM 업로드 실패 (배포에는 영향 없음)."
           fi
+
+  # ─────────────────────────── 배포 완료 알림 (Discord) ───────────────────────────
+  notify:
+    name: Discord 배포 알림
+    # Android·iOS 배포가 모두 끝난 뒤 실행. (둘 다 성공해야 알림을 보낸다)
+    needs: [ android, ios ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 디스코드 알림 전송
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_DEBUG_CD_WEBHOOK_URL }}
+        run: |
+          curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "username": "QA봇",
+              "content": "@everyone 새 배포가 완료되었습니다. 확인해주세요!!",
+              "allowed_mentions": { "parse": ["everyone"] },
+              "embeds": [
+                {
+                  "title": "앱 설치 방법",
+                  "description": "https://app.notion.com/p/iOS-388a5ea4235480efba4cdab6f4f3310f",
+                  "color": 5814783
+                }
+              ]
+            }'

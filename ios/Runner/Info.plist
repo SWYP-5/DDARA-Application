@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<!-- Flutter 기본 딥링크 자동 라우팅 비활성화. 커스텀 스킴 콜백(카카오 로그인
+		     kakao{appkey}://oauth)이 go_router 로 흘러드는 것을 막는다.
+		     딥링크는 app_links 로 직접 수신해 host 기준으로 분기한다. -->
+		<key>FlutterDeepLinkingEnabled</key>
+		<false/>
 		<key>NSCameraUsageDescription</key>
 		<string>따라찍기 사진을 촬영할 때 카메라를 사용해요.</string>
 		<key>NSPhotoLibraryUsageDescription</key>

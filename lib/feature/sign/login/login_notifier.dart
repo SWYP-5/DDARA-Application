@@ -24,7 +24,10 @@ class LoginNotifier extends Notifier<LoginState> {
           (token) => _login(token, social),
         );
       case SocialLoginType.kakao:
-        kakaoAuthService.signInWithKakao((token) => _login(token, social));
+        kakaoAuthService.signInWithKakao(
+          (token) => _login(token, social),
+          (message) => state = LoginFail(message),
+        );
     }
   }
 
