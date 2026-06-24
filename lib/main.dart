@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:ui';
 
+import 'package:app_links/app_links.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,11 +58,56 @@ Future<void> main() async {
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  final AppLinks _appLinks = AppLinks();
+  StreamSubscription<Uri>? _linkSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _initDeepLinks();
+  }
+
+  /// 딥링크를 app_links 로 직접 수신한다.
+  ///
+  /// Flutter 기본 딥링크 자동 라우팅(FlutterDeepLinkingEnabled)을 꺼두었으므로,
+  /// 콜드 스타트(getInitialLink)와 실행 중(uriLinkStream) 양쪽을 직접 구독한다.
+  Future<void> _initDeepLinks() async {
+    final initial = await _appLinks.getInitialLink();
+    if (initial != null) _handleUri(initial);
+    _linkSub = _appLinks.uriLinkStream.listen(_handleUri);
+  }
+
+  /// 들어온 딥링크를 스킴·host 기준으로 분기한다.
+  void _handleUri(Uri uri) {
+    // 카카오 로그인 콜백(kakao{appkey}://oauth)은 KakaoSDK 가 자체 처리하므로
+    // 여기서 라우팅하면 안 된다. (go_router 로 흘리면 토큰 교환 실패)
+    if (uri.scheme.startsWith('kakao')) {
+      if (uri.host == 'oauth') return;
+      if (uri.host == 'kakaolink') {
+        // TODO: 카카오톡 공유 진입 파라미터 파싱 후 라우팅.
+        // 예) ref.read(routerProvider).go('/group/${uri.queryParameters['id']}');
+        return;
+      }
+    }
+    // TODO: 기타 딥링크(푸시·유니버설 링크 등) 처리.
+  }
+
+  @override
+  void dispose() {
+    _linkSub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
 
     return CupertinoApp.router(
