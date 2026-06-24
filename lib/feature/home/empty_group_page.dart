@@ -53,9 +53,7 @@ class EmptyGroupPage extends StatelessWidget {
               ),
               AppButton.outline(
                 label: '모임 참여하기',
-                onPressed: () {
-                  // TODO: 모임 참여하기 화면 이동
-                },
+                onPressed: () => context.push(RoutePath.groupJoin),
               ),
               AppTextButton(
                 label: '나중에 추가할게요',
