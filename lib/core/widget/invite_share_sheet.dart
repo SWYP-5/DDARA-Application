@@ -11,26 +11,38 @@ import 'package:flutter_svg/flutter_svg.dart';
 /// 여러 화면에서 재사용할 수 있도록 [show] 정적 메서드로 띄운다.
 ///
 /// ```dart
-/// InviteShareSheet.show(context, inviteCode: 'A82TSJXk2');
+/// InviteShareSheet.show(context, inviteCode: 'A82TSJXk2', imageUrl: '<https-url>');
 /// ```
 class InviteShareSheet extends StatelessWidget {
-  const InviteShareSheet({super.key, required this.inviteCode});
+  const InviteShareSheet({
+    super.key,
+    required this.inviteCode,
+    required this.imageUrl,
+  });
 
   /// 공유/복사에 사용할 초대코드 (백엔드 발급 문자열).
   final String inviteCode;
 
+  /// 공유 카드에 넣을 모임 대표 이미지 (공개 https URL).
+  final String imageUrl;
+
   /// 초대 공유 시트를 표시한다. (Cupertino 모달 팝업)
-  static Future<void> show(BuildContext context, {required String inviteCode}) {
+  static Future<void> show(
+    BuildContext context, {
+    required String inviteCode,
+    required String imageUrl,
+  }) {
     return showCupertinoModalPopup<void>(
       context: context,
-      builder: (_) => InviteShareSheet(inviteCode: inviteCode),
+      builder: (_) =>
+          InviteShareSheet(inviteCode: inviteCode, imageUrl: imageUrl),
     );
   }
 
   Future<void> _onKakaoShare(BuildContext context) async {
     final navigator = Navigator.of(context);
     try {
-      await KakaoShareService().shareInvite(inviteCode);
+      await KakaoShareService().shareInvite(inviteCode, imageUrl: imageUrl);
       navigator.pop();
     } catch (_) {
       // 공유 실패(미설치 폴백 실패 등) → 시트는 유지하고 안내.

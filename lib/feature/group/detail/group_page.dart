@@ -69,8 +69,10 @@ class GroupPage extends StatelessWidget {
                 ],
                 onAddMember: () => InviteShareSheet.show(
                   context,
-                  // TODO: 모임 조회 API 응답의 초대코드로 대체. (백엔드 스펙 대기 — 임시 더미)
+                  // TODO: 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
                   inviteCode: 'DUMMY1234',
+                  // 카카오가 접근 가능한 공개 https URL 이어야 한다. (로컬 에셋 불가)
+                  imageUrl: 'https://placehold.co/800x400.png',
                 ),
               ),
               const SizedBox(height: AppSpacing.s3),
