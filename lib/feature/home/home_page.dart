@@ -1,11 +1,21 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/feature/home/empty_group_page.dart';
+import 'package:ddara/feature/home/group_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // TODO: 그룹 조회 API 연동 후 실제 모임 유무로 분기. (현재는 임시 토글)
+  /// 모임 목록 화면 표시 여부. (false: EmptyGroupPage / true: GroupListPage)
+  bool _showGroupList = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +51,13 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      // TODO: 그룹 조회 API 연동 후 분기 — 그룹 있으면 GroupListPage, 없으면 EmptyGroupPage.
-      //       현재는 API 미구현이라 EmptyGroupPage 고정.
-      child: const SafeArea(child: EmptyGroupPage()),
+      child: SafeArea(
+        child: _showGroupList
+            ? const GroupListPage()
+            : EmptyGroupPage(
+                onLater: () => setState(() => _showGroupList = true),
+              ),
+      ),
     );
   }
 }

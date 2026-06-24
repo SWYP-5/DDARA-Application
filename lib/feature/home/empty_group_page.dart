@@ -8,7 +8,10 @@ import 'package:go_router/go_router.dart';
 
 /// 참여한 모임이 하나도 없을 때 보여주는 빈 상태 화면.
 class EmptyGroupPage extends StatelessWidget {
-  const EmptyGroupPage({super.key});
+  const EmptyGroupPage({super.key, required this.onLater});
+
+  /// '나중에 추가할게요' 를 눌렀을 때 실행할 콜백.
+  final VoidCallback onLater;
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +58,7 @@ class EmptyGroupPage extends StatelessWidget {
                 label: '모임 참여하기',
                 onPressed: () => context.push(RoutePath.groupJoin),
               ),
-              AppTextButton(
-                label: '나중에 추가할게요',
-                onPressed: () {
-                  // TODO: 나중에 추가 처리
-                },
-              ),
+              AppTextButton(label: '나중에 추가할게요', onPressed: onLater),
             ],
           ),
         ),
