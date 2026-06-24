@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/share/kakao_share_service.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
@@ -141,11 +142,9 @@ class InviteShareSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                minimumSize: Size.zero,
+              AppTextButton.body(
+                label: '나중에 할게요',
                 onPressed: () => _onLater(context),
-                child: const AppText.body('나중에 할게요'),
               ),
             ],
           ),

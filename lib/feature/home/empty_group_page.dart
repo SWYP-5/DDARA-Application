@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
+import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
@@ -50,55 +51,22 @@ class EmptyGroupPage extends StatelessWidget {
                 label: '모임 만들기',
                 onPressed: () => context.push(RoutePath.groupCreate),
               ),
-              _OutlineButton(
+              AppButton.outline(
                 label: '모임 참여하기',
                 onPressed: () {
                   // TODO: 모임 참여하기 화면 이동
                 },
               ),
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                minimumSize: Size.zero,
+              AppTextButton(
+                label: '나중에 추가할게요',
                 onPressed: () {
                   // TODO: 나중에 추가 처리
                 },
-                child: const AppText.caption(
-                  '나중에 추가할게요',
-                  color: AppColors.textTertiary,
-                ),
               ),
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-/// 배경은 투명하고 테두리·글자색만 강조색인 보조 버튼. ([AppButton] 과 동일 치수)
-class _OutlineButton extends StatelessWidget {
-  const _OutlineButton({required this.label, required this.onPressed});
-
-  final String label;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        onPressed: onPressed,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: AppColors.accentDefault),
-          ),
-          child: AppText.title(label, color: AppColors.accentDefault),
-        ),
-      ),
     );
   }
 }

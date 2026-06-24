@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
@@ -106,10 +107,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 SocialLoginType.google,
                               ),
                       ),
-                      const AppText.caption(
-                        '이용약관과 개인정보 처리방침 확인',
-                        textAlign: TextAlign.center,
-                        color: AppColors.textTertiary,
+                      AppTextButton(
+                        label: '이용약관과 개인정보 처리방침 확인',
+                        onPressed: () {
+                          // TODO: 이용약관·개인정보 처리방침 화면 이동
+                        },
                       ),
                       const SizedBox(height: AppSpacing.s4),
                     ],
