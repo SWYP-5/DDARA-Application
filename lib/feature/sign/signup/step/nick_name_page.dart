@@ -1,5 +1,5 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
-import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,10 +28,6 @@ class _NicknamePageState extends State<NicknamePage> {
   late final TextEditingController _controller = TextEditingController(
     text: widget.initialValue,
   )..addListener(_onTextChanged);
-
-  static final _hintStyle = AppTypography.body.copyWith(
-    color: AppColors.textTertiary,
-  );
 
   void _onTextChanged() => setState(() {});
 
@@ -76,31 +72,12 @@ class _NicknamePageState extends State<NicknamePage> {
               ),
 
               // 닉네임 입력 필드
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: ShapeDecoration(
-                  color: AppColors.bgSurface,
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                      width: 1,
-                      color: AppColors.borderDefault,
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: CupertinoTextField(
-                  controller: _controller,
-                  onChanged: widget.onChanged,
-                  maxLength: 10,
-                  textInputAction: TextInputAction.done,
-                  padding: EdgeInsets.zero,
-                  decoration: null,
-                  placeholder: '닉네임 (2~10자)',
-                  placeholderStyle: _hintStyle,
-                  style: _hintStyle.copyWith(color: AppColors.textPrimary),
-                  cursorColor: AppColors.accentDefault,
-                ),
+              AppTextField(
+                controller: _controller,
+                onChanged: widget.onChanged,
+                maxLength: 10,
+                textInputAction: TextInputAction.done,
+                placeholder: '닉네임 (2~10자)',
               ),
             ],
           ),

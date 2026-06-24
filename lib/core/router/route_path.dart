@@ -5,5 +5,7 @@ class RoutePath {
   static const signup = '/signup';
   static const permission = '/permission';
   static const requiredPermission = '/required-permission';
+  static const group = '/group';
   static const groupCreate = '/group/create';
+  static const groupJoin = '/group/join';
 }

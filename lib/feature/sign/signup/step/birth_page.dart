@@ -1,12 +1,10 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/widget/app_description.dart';
 import 'package:ddara/core/widget/app_title.dart';
 import 'package:ddara/feature/sign/signup/step/util/birthday_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-
-import '../../../../core/designsystem/theme/app_typography.dart';
 
 class BirthPage extends StatefulWidget {
   /// 뒤로가기로 다시 들어왔을 때 복원할 기존 입력값.
@@ -47,10 +45,6 @@ class _BirthPageState extends State<BirthPage> {
   late final TextEditingController _controller = TextEditingController(
     text: widget.initialValue,
   )..addListener(_onTextChanged);
-
-  static final _hintStyle = AppTypography.body.copyWith(
-    color: AppColors.textTertiary,
-  );
 
   void _onTextChanged() => setState(() {});
 
@@ -141,52 +135,16 @@ class _BirthPageState extends State<BirthPage> {
               ),
 
               // 생년월일 입력 필드 + 검증 안내
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 8,
-                children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: ShapeDecoration(
-                      color: AppColors.bgSurface,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1,
-                          color: errorMessage != null
-                              ? AppColors.statusDanger
-                              : AppColors.borderDefault,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: CupertinoTextField(
-                      controller: _controller,
-                      onChanged: widget.onChanged,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        BirthdayInputFormatter(),
-                      ],
-                      padding: EdgeInsets.zero,
-                      decoration: null,
-                      placeholder: '예) 2008 . 01 . 01',
-                      placeholderStyle: _hintStyle,
-                      style: _hintStyle.copyWith(color: AppColors.textPrimary),
-                      cursorColor: AppColors.accentDefault,
-                    ),
-                  ),
-
-                  // 입력 완료 후 검증 실패 시 노출되는 에러 문구.
-                  if (errorMessage != null)
-                    Text(
-                      errorMessage,
-                      style: AppTypography.caption.copyWith(
-                        color: AppColors.statusDanger,
-                      ),
-                    ),
+              AppTextField(
+                controller: _controller,
+                onChanged: widget.onChanged,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  BirthdayInputFormatter(),
                 ],
+                placeholder: '예) 2008 . 01 . 01',
+                errorText: errorMessage,
               ),
             ],
           ),

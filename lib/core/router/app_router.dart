@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
+import '../../feature/group/group_page.dart';
+import '../../feature/group/join/group_join_page.dart';
 import '../../feature/home/home_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
@@ -80,9 +82,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RoutePath.requiredPermission,
         builder: (_, _) => const RequiredPermissionPage(),
       ),
+      GoRoute(path: RoutePath.group, builder: (_, _) => const GroupPage()),
       GoRoute(
         path: RoutePath.groupCreate,
         builder: (_, _) => const GroupCreatePage(),
+      ),
+      GoRoute(
+        path: RoutePath.groupJoin,
+        // 딥링크로 전달된 초대코드를 쿼리 파라미터에서 읽는다.
+        // 코드가 없으면 빈 문자열로 두어 페이지가 안내를 처리한다.
+        builder: (_, state) => GroupJoinPage(
+          inviteCode: state.uri.queryParameters['code'] ?? '',
+        ),
       ),
     ],
   );

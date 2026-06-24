@@ -50,9 +50,7 @@ class EmptyGroupPage extends StatelessWidget {
               ),
               _OutlineButton(
                 label: '모임 참여하기',
-                onPressed: () {
-                  // TODO: 모임 참여하기 화면 이동
-                },
+                onPressed: () => context.push(RoutePath.groupJoin),
               ),
               CupertinoButton(
                 padding: EdgeInsets.zero,
