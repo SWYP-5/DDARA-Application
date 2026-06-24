@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
+import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/invite_share_sheet.dart';
@@ -73,7 +74,19 @@ class GroupPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.s3),
-              const AppText.headlineLarge('지난 따라찍기'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const AppText.headlineLarge('지난 따라찍기'),
+                  AppTextButton(
+                    label: '더보기',
+                    onPressed: () {
+                      // TODO: 지난 따라찍기 전체 보기 화면으로 이동.
+                    },
+                  ),
+                ],
+              ),
               const HistoryPhotos(),
             ],
           ),
