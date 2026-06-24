@@ -1,9 +1,11 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
+import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/home/empty_group_page.dart';
 import 'package:ddara/feature/home/group_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,9 +46,7 @@ class _HomePageState extends State<HomePage> {
                 width: 26,
                 height: 26,
               ),
-              onPressed: () {
-                // TODO: 프로필 화면 이동
-              },
+              onPressed: () => context.push(RoutePath.profile),
             ),
           ],
         ),
