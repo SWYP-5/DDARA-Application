@@ -1,5 +1,5 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/sign/signup/provider/notifier_provider.dart';
@@ -100,15 +100,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 },
 
                 // 회원가입 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
-                if (state.isLoading)
-                  const Positioned.fill(
-                    child: ColoredBox(
-                      color: AppColors.overlayScrim,
-                      child: Center(
-                        child: CupertinoActivityIndicator(radius: 16),
-                      ),
-                    ),
-                  ),
+                if (state.isLoading) const AppLoadingOverlay(),
               ],
             ),
           ),

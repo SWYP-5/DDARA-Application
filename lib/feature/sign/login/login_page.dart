@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
@@ -119,15 +120,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
 
           // 로그인 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
-          if (isLoading)
-            const Positioned.fill(
-              child: ColoredBox(
-                color: Color(0x66000000),
-                child: Center(
-                  child: CupertinoActivityIndicator(radius: AppRadius.md),
-                ),
-              ),
-            ),
+          if (isLoading) const AppLoadingOverlay(),
         ],
       ),
     );
