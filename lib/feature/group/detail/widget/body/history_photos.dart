@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,7 +12,7 @@ class HistoryPhotos extends StatelessWidget {
   static const double _cardWidth = 180;
 
   /// 각 카드가 가로로 차지하는 너비. (작을수록 더 많이 겹침)
-  static const double _visibleWidth = 170;
+  static const double _visibleWidth = 200;
 
   /// 마지막 카드가 자기 영역 밖으로 삐져나오는 폭. (오른쪽 여백으로 보정)
   static const double _overhang = _cardWidth - _visibleWidth;
@@ -36,17 +37,35 @@ class HistoryPhotos extends StatelessWidget {
           _OverlapCard(
             cardWidth: _cardWidth,
             visibleWidth: _visibleWidth,
-            child: _PhotoCard(angle: -0.14, name: '나', radius: AppRadius.lg),
+            child: _PhotoCard(
+              angle: -0.14,
+              title: '강아지',
+              date: '6월 12일',
+              participantCount: 5,
+              radius: AppRadius.lg,
+            ),
           ),
           _OverlapCard(
             cardWidth: _cardWidth,
             visibleWidth: _visibleWidth,
-            child: _PhotoCard(angle: 0.14, name: '보현', radius: AppRadius.sm),
+            child: _PhotoCard(
+              angle: 0.14,
+              title: '고양이',
+              date: '6월 13일',
+              participantCount: 4,
+              radius: AppRadius.sm,
+            ),
           ),
           _OverlapCard(
             cardWidth: _cardWidth,
             visibleWidth: _visibleWidth,
-            child: _PhotoCard(angle: -0.10, name: '민주', radius: AppRadius.lg),
+            child: _PhotoCard(
+              angle: -0.10,
+              title: '산책',
+              date: '6월 14일',
+              participantCount: 3,
+              radius: AppRadius.lg,
+            ),
           ),
         ],
       ),
@@ -85,15 +104,23 @@ class _OverlapCard extends StatelessWidget {
 class _PhotoCard extends StatelessWidget {
   const _PhotoCard({
     required this.angle,
-    required this.name,
+    required this.title,
+    required this.date,
+    required this.participantCount,
     required this.radius,
   });
 
   /// 카드 회전 각(라디안).
   final double angle;
 
-  /// 카드 하단에 표시할 이름.
-  final String name;
+  /// 참여 인원 수. (예: 5 → '5명 참여') — 외부 주입
+  final int participantCount;
+
+  /// 카드 제목. (예: '강아지') — 외부 주입
+  final String title;
+
+  /// 촬영 날짜 라벨. (예: '6월 12일') — 외부 주입
+  final String date;
 
   /// 카드 모서리 둥글기.
   final double radius;
@@ -124,33 +151,26 @@ class _PhotoCard extends StatelessWidget {
           children: [
             // TODO: 사진 데이터는 모임 조회 API 응답으로 대체. (임시 에셋)
             Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover),
+            // 우측 상단: 참여 인원
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.s3),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: AppText.caption(
+                  '$participantCount명 참여',
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ),
+            // 좌측 하단: 제목 + 날짜
             Padding(
               padding: const EdgeInsets.all(AppSpacing.s3),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s3,
-                      vertical: AppSpacing.s1,
-                    ),
-                    decoration: ShapeDecoration(
-                      color: AppColors.overlayScrim,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.sm),
-                      ),
-                    ),
-                    child: Text(
-                      name,
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        height: 1.38,
-                      ),
-                    ),
-                  ),
+                  AppText.title(title),
+                  AppText.caption(date),
                 ],
               ),
             ),
