@@ -1,8 +1,7 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
-import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/invite_share_sheet.dart';
-import 'package:ddara/feature/group/detail/widget/body/history.dart';
 import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
 import 'package:ddara/feature/group/detail/widget/body/record.dart';
@@ -75,7 +74,6 @@ class GroupPage extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.s3),
               const AppText.headlineLarge('지난 따라찍기'),
-              const History(),
               const HistoryPhotos(),
             ],
           ),
