@@ -78,9 +78,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   /// 딥링크에서 받은 초대코드로 모임 참여 화면을 띄운다.
   void _onInvite(String inviteCode) {
-    ref
-        .read(routerProvider)
-        .push('${RoutePath.groupJoin}?code=$inviteCode');
+    ref.read(routerProvider).push('${RoutePath.groupJoin}?code=$inviteCode');
   }
 
   @override

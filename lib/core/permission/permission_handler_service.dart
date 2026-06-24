@@ -8,9 +8,9 @@ class PermissionHandlerService implements PermissionService {
   /// [PermissionStatus] 를 [PermissionResult] 로 변환.
   /// [grantedWhenLimited] 가 true 면 limited 상태도 허용으로 본다. (사진)
   PermissionResult _toResult(
-      PermissionStatus status, {
-        bool grantedWhenLimited = false,
-      }) {
+    PermissionStatus status, {
+    bool grantedWhenLimited = false,
+  }) {
     if (status.isGranted || (grantedWhenLimited && status.isLimited)) {
       return PermissionResult.granted;
     }
