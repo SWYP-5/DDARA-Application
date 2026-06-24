@@ -105,7 +105,6 @@ class _PhotoCard extends StatelessWidget {
       child: Container(
         width: 180,
         height: 225,
-        padding: const EdgeInsets.all(AppSpacing.s3),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
           color: AppColors.bgSurface,
@@ -120,35 +119,39 @@ class _PhotoCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 60,
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            // TODO: 사진/스티커 영역. (가로 중앙 자리만 잡아둠)
-            const SizedBox(
-              width: double.infinity,
-              child: Center(child: SizedBox.square(dimension: 36)),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.s3,
-                vertical: AppSpacing.s1,
-              ),
-              decoration: ShapeDecoration(
-                color: AppColors.overlayScrim,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                ),
-              ),
-              child: Text(
-                name,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  height: 1.38,
-                ),
+            // TODO: 사진 데이터는 모임 조회 API 응답으로 대체. (임시 에셋)
+            Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover),
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.s3),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.s3,
+                      vertical: AppSpacing.s1,
+                    ),
+                    decoration: ShapeDecoration(
+                      color: AppColors.overlayScrim,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                      ),
+                    ),
+                    child: Text(
+                      name,
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        height: 1.38,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
