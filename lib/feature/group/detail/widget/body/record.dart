@@ -1,13 +1,10 @@
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/widgets.dart';
 
 /// 모임 기록 요약 카드. (따라찍기 수 · 함께한 사진 수)
 class Record extends StatelessWidget {
-  const Record({
-    super.key,
-    required this.ddaraCount,
-    required this.photoCount,
-  });
+  const Record({super.key, required this.ddaraCount, required this.photoCount});
 
   /// 따라찍기 수.
   final int ddaraCount;
@@ -36,8 +33,12 @@ class Record extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: AppSpacing.s3,
         children: [
-          Expanded(child: _StatItem(value: '$ddaraCount', label: '따라찍기')),
-          Expanded(child: _StatItem(value: '$photoCount', label: '함께한 사진')),
+          Expanded(
+            child: _StatItem(value: '$ddaraCount', label: '따라찍기'),
+          ),
+          Expanded(
+            child: _StatItem(value: '$photoCount', label: '함께한 사진'),
+          ),
         ],
       ),
     );
@@ -58,14 +59,8 @@ class _StatItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: AppSpacing.s1,
       children: [
-        Text(
-          value,
-          style: AppTypography.display.copyWith(color: AppColors.textPrimary),
-        ),
-        Text(
-          label,
-          style: AppTypography.caption.copyWith(color: AppColors.textTertiary),
-        ),
+        AppText.display(value),
+        AppText.caption(label, color: AppColors.textTertiary),
       ],
     );
   }

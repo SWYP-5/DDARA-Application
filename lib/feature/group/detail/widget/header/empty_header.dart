@@ -1,5 +1,5 @@
 import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../core/designsystem/component/app_button.dart';
@@ -26,11 +26,13 @@ class EmptyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: AppSpacing.s1,
         children: [
-          const AppTitle('아직 따라찍기가 없어요', textAlign: TextAlign.center),
-          Text(
+          const AppText.headlineLarge(
+            '아직 따라찍기가 없어요',
+            textAlign: TextAlign.center,
+          ),
+          const AppText.caption(
             '첫 판을 시작해 친구들에게 보내보세요',
             textAlign: TextAlign.center,
-            style: AppTypography.caption.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: AppSpacing.s1),
           Image.asset(
@@ -39,10 +41,7 @@ class EmptyHeader extends StatelessWidget {
             fit: BoxFit.contain,
           ),
           const SizedBox(height: AppSpacing.s5),
-          AppButton(
-            label: '스타터 시작하기',
-            onPressed: navigateToStart,
-          ),
+          AppButton(label: '스타터 시작하기', onPressed: navigateToStart),
         ],
       ),
     );

@@ -1,8 +1,7 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/core/widget/app_description.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,8 +20,11 @@ class EmptyGroupPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const AppTitle('아직 참여한 모임이 없어요', textAlign: TextAlign.center),
-              const AppDescription(
+              const AppText.headlineLarge(
+                '아직 참여한 모임이 없어요',
+                textAlign: TextAlign.center,
+              ),
+              const AppText.body(
                 '첫 판을 시작해 친구들에게 보내보세요',
                 textAlign: TextAlign.center,
               ),
@@ -60,11 +62,9 @@ class EmptyGroupPage extends StatelessWidget {
                 onPressed: () {
                   // TODO: 나중에 추가 처리
                 },
-                child: Text(
+                child: const AppText.caption(
                   '나중에 추가할게요',
-                  style: AppTypography.caption.copyWith(
-                    color: AppColors.textTertiary,
-                  ),
+                  color: AppColors.textTertiary,
                 ),
               ),
             ],
@@ -96,10 +96,7 @@ class _OutlineButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(color: AppColors.accentDefault),
           ),
-          child: Text(
-            label,
-            style: AppTypography.title.copyWith(color: AppColors.accentDefault),
-          ),
+          child: AppText.title(label, color: AppColors.accentDefault),
         ),
       ),
     );

@@ -1,9 +1,9 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/feature/permission/widget/permission_item.dart';
 import 'package:ddara/feature/permission/widget/section_label.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,28 +126,8 @@ class PermissionPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 12,
                   children: [
-                    Text(
-                      'ddara 권한 안내',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 20,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w700,
-                        height: 1.40,
-                        letterSpacing: -0.20,
-                      ),
-                    ),
-                    Text(
-                      '꼭 필요한 순간에만 권한을 요청해요.\n요청이 뜨면 허용해 주시면 돼요',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w400,
-                        height: 1.55,
-                        letterSpacing: -0.14,
-                      ),
-                    ),
+                    AppText.headlineLarge('ddara 권한 안내'),
+                    AppText.body('꼭 필요한 순간에만 권한을 요청해요.\n요청이 뜨면 허용해 주시면 돼요'),
                   ],
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/cupertino.dart';
 // table_calendar 가 내부적으로 Material(InkWell 등)을 요구한다.
@@ -101,20 +102,12 @@ class _CalendarDialogState extends State<CalendarDialog> {
                       ),
                       calendarBuilders: CalendarBuilders(
                         headerTitleBuilder: (context, day) => Center(
-                          child: Text(
+                          child: AppText.headlineMedium(
                             '${day.year}년 ${day.month}월',
-                            style: AppTypography.headlineMedium.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
                           ),
                         ),
                         dowBuilder: (context, day) => Center(
-                          child: Text(
-                            _weekdayLabel(day.weekday),
-                            style: AppTypography.caption.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
+                          child: AppText.caption(_weekdayLabel(day.weekday)),
                         ),
                       ),
                       calendarStyle: CalendarStyle(

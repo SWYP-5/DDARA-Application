@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/logo.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
@@ -62,12 +63,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       spacing: 10,
                       children: [
                         const LogoLarge(),
-                        Text(
+                        const AppText.title(
                           '우리끼리 따라찍기',
                           textAlign: TextAlign.center,
-                          style: AppTypography.title.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                          color: AppColors.textSecondary,
                         ),
                       ],
                     ),
@@ -106,12 +105,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 SocialLoginType.google,
                               ),
                       ),
-                      Text(
+                      const AppText.caption(
                         '이용약관과 개인정보 처리방침 확인',
                         textAlign: TextAlign.center,
-                        style: AppTypography.caption.copyWith(
-                          color: AppColors.textTertiary,
-                        ),
+                        color: AppColors.textTertiary,
                       ),
                       const SizedBox(height: AppSpacing.s4),
                     ],

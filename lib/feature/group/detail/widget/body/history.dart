@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/feature/group/detail/widget/body/calendar_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,10 @@ class _HistoryState extends State<History> {
 
   /// 달력 다이얼로그를 띄우고, 고른 날짜를 반영한다.
   Future<void> _openCalendar() async {
-    final picked = await CalendarDialog.show(context, initialDate: _selectedDate);
+    final picked = await CalendarDialog.show(
+      context,
+      initialDate: _selectedDate,
+    );
     if (picked != null) {
       setState(() => _selectedDate = picked);
     }
@@ -45,10 +49,7 @@ class _HistoryState extends State<History> {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: AppSpacing.s1,
         children: [
-          Text(
-            _dateLabel,
-            style: AppTypography.body.copyWith(color: AppColors.textPrimary),
-          ),
+          AppText.body(_dateLabel, color: AppColors.textPrimary),
           CupertinoButton(
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,

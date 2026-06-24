@@ -1,6 +1,6 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/feature/group/detail/widget/body/history.dart';
 import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
@@ -19,7 +19,10 @@ class GroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: AppBar(title: _dummyGroupName, onBack: () => context.pop()),
+      navigationBar: AppBar(
+        title: _dummyGroupName,
+        onBack: () => context.pop(),
+      ),
       // imageUri 를 넘기지 않으면 GroupHeader 가 EmptyHeader(빈 상태)를 보여준다.
       child: SafeArea(
         child: SingleChildScrollView(
@@ -41,16 +44,16 @@ class GroupPage extends StatelessWidget {
                   // TODO: 스타터(첫 따라찍기) 시작 화면으로 이동.
                 },
               ),
-              const AppTitle('기록'),
+              const AppText.headlineLarge('기록'),
               // TODO: 통계 값은 모임 조회 API 응답으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
               const Record(ddaraCount: 0, photoCount: 0),
               const SizedBox(height: AppSpacing.s3),
-              const AppTitle('사람들'),
+              const AppText.headlineLarge('사람들'),
               const Members(),
               const SizedBox(height: AppSpacing.s3),
-              const AppTitle('지난 따라찍기'),
+              const AppText.headlineLarge('지난 따라찍기'),
               const History(),
-              const HistoryPhotos()
+              const HistoryPhotos(),
             ],
           ),
         ),
