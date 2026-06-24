@@ -32,6 +32,11 @@ class DeepLinkService {
   }
 
   void _handle(Uri uri) {
+    // 카카오 로그인 콜백(kakao{KEY}://oauth?code=...)은 KakaoSDK 가 처리한다.
+    // oauth 콜백도 code 파라미터를 갖고 있어, host 로 거르지 않으면 인가 코드를
+    // 초대코드로 오인해 참여 화면으로 튕긴다. (로그인과 같은 스킴·host 만 다름)
+    if (uri.scheme.startsWith('kakao') && uri.host == 'oauth') return;
+
     // (A) invite_code / (B) code 둘 다 지원.
     final code =
         uri.queryParameters['invite_code'] ?? uri.queryParameters['code'];

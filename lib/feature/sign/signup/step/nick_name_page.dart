@@ -1,7 +1,6 @@
-import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
-import 'package:ddara/core/widget/app_description.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 
 class NicknamePage extends StatefulWidget {
@@ -66,8 +65,8 @@ class _NicknamePageState extends State<NicknamePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12,
                 children: [
-                  AppTitle('어떻게 불러드릴까요?'),
-                  AppDescription('친구들에게 보여질 이름이에요'),
+                  AppText.headlineLarge('어떻게 불러드릴까요?'),
+                  AppText.body('친구들에게 보여질 이름이에요'),
                 ],
               ),
 

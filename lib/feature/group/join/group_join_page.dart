@@ -1,8 +1,8 @@
-import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/widget/app_description.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,21 +40,7 @@ class _GroupJoinPageState extends State<GroupJoinPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          onPressed: () => context.pop(),
-          child: const Icon(CupertinoIcons.back, color: AppColors.textPrimary),
-        ),
-        middle: Text(
-          '모임 참여',
-          style: AppTypography.headlineMedium.copyWith(
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
+      navigationBar: AppBar(title: '모임 참여', onBack: () => context.pop()),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -67,8 +53,8 @@ class _GroupJoinPageState extends State<GroupJoinPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const AppTitle('받은 초대 코드를 입력해주세요'),
-              const AppDescription('링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요'),
+              const AppText.headlineLarge('받은 초대 코드를 입력해주세요'),
+              const AppText.body('링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요'),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
                 label: '초대 코드',

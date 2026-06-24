@@ -1,8 +1,7 @@
-import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_checkbox.dart';
-import 'package:ddara/core/widget/app_description.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/widgets.dart';
 
 class TermsPage extends StatefulWidget {
@@ -76,8 +75,8 @@ class _TermsPageState extends State<TermsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12,
                 children: [
-                  AppTitle('약관에 동의해 주세요'),
-                  AppDescription('서비스 이용을 위해선 이용약관 동의가 필요해요'),
+                  AppText.headlineLarge('약관에 동의해 주세요'),
+                  AppText.body('서비스 이용을 위해선 이용약관 동의가 필요해요'),
                 ],
               ),
 
@@ -112,12 +111,10 @@ class _TermsPageState extends State<TermsPage> {
                             onChanged: _toggleAll,
                             size: 22,
                           ),
-                          Expanded(
-                            child: Text(
+                          const Expanded(
+                            child: AppText.label(
                               '전체 동의',
-                              style: AppTypography.label.copyWith(
-                                color: AppColors.textPrimary,
-                              ),
+                              color: AppColors.textPrimary,
                             ),
                           ),
                         ],
@@ -184,14 +181,7 @@ class _TermItem extends StatelessWidget {
         spacing: 12,
         children: [
           AppCheckbox(value: value, onChanged: onChanged),
-          Expanded(
-            child: Text(
-              label,
-              style: AppTypography.body.copyWith(
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ),
+          Expanded(child: AppText.body(label)),
           // TODO: 약관 상세보기(>) 아이콘 추후 구현
           const SizedBox(width: 20, height: 20),
         ],

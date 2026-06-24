@@ -12,9 +12,8 @@ abstract class LoginResponse with _$LoginResponse {
     required UserResponse? user,
   }) = _LoginResponse;
 
-  factory LoginResponse.fromJson(
-      Map<String, dynamic> json,
-      ) => _$LoginResponseFromJson(json);
+  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseFromJson(json);
 }
 
 @freezed
@@ -25,7 +24,6 @@ abstract class UserResponse with _$UserResponse {
     required String? profileImageUrl,
   }) = _UserResponse;
 
-  factory UserResponse.fromJson(
-      Map<String, dynamic> json,
-      ) => _$UserResponseFromJson(json);
+  factory UserResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseFromJson(json);
 }

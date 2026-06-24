@@ -17,9 +17,12 @@ class LoginNotifier extends Notifier<LoginState> {
     final googleAuthService = ref.read(googleAuthProvider);
     final kakaoAuthService = ref.read(kakaoAuthProvider);
 
-    switch(social){
+    switch (social) {
       case SocialLoginType.google:
-        googleAuthService.signInWithGoogle(context, (token) => _login(token, social));
+        googleAuthService.signInWithGoogle(
+          context,
+          (token) => _login(token, social),
+        );
       case SocialLoginType.kakao:
         kakaoAuthService.signInWithKakao((token) => _login(token, social));
     }
@@ -31,12 +34,11 @@ class LoginNotifier extends Notifier<LoginState> {
 
       final login = await ref.read(loginUseCaseProvider)(token, social);
 
-      if(login.isNewUser){
+      if (login.isNewUser) {
         state = SignupRequired(social);
       } else {
         state = LoginSuccess();
       }
-
     } on UnauthorizedException {
       state = LoginFail('Unauthorized');
     } on NetworkException {

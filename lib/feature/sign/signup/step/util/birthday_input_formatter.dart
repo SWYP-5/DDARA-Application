@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 class BirthdayInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final numbersOnly = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numbersOnly.length > 8) {
@@ -25,9 +25,7 @@ class BirthdayInputFormatter extends TextInputFormatter {
 
     return TextEditingValue(
       text: formatted,
-      selection: TextSelection.collapsed(
-        offset: formatted.length,
-      ),
+      selection: TextSelection.collapsed(offset: formatted.length),
     );
   }
 }

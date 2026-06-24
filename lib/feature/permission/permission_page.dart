@@ -1,8 +1,10 @@
-import 'package:ddara/core/designsystem/component/app_button.dart';
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/deeplink/pending_invite.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/feature/permission/widget/permission_item.dart';
 import 'package:ddara/feature/permission/widget/section_label.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,10 +32,11 @@ class PermissionPage extends ConsumerWidget {
 
     if (!context.mounted) return;
 
-    // 카메라 허용 → 홈
+    // 카메라 허용 → 보관된 초대코드가 있으면 모임 참여로, 없으면 홈으로.
     if (cameraResult == PermissionResult.granted) {
       ref.read(cameraNoticeAcknowledgedProvider.notifier).state = true;
-      context.go(RoutePath.home);
+      if (!context.mounted) return;
+      await routeAfterAuth(ref, GoRouter.of(context));
       return;
     }
 
@@ -98,18 +101,7 @@ class PermissionPage extends ConsumerWidget {
     final permission = ref.read(permissionServiceProvider);
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text(
-          '권한 안내',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 16,
-            fontFamily: 'Pretendard',
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.16,
-          ),
-        ),
-      ),
+      navigationBar: const AppBar(title: '권한 안내', showBackButton: false),
       child: SafeArea(
         child: Container(
           width: double.infinity,
@@ -136,28 +128,8 @@ class PermissionPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 12,
                   children: [
-                    Text(
-                      'ddara 권한 안내',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 20,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w700,
-                        height: 1.40,
-                        letterSpacing: -0.20,
-                      ),
-                    ),
-                    Text(
-                      '꼭 필요한 순간에만 권한을 요청해요.\n요청이 뜨면 허용해 주시면 돼요',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
-                        fontFamily: 'Pretendard',
-                        fontWeight: FontWeight.w400,
-                        height: 1.55,
-                        letterSpacing: -0.14,
-                      ),
-                    ),
+                    AppText.headlineLarge('ddara 권한 안내'),
+                    AppText.body('꼭 필요한 순간에만 권한을 요청해요.\n요청이 뜨면 허용해 주시면 돼요'),
                   ],
                 ),
               ),

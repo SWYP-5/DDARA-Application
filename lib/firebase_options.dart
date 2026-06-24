@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '158116621773',
     projectId: 'ddara-b5370',
     storageBucket: 'ddara-b5370.firebasestorage.app',
-    androidClientId: '158116621773-0iluth9aadce9fgd22133qs9r3t5hr7v.apps.googleusercontent.com',
+    androidClientId:
+        '158116621773-0iluth9aadce9fgd22133qs9r3t5hr7v.apps.googleusercontent.com',
     iosBundleId: 'com.swyp.ddara',
   );
 }

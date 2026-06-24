@@ -13,11 +13,13 @@ class AuthRemoteDataSource {
   final Dio _dio;
   final FlutterSecureStorage _storage;
 
-  Future<RefreshAccessTokenResponse> refreshAccessToken(String refreshToken) async {
+  Future<RefreshAccessTokenResponse> refreshAccessToken(
+    String refreshToken,
+  ) async {
     try {
       final response = await _dio.post(
         '/api/auth/refresh',
-        data: { 'refreshToken': refreshToken },
+        data: {'refreshToken': refreshToken},
       );
       return RefreshAccessTokenResponse.fromJson(response.data);
     } on DioException {
@@ -59,17 +61,11 @@ class AuthRemoteDataSource {
   }
 
   Future<void> saveAccessToken(String? token) async {
-    await _storage.write(
-      key: StorageKey.accessToken,
-      value: token,
-    );
+    await _storage.write(key: StorageKey.accessToken, value: token);
   }
 
   Future<void> saveRefreshToken(String? token) async {
-    await _storage.write(
-      key: StorageKey.refreshToken,
-      value: token,
-    );
+    await _storage.write(key: StorageKey.refreshToken, value: token);
   }
 
   Future<String?> getAccessToken() async {

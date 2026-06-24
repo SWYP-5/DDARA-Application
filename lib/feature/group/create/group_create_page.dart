@@ -1,9 +1,9 @@
-import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/core/widget/app_description.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -41,22 +41,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        // sign_up_page 와 동일한 여백 규약.
-        padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          onPressed: () => context.pop(),
-          child: const Icon(CupertinoIcons.back, color: AppColors.textPrimary),
-        ),
-        middle: Text(
-          '모임 만들기',
-          style: AppTypography.headlineMedium.copyWith(
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
+      navigationBar: AppBar(title: '모임 만들기', onBack: () => context.pop()),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -69,8 +54,8 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const AppTitle('모임 이름을 설정해주세요.'),
-              const AppDescription('내가 먼저 찍으면, 친구들이 이 주제를 따라 찍어요'),
+              const AppText.headlineLarge('모임 이름을 설정해주세요.'),
+              const AppText.body('내가 먼저 찍으면, 친구들이 이 주제를 따라 찍어요'),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
                 label: '모임 이름',

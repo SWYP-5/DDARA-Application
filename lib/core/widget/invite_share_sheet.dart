@@ -1,5 +1,7 @@
+import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/share/kakao_share_service.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,33 +11,38 @@ import 'package:flutter_svg/flutter_svg.dart';
 /// 여러 화면에서 재사용할 수 있도록 [show] 정적 메서드로 띄운다.
 ///
 /// ```dart
-/// InviteShareSheet.show(context, inviteCode: 'A82TSJXk2');
+/// InviteShareSheet.show(context, inviteCode: 'A82TSJXk2', imageUrl: '<https-url>');
 /// ```
 class InviteShareSheet extends StatelessWidget {
   const InviteShareSheet({
     super.key,
     required this.inviteCode,
+    required this.imageUrl,
   });
 
   /// 공유/복사에 사용할 초대코드 (백엔드 발급 문자열).
   final String inviteCode;
 
+  /// 공유 카드에 넣을 모임 대표 이미지 (공개 https URL).
+  final String imageUrl;
+
   /// 초대 공유 시트를 표시한다. (Cupertino 모달 팝업)
   static Future<void> show(
     BuildContext context, {
     required String inviteCode,
+    required String imageUrl,
   }) {
     return showCupertinoModalPopup<void>(
       context: context,
       builder: (_) =>
-          InviteShareSheet(inviteCode: inviteCode),
+          InviteShareSheet(inviteCode: inviteCode, imageUrl: imageUrl),
     );
   }
 
   Future<void> _onKakaoShare(BuildContext context) async {
     final navigator = Navigator.of(context);
     try {
-      await KakaoShareService().shareInvite(inviteCode);
+      await KakaoShareService().shareInvite(inviteCode, imageUrl: imageUrl);
       navigator.pop();
     } catch (_) {
       // 공유 실패(미설치 폴백 실패 등) → 시트는 유지하고 안내.
@@ -106,12 +113,9 @@ class InviteShareSheet extends StatelessWidget {
                   shape: StadiumBorder(),
                 ),
               ),
-              Text(
+              const AppText.headlineMedium(
                 '함께할 친구를 초대해요',
                 textAlign: TextAlign.center,
-                style: AppTypography.headlineMedium.copyWith(
-                  color: AppColors.textPrimary,
-                ),
               ),
               const SizedBox(height: AppSpacing.s2),
               Padding(
@@ -150,16 +154,9 @@ class InviteShareSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              CupertinoButton(
-                padding: EdgeInsets.zero,
-                minimumSize: Size.zero,
+              AppTextButton.body(
+                label: '나중에 할게요',
                 onPressed: () => _onLater(context),
-                child: Text(
-                  '나중에 할게요',
-                  style: AppTypography.body.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
               ),
             ],
           ),
@@ -205,10 +202,7 @@ class _CircleAction extends StatelessWidget {
             child: icon,
           ),
         ),
-        Text(
-          label,
-          style: AppTypography.caption.copyWith(color: AppColors.textSecondary),
-        ),
+        AppText.caption(label),
       ],
     );
   }

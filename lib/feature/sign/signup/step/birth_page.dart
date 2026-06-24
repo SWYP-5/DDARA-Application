@@ -1,7 +1,6 @@
-import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
-import 'package:ddara/core/widget/app_description.dart';
-import 'package:ddara/core/widget/app_title.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/feature/sign/signup/step/util/birthday_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -129,8 +128,8 @@ class _BirthPageState extends State<BirthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12,
                 children: [
-                  AppTitle('생년월일을 알려주세요'),
-                  AppDescription('만 14세 이상부터 가입할 수 있어요'),
+                  AppText.headlineLarge('생년월일을 알려주세요'),
+                  AppText.body('만 14세 이상부터 가입할 수 있어요'),
                 ],
               ),
 

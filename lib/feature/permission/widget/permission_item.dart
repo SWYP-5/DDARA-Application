@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/designsystem/component/text/app_text.dart';
 import '../../../core/designsystem/theme/app_colors.dart';
 
 /// 개별 권한 항목 카드. (아이콘 · 제목 · 설명)
@@ -75,28 +76,8 @@ class _PermissionItemState extends State<PermissionItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 3,
                 children: [
-                  Text(
-                    widget.title,
-                    style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 14,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w600,
-                      height: 1.35,
-                      letterSpacing: -0.28,
-                    ),
-                  ),
-                  Text(
-                    widget.description,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                      fontFamily: 'Pretendard',
-                      fontWeight: FontWeight.w400,
-                      height: 1.30,
-                      letterSpacing: -0.12,
-                    ),
-                  ),
+                  AppText.label(widget.title, color: AppColors.textPrimary),
+                  AppText.caption(widget.description),
                 ],
               ),
             ),

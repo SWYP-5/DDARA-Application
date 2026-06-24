@@ -5,11 +5,9 @@ part 'refresh_access_token_response.g.dart';
 
 @freezed
 abstract class RefreshAccessTokenResponse with _$RefreshAccessTokenResponse {
-  const factory RefreshAccessTokenResponse({
-    required String accessToken,
-  }) = _RefreshAccessTokenResponse;
+  const factory RefreshAccessTokenResponse({required String accessToken}) =
+      _RefreshAccessTokenResponse;
 
-  factory RefreshAccessTokenResponse.fromJson(
-      Map<String, dynamic> json,
-      ) => _$RefreshAccessTokenResponseFromJson(json);
+  factory RefreshAccessTokenResponse.fromJson(Map<String, dynamic> json) =>
+      _$RefreshAccessTokenResponseFromJson(json);
 }
