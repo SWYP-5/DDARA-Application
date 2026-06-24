@@ -2,7 +2,7 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../core/designsystem/component/app_button.dart';
+import '../../../../../core/designsystem/component/button/app_button.dart';
 
 /// 모임에 아직 따라찍기가 하나도 없을 때 상단에 보여주는 빈 상태 헤더.
 ///
