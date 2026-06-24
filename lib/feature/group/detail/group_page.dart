@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:ddara/feature/group/detail/widget/body/history.dart';
 import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
@@ -49,7 +50,19 @@ class GroupPage extends StatelessWidget {
               const Record(ddaraCount: 0, photoCount: 0),
               const SizedBox(height: AppSpacing.s3),
               const AppText.headlineLarge('사람들'),
-              const Members(),
+              // TODO: 모임 조회 API 응답의 멤버 목록으로 대체. (백엔드 스펙 대기 — 임시 더미)
+              Members(
+                members: const [
+                  (name: '김도윤', imageUrl: null),
+                  (name: '주민주', imageUrl: null),
+                  (name: '허보현', imageUrl: null),
+                ],
+                onAddMember: () => InviteShareSheet.show(
+                  context,
+                  // TODO: 모임 조회 API 응답의 초대코드로 대체. (백엔드 스펙 대기 — 임시 더미)
+                  inviteCode: 'DUMMY1234',
+                ),
+              ),
               const SizedBox(height: AppSpacing.s3),
               const AppText.headlineLarge('지난 따라찍기'),
               const History(),
