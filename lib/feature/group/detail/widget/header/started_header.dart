@@ -69,7 +69,7 @@ class _StartedHeaderState extends State<StartedHeader> {
           secondChild: _buildCollapsed(),
         ),
         const SizedBox(height: AppSpacing.s5),
-        AppButton(label: '촬영하러 가기', onPressed: widget.onTakePhoto),
+        AppButton(label: '따라찍으러 가기', onPressed: widget.onTakePhoto),
       ],
     );
   }

@@ -41,7 +41,7 @@ class EmptyHeader extends StatelessWidget {
             fit: BoxFit.contain,
           ),
           const SizedBox(height: AppSpacing.s5),
-          AppButton(label: '스타터 시작하기', onPressed: navigateToStart),
+          AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
         ],
       ),
     );
