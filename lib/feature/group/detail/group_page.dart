@@ -41,8 +41,18 @@ class GroupPage extends StatelessWidget {
             spacing: AppSpacing.s5,
             children: [
               GroupHeader(
+                // TODO: 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
+                progress: (
+                  round: 3,
+                  topic: '마라탕 맛있게 먹기',
+                  starterName: '도윤',
+                  remainingTime: '14시간',
+                ),
                 navigateToStart: () {
                   // TODO: 스타터(첫 따라찍기) 시작 화면으로 이동.
+                },
+                onTakePhoto: () {
+                  // TODO: 촬영 화면으로 이동.
                 },
               ),
               const AppText.headlineLarge('기록'),
