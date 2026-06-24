@@ -1,3 +1,4 @@
+import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/permission/permission_service.dart';
@@ -31,10 +32,11 @@ class PermissionPage extends ConsumerWidget {
 
     if (!context.mounted) return;
 
-    // 카메라 허용 → 홈
+    // 카메라 허용 → 보관된 초대코드가 있으면 모임 참여로, 없으면 홈으로.
     if (cameraResult == PermissionResult.granted) {
       ref.read(cameraNoticeAcknowledgedProvider.notifier).state = true;
-      context.go(RoutePath.home);
+      if (!context.mounted) return;
+      await routeAfterAuth(ref, GoRouter.of(context));
       return;
     }
 

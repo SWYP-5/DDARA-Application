@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
+import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
@@ -29,7 +30,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ref.listen(loginNotifierProvider, (previous, next) {
       switch (next) {
         case LoginSuccess():
-          context.go(RoutePath.home);
+          // 보관된 초대코드가 있으면 모임 참여로 복귀, 없으면 홈으로.
+          routeAfterAuth(ref, GoRouter.of(context));
 
         case SignupRequired():
           context.push(RoutePath.signup, extra: next.social);

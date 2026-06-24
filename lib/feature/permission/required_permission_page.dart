@@ -1,8 +1,8 @@
+import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
-import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -23,11 +23,11 @@ class RequiredPermissionPage extends ConsumerWidget {
     final permission = ref.read(permissionServiceProvider);
     final result = await permission.requestCamera();
 
-    // 허용 → 홈
+    // 허용 → 보관된 초대코드가 있으면 모임 참여로, 없으면 홈으로.
     if (result == PermissionResult.granted) {
       ref.read(cameraNoticeAcknowledgedProvider.notifier).state = true;
       if (!context.mounted) return;
-      context.go(RoutePath.home);
+      await routeAfterAuth(ref, GoRouter.of(context));
       return;
     }
 

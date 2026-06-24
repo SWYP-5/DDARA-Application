@@ -1,7 +1,7 @@
+import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
-import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/sign/signup/provider/notifier_provider.dart';
 import 'package:ddara/feature/sign/signup/step/birth_page.dart';
 import 'package:ddara/feature/sign/signup/step/nick_name_page.dart';
@@ -27,7 +27,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     ref.listen(signNotifierProvider(social), (prev, next) {
       if (prev?.isSuccess == false && next.isSuccess) {
-        context.go(RoutePath.home);
+        // 보관된 초대코드가 있으면 모임 참여로 복귀, 없으면 홈으로.
+        routeAfterAuth(ref, GoRouter.of(context));
         return;
       }
 

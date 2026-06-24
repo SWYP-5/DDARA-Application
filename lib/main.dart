@@ -11,10 +11,13 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/deeplink/deep_link_service.dart';
+import 'core/deeplink/pending_invite.dart';
 import 'core/designsystem/theme/app_theme.dart';
 import 'core/local/provider/local_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/router/route_path.dart';
+import 'data/provider/repository_provider.dart';
+import 'feature/onboarding/provider/onboarding_provider.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -76,9 +79,27 @@ class _MyAppState extends ConsumerState<MyApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _deepLink.init());
   }
 
-  /// 딥링크에서 받은 초대코드로 모임 참여 화면을 띄운다.
-  void _onInvite(String inviteCode) {
-    ref.read(routerProvider).push('${RoutePath.groupJoin}?code=$inviteCode');
+  /// 딥링크에서 받은 초대코드로 모임 참여 흐름을 시작한다.
+  ///
+  /// 딥링크는 로그아웃·권한 미허용 상태에서도 외부에서 진입할 수 있으므로,
+  /// 초대코드를 보관해두고 상황에 맞는 화면으로 보낸다. (로그인/온보딩/권한)
+  /// 각 단계가 끝나면 routeAfterAuth 가 보관된 코드로 참여 화면에 복귀시킨다.
+  Future<void> _onInvite(String inviteCode) async {
+    final router = ref.read(routerProvider);
+    final token = await ref.read(authRepositoryProvider).getAccessToken();
+
+    // 초대코드는 항상 보관한다. (권한 게이트 통과 후 routeAfterAuth 가 소비)
+    ref.read(pendingInviteCodeProvider.notifier).state = inviteCode;
+
+    // 미로그인 상태면 인증 흐름부터. (첫 진입이면 온보딩, 그 외엔 로그인)
+    if (token == null || token.isEmpty) {
+      final seenOnboarding = ref.read(onboardingSeenProvider);
+      router.go(seenOnboarding ? RoutePath.login : RoutePath.onboarding);
+      return;
+    }
+
+    // 로그인됨 → 권한 게이트를 거쳐 참여 화면으로. (권한 없으면 PermissionPage)
+    await routeAfterAuth(ref, router);
   }
 
   @override
