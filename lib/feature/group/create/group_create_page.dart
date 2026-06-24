@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/app_description.dart';
@@ -41,22 +42,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        // sign_up_page 와 동일한 여백 규약.
-        padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          onPressed: () => context.pop(),
-          child: const Icon(CupertinoIcons.back, color: AppColors.textPrimary),
-        ),
-        middle: Text(
-          '모임 만들기',
-          style: AppTypography.headlineMedium.copyWith(
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
+      navigationBar: AppBar(title: '모임 만들기', onBack: () => context.pop()),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(

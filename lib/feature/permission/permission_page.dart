@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/app_button.dart';
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
@@ -98,18 +99,7 @@ class PermissionPage extends ConsumerWidget {
     final permission = ref.read(permissionServiceProvider);
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text(
-          '권한 안내',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 16,
-            fontFamily: 'Pretendard',
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.16,
-          ),
-        ),
-      ),
+      navigationBar: const AppBar(title: '권한 안내', showBackButton: false),
       child: SafeArea(
         child: Container(
           width: double.infinity,

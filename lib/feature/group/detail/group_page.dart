@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_title.dart';
 import 'package:ddara/feature/group/detail/widget/body/history.dart';
@@ -18,22 +19,7 @@ class GroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        // 다른 화면과 동일한 여백 규약.
-        padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          onPressed: () => context.pop(),
-          child: const Icon(CupertinoIcons.back, color: AppColors.textPrimary),
-        ),
-        middle: Text(
-          _dummyGroupName,
-          style: AppTypography.headlineMedium.copyWith(
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
+      navigationBar: AppBar(title: _dummyGroupName, onBack: () => context.pop()),
       // imageUri 를 넘기지 않으면 GroupHeader 가 EmptyHeader(빈 상태)를 보여준다.
       child: SafeArea(
         child: SingleChildScrollView(

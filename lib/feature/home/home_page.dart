@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/feature/home/empty_group_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,9 +10,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        // 좌측 로고를 직접 배치하므로 자동 leading(뒤로가기) 비활성화.
-        automaticallyImplyLeading: false,
+      navigationBar: AppBar(
+        // 좌측 로고를 직접 배치하므로 뒤로가기 버튼 비활성화.
+        showBackButton: false,
         padding: const EdgeInsetsDirectional.only(start: 20, end: 12),
         leading: const Align(alignment: Alignment.centerLeft, child: Logo()),
         trailing: Row(

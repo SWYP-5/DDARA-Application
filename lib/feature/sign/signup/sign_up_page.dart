@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
@@ -6,7 +7,7 @@ import 'package:ddara/feature/sign/signup/step/birth_page.dart';
 import 'package:ddara/feature/sign/signup/step/nick_name_page.dart';
 import 'package:ddara/feature/sign/signup/step/terms_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AppBar;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,20 +61,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         }
       },
       child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
-          leading: CupertinoButton(
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-            onPressed: () {
-              if (state.step > 1) {
-                notifier.backButtonClicked();
-              } else {
-                context.pop();
-              }
-            },
-            child: const Icon(CupertinoIcons.back, color: Colors.white),
-          ),
+        navigationBar: AppBar(
+          onBack: () {
+            if (state.step > 1) {
+              notifier.backButtonClicked();
+            } else {
+              context.pop();
+            }
+          },
         ),
         child: SafeArea(
           // birth/nickname 스텝이 아직 Material 위젯(TextField/ElevatedButton)을
