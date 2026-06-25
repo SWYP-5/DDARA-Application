@@ -75,4 +75,20 @@ class AuthRemoteDataSource {
   Future<String?> getRefreshToken() async {
     return await _storage.read(key: StorageKey.refreshToken);
   }
+
+  Future<void> saveSocialLoginType(SocialLoginType? social) async {
+    await _storage.write(
+      key: StorageKey.socialLoginType,
+      value: social?.value,
+    );
+  }
+
+  Future<SocialLoginType?> getSocialLoginType() async {
+    final value = await _storage.read(key: StorageKey.socialLoginType);
+    return SocialLoginType.fromValue(value);
+  }
+
+  Future<void> deleteSocialLoginType() async {
+    await _storage.delete(key: StorageKey.socialLoginType);
+  }
 }

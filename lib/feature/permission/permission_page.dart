@@ -5,6 +5,7 @@ import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/permission_dialog.dart';
 import 'package:ddara/feature/permission/widget/permission_item.dart';
 import 'package:ddara/feature/permission/widget/section_label.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +44,11 @@ class PermissionPage extends ConsumerWidget {
     // 이미 영구 거부라 프롬프트가 안 뜨는 경우에만 설정 안내.
     // '설정으로 이동' 시 머무르고, '취소' 시 필수 권한 안내 페이지로 이동.
     if (wasBlocked) {
-      final goSettings = await _showSettingsDialog(context, permission, '카메라');
+      final goSettings = await showPermissionDialog(
+        context,
+        permission: permission,
+        permissionName: '카메라',
+      );
       if (goSettings == true) return;
       if (!context.mounted) return;
     }
@@ -63,36 +68,10 @@ class PermissionPage extends ConsumerWidget {
     if (result != PermissionResult.permanentlyDenied) return;
     if (!context.mounted) return;
 
-    await _showSettingsDialog(context, permission, permissionName);
-  }
-
-  /// 영구 거부 상태에서 앱 설정으로 이동하도록 안내하는 다이얼로그.
-  /// '설정으로 이동' 선택 시 true, '취소' 선택 시 false 를 반환한다.
-  Future<bool?> _showSettingsDialog(
-    BuildContext context,
-    PermissionService permission,
-    String permissionName,
-  ) {
-    return showCupertinoDialog<bool>(
-      context: context,
-      builder: (dialogContext) => CupertinoAlertDialog(
-        title: Text('$permissionName 권한이 필요해요'),
-        content: const Text('설정 > 권한에서 직접 허용해 주세요.'),
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('취소'),
-          ),
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            onPressed: () {
-              Navigator.of(dialogContext).pop(true);
-              permission.openSettings();
-            },
-            child: const Text('설정으로 이동'),
-          ),
-        ],
-      ),
+    await showPermissionDialog(
+      context,
+      permission: permission,
+      permissionName: permissionName,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/group/detail/widget/header/started_header.dart';
 import 'package:ddara/feature/group/widget/member_photo_card.dart';
@@ -43,11 +44,14 @@ class StartedPage extends StatelessWidget {
               StartedHeader(
                 imageUri: "",
                 // TODO: 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
-                progress: (
-                  round: 3,
+                progress: GroupCycle(
+                  cycleId: 0,
+                  cycleNumber: 3,
                   topic: '마라탕 맛있게 먹기',
-                  starterName: '도윤',
-                  remainingTime: '14시간',
+                  starterUserId: 0,
+                  status: 'in_progress',
+                  startedAt: DateTime.now(),
+                  deadlineAt: DateTime.now().add(const Duration(hours: 14)),
                 ),
               ),
               // TODO: 헤더 아래 본문 구현 예정.

@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/share/kakao_share_service.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/error_message_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -52,18 +53,10 @@ class InviteShareSheet extends StatelessWidget {
   }
 
   void _showShareError(BuildContext context) {
-    showCupertinoDialog<void>(
-      context: context,
-      builder: (dialogContext) => CupertinoAlertDialog(
-        title: const Text('공유하지 못했어요'),
-        content: const Text('잠시 후 다시 시도하거나 초대코드를 복사해 전달해주세요.'),
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('확인'),
-          ),
-        ],
-      ),
+    showErrorMessageDialog(
+      context,
+      title: '공유하지 못했어요',
+      message: '잠시 후 다시 시도하거나 초대코드를 복사해 전달해주세요.',
     );
   }
 

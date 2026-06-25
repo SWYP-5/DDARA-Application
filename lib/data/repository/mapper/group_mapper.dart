@@ -1,0 +1,73 @@
+import 'package:ddara/core/model/group/create_group.dart';
+import 'package:ddara/core/model/group/group_detail.dart';
+import 'package:ddara/core/network/dto/group/create_group_response.dart';
+import 'package:ddara/core/network/dto/group/group_detail_response.dart';
+import 'package:ddara/core/network/dto/group/group_list_response.dart';
+
+import '../../../core/model/group/group_list.dart';
+
+extension CreateGroupMapper on CreateGroupResponse {
+  CreateGroup toDomain() {
+    return CreateGroup(groupId: groupId);
+  }
+}
+
+extension GroupDetailMapper on GroupDetailResponse {
+  GroupDetail toDomain() {
+    final cycle = currentCycle;
+
+    return GroupDetail(
+      groupId: groupId,
+      name: name,
+      inviteCode: inviteCode,
+      members: members
+          .map(
+            (member) => GroupMember(
+              userId: member.userId,
+              nickname: member.nickname,
+              profileImageUrl: member.profileImageUrl,
+              role: member.role,
+            ),
+          )
+          .toList(),
+      currentCycle: cycle == null
+          ? null
+          : GroupCycle(
+              cycleId: cycle.cycleId,
+              cycleNumber: cycle.cycleNumber,
+              topic: cycle.topic,
+              starterUserId: cycle.starterUserId,
+              status: cycle.status,
+              startedAt: cycle.startedAt,
+              deadlineAt: cycle.deadlineAt,
+            ),
+      createdAt: createdAt,
+    );
+  }
+}
+
+extension GroupListMapper on GroupListResponse {
+  GroupList toDomain() {
+    return GroupList(
+      groups: groups
+          .map(
+            (group) => Group(
+              groupId: group.groupId,
+              name: group.name,
+              ownerNickname: group.ownerNickname,
+              memberCount: group.memberCount,
+              currentCycle: group.currentCycle == null
+                  ? null
+                  : CurrentCycle(
+                      cycleId: group.currentCycle!.cycleId,
+                      topic: group.currentCycle!.topic,
+                      status: group.currentCycle!.status,
+                      startedAt: group.currentCycle!.startedAt,
+                      thumbnailUrl: group.currentCycle!.thumbnailUrl,
+                    ),
+            ),
+          )
+          .toList(),
+    );
+  }
+}

@@ -40,6 +40,21 @@ class GoogleAuthService {
     return user != null;
   }
 
+  /// UI 없이 이전 구글 세션을 복원해 accessToken 을 반환한다.
+  /// 캐시된 세션이 없거나 복원 실패면 null. (토큰 만료 시 무중단 재인증용)
+  Future<String?> signInSilently() async {
+    try {
+      final account = await _googleSignIn.signInSilently();
+      if (account == null) return null;
+
+      _currentUser = account;
+      final auth = await account.authentication;
+      return auth.accessToken;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<bool> signInWithGoogle(
     BuildContext context,
     Function(String) login,

@@ -39,5 +39,7 @@ class SignUpUseCase {
 
     await _authRepository.saveAccessToken(response.accessToken);
     await _authRepository.saveRefreshToken(response.refreshToken);
+    // 토큰 만료 시 무중단 재인증에서 분기하도록 소셜 종류도 저장.
+    await _authRepository.saveSocialLoginType(type);
   }
 }

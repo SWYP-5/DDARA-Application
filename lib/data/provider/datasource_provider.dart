@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/network/dio_provider.dart';
 import '../datasource/auth/auth_datasource.dart';
+import '../datasource/group/group_datasource.dart';
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   return AuthRemoteDataSource(
@@ -10,3 +11,10 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
     ref.read(secureStorageProvider),
   );
 });
+
+final groupDataSourceProvider = Provider<GroupDataSource>((ref) {
+  return GroupDataSource(
+    ref.read(dioProvider),
+  );
+});
+

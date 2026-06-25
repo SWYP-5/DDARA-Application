@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/home/widget/group_list_widget.dart';
 import 'package:ddara/feature/home/widget/meeting_card.dart';
@@ -16,52 +17,16 @@ const double _fabSize = 56;
 ///
 /// 카드 높이가 균일하므로 Masonry 패키지 없이 `Row` + `Column` 2개로 충분하다.
 class GroupListPage extends StatelessWidget {
-  const GroupListPage({super.key});
+  const GroupListPage({super.key, required this.groups});
 
-  // TODO: 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
-  static const List<GroupSummary> _dummyGroups = [
-    (
-      name: '마라탕 걸즈',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '도윤님 외 2명',
-      date: '06.12',
-      status: '진행 중',
-    ),
-    (
-      name: '주말 등산 모임',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '민주님 외 4명',
-      date: '06.10',
-      status: '진행 중',
-    ),
-    (
-      name: '사진 동호회',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '보현님 외 7명',
-      date: '06.08',
-      status: '종료',
-    ),
-    (
-      name: '독서 클럽',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '도윤님 외 3명',
-      date: '06.05',
-      status: '진행 중',
-    ),
-    (
-      name: '맛집 탐방대',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '민주님 외 5명',
-      date: '06.01',
-      status: '종료',
-    ),
-  ];
+  /// 표시할 모임 목록. (상위 HomePage 에서 조회 결과를 주입)
+  final List<Group> groups;
 
   @override
   Widget build(BuildContext context) {
-    final groups = _dummyGroups;
-
     return Stack(
+      // 콘텐츠가 짧아도(빈 목록 등) 화면 전체 높이를 채워 FAB 가 항상 바닥에 붙도록.
+      fit: StackFit.expand,
       children: [
         SingleChildScrollView(
           // 끝에서 더 당겨지는 바운스(overscroll)를 막고 가장자리에서 멈춘다.
@@ -86,7 +51,7 @@ class GroupListPage extends StatelessWidget {
                 for (var i = 0; i < groups.length; i += 2)
                   MeetingCard(
                     group: groups[i],
-                    onTap: () => _openGroup(context),
+                    onTap: () => _openGroup(context, groups[i].groupId),
                   ),
               ],
             ),
@@ -103,7 +68,7 @@ class GroupListPage extends StatelessWidget {
                 for (var i = 1; i < groups.length; i += 2)
                   MeetingCard(
                     group: groups[i],
-                    onTap: () => _openGroup(context),
+                    onTap: () => _openGroup(context, groups[i].groupId),
                   ),
               ],
             ),
@@ -123,9 +88,8 @@ class GroupListPage extends StatelessWidget {
     );
   }
 
-  void _openGroup(BuildContext context) {
-    // TODO: 선택한 모임 식별자를 함께 전달. (라우트 파라미터 정의 후)
-    context.push(RoutePath.group);
+  void _openGroup(BuildContext context, int groupId) {
+    context.push(RoutePath.group, extra: groupId);
   }
 }
 

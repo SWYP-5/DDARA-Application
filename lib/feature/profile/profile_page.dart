@@ -35,6 +35,8 @@ class ProfilePage extends ConsumerWidget {
     final repo = ref.read(authRepositoryProvider);
     await repo.saveAccessToken(null);
     await repo.saveRefreshToken(null);
+    // 무중단 재인증 분기 정보도 함께 비워, 강제 로그아웃과 동작을 일치시킨다.
+    await repo.deleteSocialLoginType();
     // 라우터가 인증 상태를 다시 계산하도록 무효화. (isLoggedIn → false)
     ref.invalidate(authStateProvider);
     if (context.mounted) context.go(RoutePath.login);

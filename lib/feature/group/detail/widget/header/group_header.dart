@@ -1,5 +1,7 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/group_detail.dart';
+import 'package:ddara/feature/group/detail/widget/header/empty_header.dart';
 import 'package:ddara/feature/group/detail/widget/header/started_header.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,8 +20,8 @@ class GroupHeader extends StatelessWidget {
   /// 대표로 보여줄 이미지 URI. null/빈 값이면 빈 상태로 본다.
   final String? imageUri;
 
-  /// 시작된 상태에서 보여줄 따라찍기 진행 정보.
-  final DdaraProgress progress;
+  /// 진행 중인 따라찍기(사이클). null 이면 진행 중이 아니라 빈 상태로 본다.
+  final GroupCycle? progress;
 
   /// 빈 상태에서 '스타터 시작하기' 버튼을 눌렀을 때 실행할 콜백.
   final VoidCallback navigateToStart;
@@ -29,23 +31,24 @@ class GroupHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // // 이미지가 없으면 빈 상태 헤더 + 시작 버튼.
-    // if (imageUri == null || imageUri!.isEmpty) {
-    //   return Column(
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: [
-    //       const EmptyHeader(),
-    //       const SizedBox(height: AppSpacing.s5),
-    //       AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
-    //     ],
-    //   );
-    // }
+    final cycle = progress;
+    // 진행 중인 사이클이 없으면 빈 상태 헤더 + 시작 버튼.
+    if (cycle == null) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const EmptyHeader(),
+          const SizedBox(height: AppSpacing.s5),
+          AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
+        ],
+      );
+    }
 
     // 따라찍기가 시작된 상태의 헤더 + 촬영 버튼.
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        StartedHeader(imageUri: "", progress: progress),
+        StartedHeader(imageUri: imageUri ?? "", progress: cycle),
         const SizedBox(height: AppSpacing.s5),
         AppButton(label: '따라찍으러 가기', onPressed: onTakePhoto),
       ],
