@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
+import '../../feature/group/camera/started_camera_page.dart';
 import '../../feature/group/detail/group_page.dart';
 import '../../feature/group/join/group_join_page.dart';
 import '../../feature/home/home_page.dart';
@@ -95,6 +96,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         // 코드가 없으면 빈 문자열로 두어 페이지가 안내를 처리한다.
         builder: (_, state) =>
             GroupJoinPage(inviteCode: state.uri.queryParameters['code'] ?? ''),
+      ),
+      GoRoute(
+        path: RoutePath.startedCamera,
+        builder: (_, _) => const StartedCameraPage(),
       ),
     ],
   );

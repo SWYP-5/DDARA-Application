@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
@@ -51,9 +52,7 @@ class GroupPage extends StatelessWidget {
                 navigateToStart: () {
                   // TODO: 스타터(첫 따라찍기) 시작 화면으로 이동.
                 },
-                onTakePhoto: () {
-                  // TODO: 촬영 화면으로 이동.
-                },
+                onTakePhoto: () => context.push(RoutePath.startedCamera),
               ),
               const AppText.headlineLarge('기록'),
               // TODO: 통계 값은 모임 조회 API 응답으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
