@@ -1,6 +1,7 @@
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/model/group/create_group.dart';
+import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/data/datasource/group/group_datasource.dart';
 import 'package:ddara/domain/repository/group_repository.dart';
@@ -45,5 +46,26 @@ class GroupRepositoryImpl implements GroupRepository {
   Future<GroupList> getGroupList() async {
     final response = await _groupDataSource.getGroupList();
     return response.toDomain();
+  }
+
+  @override
+  Future<GroupDetail> getGroupDetail(int groupId) async {
+    try {
+      final response = await _groupDataSource.getGroupDetail(groupId);
+      return response.toDomain();
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 403:
+          // 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case 404:
+          // 모임 없음
+          throw GroupNotFoundException();
+
+        default:
+          throw NetworkException();
+      }
+    }
   }
 }

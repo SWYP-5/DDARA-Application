@@ -6,6 +6,7 @@ import 'package:ddara/domain/usecase/signup_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/provider/repository_provider.dart';
+import '../usecase/group/get_group_detail_use_case.dart';
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
   return LoginUseCase(ref.read(authRepositoryProvider));
@@ -25,4 +26,8 @@ final createGroupUseCaseProvider = Provider<CreateGroupUseCase>((ref) {
 
 final getGroupListUseCaseProvider = Provider<GetGroupListUseCase>((ref) {
   return GetGroupListUseCase(ref.read(groupRepositoryProvider));
+});
+
+final getGroupDetailUseCaseProvider = Provider<GetGroupDetailUseCase>((ref) {
+  return GetGroupDetailUseCase(ref.read(groupRepositoryProvider));
 });
