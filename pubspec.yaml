@@ -69,6 +69,7 @@ dev_dependencies:
   freezed: ^3.0.0
   build_runner: ^2.4.0
   json_serializable: ^6.9.0
+  flutter_launcher_icons: ^0.14.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -137,6 +138,16 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# 런처(설치) 아이콘 설정.
+# 변경 후 `dart run flutter_launcher_icons` 로 android/ios 아이콘을 재생성한다.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/ddara.png"
+  # iOS 아이콘은 투명(alpha) 채널을 허용하지 않으므로 제거한다.
+  remove_alpha_ios: true
+  min_sdk_android: 21
 
 # 네이티브(시스템) 스플래시 설정.
 # 변경 후 `dart run flutter_native_splash:create` 로 네이티브 리소스를 재생성한다.
