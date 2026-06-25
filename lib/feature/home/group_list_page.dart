@@ -25,6 +25,8 @@ class GroupListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      // 콘텐츠가 짧아도(빈 목록 등) 화면 전체 높이를 채워 FAB 가 항상 바닥에 붙도록.
+      fit: StackFit.expand,
       children: [
         SingleChildScrollView(
           // 끝에서 더 당겨지는 바운스(overscroll)를 막고 가장자리에서 멈춘다.
