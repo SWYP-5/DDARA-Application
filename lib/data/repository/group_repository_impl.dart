@@ -1,6 +1,7 @@
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/model/group/create_group.dart';
+import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/data/datasource/group/group_datasource.dart';
 import 'package:ddara/domain/repository/group_repository.dart';
 import 'package:dio/dio.dart';
@@ -38,5 +39,11 @@ class GroupRepositoryImpl implements GroupRepository {
           throw NetworkException();
       }
     }
+  }
+
+  @override
+  Future<GroupList> getGroupList() async {
+    final response = await _groupDataSource.getGroupList();
+    return response.toDomain();
   }
 }

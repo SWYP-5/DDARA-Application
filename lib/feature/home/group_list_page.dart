@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/home/widget/group_list_widget.dart';
 import 'package:ddara/feature/home/widget/meeting_card.dart';
@@ -16,56 +17,13 @@ const double _fabSize = 56;
 ///
 /// 카드 높이가 균일하므로 Masonry 패키지 없이 `Row` + `Column` 2개로 충분하다.
 class GroupListPage extends StatelessWidget {
-  const GroupListPage({super.key});
+  const GroupListPage({super.key, required this.groups});
 
-  // TODO: 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
-  static const List<GroupSummary> _dummyGroups = [
-    (
-      groupId: 1,
-      name: '마라탕 걸즈',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '도윤님 외 2명',
-      date: '06.12',
-      status: '진행 중',
-    ),
-    (
-      groupId: 2,
-      name: '주말 등산 모임',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '민주님 외 4명',
-      date: '06.10',
-      status: '진행 중',
-    ),
-    (
-      groupId: 3,
-      name: '사진 동호회',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '보현님 외 7명',
-      date: '06.08',
-      status: '종료',
-    ),
-    (
-      groupId: 4,
-      name: '독서 클럽',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '도윤님 외 3명',
-      date: '06.05',
-      status: '진행 중',
-    ),
-    (
-      groupId: 5,
-      name: '맛집 탐방대',
-      imageUrl: 'assets/images/temp_image.jpg',
-      memberSummary: '민주님 외 5명',
-      date: '06.01',
-      status: '종료',
-    ),
-  ];
+  /// 표시할 모임 목록. (상위 HomePage 에서 조회 결과를 주입)
+  final List<Group> groups;
 
   @override
   Widget build(BuildContext context) {
-    final groups = _dummyGroups;
-
     return Stack(
       children: [
         SingleChildScrollView(

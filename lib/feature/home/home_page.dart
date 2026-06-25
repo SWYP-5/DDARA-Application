@@ -1,26 +1,31 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/home/empty_group_page.dart';
 import 'package:ddara/feature/home/group_list_page.dart';
+import 'package:ddara/feature/home/provider/notifier_provider.dart';
+import 'package:ddara/feature/home/util/home_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  // TODO: 그룹 조회 API 연동 후 실제 모임 유무로 분기. (현재는 임시 토글)
-  /// 모임 목록 화면 표시 여부. (false: EmptyGroupPage / true: GroupListPage)
-  bool _showGroupList = false;
+class _HomePageState extends ConsumerState<HomePage> {
+  /// 빈 상태에서 '나중에 추가할게요'를 누르면 빈 목록 화면으로 넘어간다.
+  bool _skipEmptyState = false;
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(homeNotifierProvider);
+
     return CupertinoPageScaffold(
       navigationBar: AppBar(
         // 좌측 로고를 직접 배치하므로 뒤로가기 버튼 비활성화.
@@ -51,13 +56,26 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      child: SafeArea(
-        child: _showGroupList
-            ? const GroupListPage()
-            : EmptyGroupPage(
-                onLater: () => setState(() => _showGroupList = true),
-              ),
-      ),
+      child: SafeArea(child: _body(state)),
+    );
+  }
+
+  /// 조회 결과에 따라 화면을 분기한다.
+  /// 로딩 → 인디케이터 / 에러 → 안내 / 모임 없음 → 빈 상태 / 있으면(또는 '나중에') 목록.
+  Widget _body(HomeState state) {
+    if (state.isLoading) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
+    if (state.errorMessage.isNotEmpty) {
+      return Center(child: AppText.body(state.errorMessage));
+    }
+    // 모임이 있거나, 빈 상태에서 '나중에 추가할게요'를 눌렀으면 목록을 보여준다.
+    // (후자의 경우 groups 는 빈 리스트라 FAB 만 있는 화면이 된다)
+    if (state.groups.isNotEmpty || _skipEmptyState) {
+      return GroupListPage(groups: state.groups);
+    }
+    return EmptyGroupPage(
+      onLater: () => setState(() => _skipEmptyState = true),
     );
   }
 }
