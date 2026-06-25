@@ -21,6 +21,7 @@ class GroupListPage extends StatelessWidget {
   // TODO: 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
   static const List<GroupSummary> _dummyGroups = [
     (
+      groupId: 1,
       name: '마라탕 걸즈',
       imageUrl: 'assets/images/temp_image.jpg',
       memberSummary: '도윤님 외 2명',
@@ -28,6 +29,7 @@ class GroupListPage extends StatelessWidget {
       status: '진행 중',
     ),
     (
+      groupId: 2,
       name: '주말 등산 모임',
       imageUrl: 'assets/images/temp_image.jpg',
       memberSummary: '민주님 외 4명',
@@ -35,6 +37,7 @@ class GroupListPage extends StatelessWidget {
       status: '진행 중',
     ),
     (
+      groupId: 3,
       name: '사진 동호회',
       imageUrl: 'assets/images/temp_image.jpg',
       memberSummary: '보현님 외 7명',
@@ -42,6 +45,7 @@ class GroupListPage extends StatelessWidget {
       status: '종료',
     ),
     (
+      groupId: 4,
       name: '독서 클럽',
       imageUrl: 'assets/images/temp_image.jpg',
       memberSummary: '도윤님 외 3명',
@@ -49,6 +53,7 @@ class GroupListPage extends StatelessWidget {
       status: '진행 중',
     ),
     (
+      groupId: 5,
       name: '맛집 탐방대',
       imageUrl: 'assets/images/temp_image.jpg',
       memberSummary: '민주님 외 5명',
@@ -86,7 +91,7 @@ class GroupListPage extends StatelessWidget {
                 for (var i = 0; i < groups.length; i += 2)
                   MeetingCard(
                     group: groups[i],
-                    onTap: () => _openGroup(context),
+                    onTap: () => _openGroup(context, groups[i].groupId),
                   ),
               ],
             ),
@@ -103,7 +108,7 @@ class GroupListPage extends StatelessWidget {
                 for (var i = 1; i < groups.length; i += 2)
                   MeetingCard(
                     group: groups[i],
-                    onTap: () => _openGroup(context),
+                    onTap: () => _openGroup(context, groups[i].groupId),
                   ),
               ],
             ),
@@ -123,9 +128,8 @@ class GroupListPage extends StatelessWidget {
     );
   }
 
-  void _openGroup(BuildContext context) {
-    // TODO: 선택한 모임 식별자를 함께 전달. (라우트 파라미터 정의 후)
-    context.push(RoutePath.group);
+  void _openGroup(BuildContext context, int groupId) {
+    context.push(RoutePath.group, extra: groupId);
   }
 }
 

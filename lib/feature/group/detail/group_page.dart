@@ -13,7 +13,10 @@ import 'package:go_router/go_router.dart';
 
 /// 모임 화면. (현재는 자리만 잡아둔 상태 — 추후 모임 상세 UI 구현)
 class GroupPage extends StatelessWidget {
-  const GroupPage({super.key});
+  const GroupPage({super.key, required this.groupId});
+
+  /// 진입 시 전달받은 모임 식별자. (이 id 로 모임 조회 API 를 호출할 예정)
+  final int groupId;
 
   // TODO: 모임 조회 API 응답의 모임 이름으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
   static const _dummyGroupName = '마라탕 걸즈';

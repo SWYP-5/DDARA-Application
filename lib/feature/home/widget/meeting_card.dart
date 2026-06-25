@@ -7,6 +7,9 @@ import 'package:flutter/material.dart' show Colors;
 ///
 /// TODO: 모임 조회 API 의 모임 요약 모델로 대체. (백엔드 스펙 대기 — 임시 record)
 typedef GroupSummary = ({
+  /// 모임 식별자. (입장 시 GroupPage 로 전달)
+  int groupId,
+
   /// 모임 이름. (예: '동아리 친구들')
   String name,
 

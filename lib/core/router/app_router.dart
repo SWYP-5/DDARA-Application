@@ -89,7 +89,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RoutePath.requiredPermission,
         builder: (_, _) => const RequiredPermissionPage(),
       ),
-      GoRoute(path: RoutePath.group, builder: (_, _) => const GroupPage()),
+      GoRoute(
+        path: RoutePath.group,
+        builder: (_, state) => GroupPage(groupId: state.extra! as int),
+      ),
       GoRoute(path: RoutePath.profile, builder: (_, _) => const ProfilePage()),
       GoRoute(
         path: RoutePath.groupCreate,

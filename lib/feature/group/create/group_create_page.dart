@@ -1,20 +1,24 @@
-import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
-import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/widget/error_message_dialog.dart';
+import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class GroupCreatePage extends StatefulWidget {
+import '../../../core/router/route_path.dart';
+
+class GroupCreatePage extends ConsumerStatefulWidget {
   const GroupCreatePage({super.key});
 
   @override
-  State<GroupCreatePage> createState() => _GroupCreatePageState();
+  ConsumerState<GroupCreatePage> createState() => _GroupCreatePageState();
 }
 
-class _GroupCreatePageState extends State<GroupCreatePage> {
+class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
   final _nameController = TextEditingController();
   final _introController = TextEditingController();
 
@@ -40,6 +44,21 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = ref.read(createGroupNotifierProvider.notifier);
+
+    ref.listen(createGroupNotifierProvider, (prev, next) {
+      if (prev?.createGroupId == -1 && next.createGroupId > -1) {
+        context.pushReplacement(RoutePath.group, extra: next.createGroupId);
+        return;
+      }
+
+      final errorMessage = next.errorMessage;
+
+      if (errorMessage.isNotEmpty) {
+        showErrorMessageDialog(context, message: errorMessage);
+      }
+    });
+
     return CupertinoPageScaffold(
       navigationBar: AppBar(title: '모임 만들기', onBack: () => context.pop()),
       child: SafeArea(
@@ -62,6 +81,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
                 placeholder: '예) 마라탕 걸즈',
                 controller: _nameController,
                 highlightWhenFilled: true,
+                onChanged: notifier.groupNameOnChanged,
               ),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
@@ -69,15 +89,14 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
                 placeholder: '어떤 모임인지 알려주세요',
                 controller: _introController,
                 highlightWhenFilled: true,
+                onChanged: notifier.descriptionOnChanged,
               ),
               const Spacer(),
               AppButton(
                 label: '만들기',
                 onPressed: _canSubmit
                     ? () {
-                        // TODO: 모임 생성 API 호출 후 이동. (현재 백엔드 스펙 대기)
-                        // 생성 화면은 스택에서 제거하고 그 아래 home 위에 모임 화면을 쌓는다.
-                        context.pushReplacement(RoutePath.group);
+                        notifier.createGroup();
                       }
                     : null,
               ),

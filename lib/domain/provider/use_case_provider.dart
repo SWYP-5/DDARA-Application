@@ -1,4 +1,5 @@
 import 'package:ddara/core/auth/provider/auth_provider.dart';
+import 'package:ddara/domain/usecase/group/create_group_use_case.dart';
 import 'package:ddara/domain/usecase/login_use_case.dart';
 import 'package:ddara/domain/usecase/signup_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,4 +16,8 @@ final signUpUseCaseProvider = Provider<SignUpUseCase>((ref) {
     ref.read(kakaoAuthProvider),
     ref.read(googleAuthProvider),
   );
+});
+
+final createGroupUseCaseProvider = Provider<CreateGroupUseCase>((ref) {
+  return CreateGroupUseCase(ref.read(groupRepositoryProvider));
 });

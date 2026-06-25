@@ -2,7 +2,9 @@ import 'package:ddara/core/auth/provider/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/repository/auth_repository.dart';
+import '../../domain/repository/group_repository.dart';
 import '../repository/auth_repository_impl.dart';
+import '../repository/group_repository_impl.dart';
 import 'datasource_provider.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
@@ -10,5 +12,11 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
     ref.read(authRemoteDataSourceProvider),
     ref.read(kakaoAuthProvider),
     ref.read(googleAuthProvider),
+  );
+});
+
+final groupRepositoryProvider = Provider<GroupRepository>((ref) {
+  return GroupRepositoryImpl(
+    ref.read(groupDataSourceProvider),
   );
 });
