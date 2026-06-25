@@ -6,7 +6,6 @@ import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:ddara/feature/group/detail/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
-import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
 import 'package:ddara/feature/group/detail/widget/body/record.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
@@ -117,7 +116,13 @@ class GroupPage extends ConsumerWidget {
               ),
             ],
           ),
-          const HistoryPhotos(),
+          // HistoryPhotos 는 2차 MVP 예정 — 같은 높이(카드 225 + 상하 여백)로 빈 상태 안내.
+          SizedBox(
+            height: 225 + AppSpacing.s4 * 2,
+            child: const Center(
+              child: AppText.body('지난 따라찍기가 아직 없어요'),
+            ),
+          ),
         ],
       ),
     );
