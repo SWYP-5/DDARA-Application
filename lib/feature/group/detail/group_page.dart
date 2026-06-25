@@ -52,7 +52,7 @@ class GroupPage extends StatelessWidget {
                 navigateToStart: () {
                   // TODO: 스타터(첫 따라찍기) 시작 화면으로 이동.
                 },
-                onTakePhoto: () => context.push(RoutePath.startedCamera),
+                onTakePhoto: () => context.push(RoutePath.started),
               ),
               const AppText.headlineLarge('기록'),
               // TODO: 통계 값은 모임 조회 API 응답으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
