@@ -1,6 +1,5 @@
 import 'dart:ui' show ImageFilter;
 
-import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,12 +25,12 @@ typedef DdaraProgress = ({
 /// 모임에 따라찍기가 시작된 뒤 상단에 보여주는 헤더. ([EmptyHeader] 의 반대 상태)
 ///
 /// 대표 이미지를 중심으로 구성하며, 우측 하단 토글 버튼으로 펼침/접힘을 전환한다.
+/// 버튼이 없는 순수 헤더라 다른 화면에서도 재사용할 수 있다.
 class StartedHeader extends StatefulWidget {
   const StartedHeader({
     super.key,
     required this.imageUri,
     required this.progress,
-    required this.onTakePhoto,
   });
 
   /// 대표로 보여줄 이미지 URI.
@@ -39,9 +38,6 @@ class StartedHeader extends StatefulWidget {
 
   /// 진행 중인 따라찍기 정보.
   final DdaraProgress progress;
-
-  /// 하단 '촬영하러 가기' 버튼을 눌렀을 때 실행할 콜백.
-  final VoidCallback onTakePhoto;
 
   @override
   State<StartedHeader> createState() => _StartedHeaderState();
@@ -55,22 +51,15 @@ class _StartedHeaderState extends State<StartedHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AnimatedCrossFade(
-          duration: const Duration(milliseconds: 250),
-          // 위 고정 헤더라 접힐 때 위에서부터 높이가 줄도록 상단 기준 정렬.
-          alignment: Alignment.topCenter,
-          crossFadeState: _expanded
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          firstChild: _buildExpanded(),
-          secondChild: _buildCollapsed(),
-        ),
-        const SizedBox(height: AppSpacing.s5),
-        AppButton(label: '따라찍으러 가기', onPressed: widget.onTakePhoto),
-      ],
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 250),
+      // 위 고정 헤더라 접힐 때 위에서부터 높이가 줄도록 상단 기준 정렬.
+      alignment: Alignment.topCenter,
+      crossFadeState: _expanded
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      firstChild: _buildExpanded(),
+      secondChild: _buildCollapsed(),
     );
   }
 
