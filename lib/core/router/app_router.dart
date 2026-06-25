@@ -22,14 +22,18 @@ final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
 
 final authStateProvider = FutureProvider<bool>((ref) async {
   final repo = ref.read(authRepositoryProvider);
-  final refreshToken = await repo.getRefreshToken();
 
-  if (refreshToken == null) return false;
-
-  final accessToken = await repo.refreshAccessToken(refreshToken);
-  await repo.saveAccessToken(accessToken);
-
-  return true;
+  // 세션 복구(재발급 → 실패 시 소셜 무중단 재인증)를 시도. 토큰을 얻으면 로그인.
+  // 콜드 스타트 스플래시가 오래 잡히지 않도록 타임아웃 후 비로그인으로 떨어뜨린다.
+  try {
+    final token = await repo.recoverSession().timeout(
+      const Duration(seconds: 15),
+    );
+    return token != null;
+  } catch (_) {
+    // 타임아웃·네트워크 오류 등 → 비로그인 처리.
+    return false;
+  }
 });
 
 final routerProvider = Provider<GoRouter>((ref) {
