@@ -2,6 +2,7 @@ import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
+import 'package:ddara/core/widget/error_message_dialog.dart';
 import 'package:ddara/feature/sign/signup/provider/notifier_provider.dart';
 import 'package:ddara/feature/sign/signup/step/birth_page.dart';
 import 'package:ddara/feature/sign/signup/step/nick_name_page.dart';
@@ -35,18 +36,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       final errorMessage = next.errorMessage;
 
       if (errorMessage.isNotEmpty) {
-        showCupertinoDialog(
-          context: context,
-          builder: (dialogContext) => CupertinoAlertDialog(
-            content: Text(errorMessage),
-            actions: [
-              CupertinoDialogAction(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('확인'),
-              ),
-            ],
-          ),
-        );
+        showErrorMessageDialog(context, message: errorMessage);
       }
     });
 
