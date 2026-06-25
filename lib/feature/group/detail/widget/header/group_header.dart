@@ -1,6 +1,5 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/feature/group/detail/widget/header/empty_header.dart';
 import 'package:ddara/feature/group/detail/widget/header/started_header.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -31,16 +30,16 @@ class GroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // // 이미지가 없으면 빈 상태 헤더 + 시작 버튼.
-    if (imageUri == null || imageUri!.isEmpty) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const EmptyHeader(),
-          const SizedBox(height: AppSpacing.s5),
-          AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
-        ],
-      );
-    }
+    // if (imageUri == null || imageUri!.isEmpty) {
+    //   return Column(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       const EmptyHeader(),
+    //       const SizedBox(height: AppSpacing.s5),
+    //       AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
+    //     ],
+    //   );
+    // }
 
     // 따라찍기가 시작된 상태의 헤더 + 촬영 버튼.
     return Column(
