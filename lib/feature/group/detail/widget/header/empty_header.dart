@@ -2,16 +2,12 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../core/designsystem/component/button/app_button.dart';
-
 /// 모임에 아직 따라찍기가 하나도 없을 때 상단에 보여주는 빈 상태 헤더.
 ///
 /// 제목 + 안내 문구 + 일러스트로 구성하며, 화면 상단에 가로 중앙 정렬로 배치한다.
+/// 버튼이 없는 순수 헤더라 다른 화면에서도 재사용할 수 있다.
 class EmptyHeader extends StatelessWidget {
-  const EmptyHeader({super.key, required this.navigateToStart});
-
-  /// '스타터 시작하기' 버튼을 눌렀을 때 실행할 콜백.
-  final VoidCallback navigateToStart;
+  const EmptyHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +36,6 @@ class EmptyHeader extends StatelessWidget {
             width: 160,
             fit: BoxFit.contain,
           ),
-          const SizedBox(height: AppSpacing.s5),
-          AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
         ],
       ),
     );
