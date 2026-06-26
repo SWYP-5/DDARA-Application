@@ -9,6 +9,7 @@ class RoutePath {
   static const groupCreate = '/group/create';
   static const groupJoin = '/group/join';
   static const started = '/group/started';
+  static const starter = '/group/starter';
   static const startedCamera = '/group/camera';
   static const profile = '/profile';
 }
