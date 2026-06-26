@@ -2,6 +2,7 @@ import 'dart:ui' show ImageFilter;
 
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/feature/group/widget/take_photo_button.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 멤버 사진 카드. 배경 이미지 위에 하단 이름 라벨을 표시한다.
@@ -74,7 +75,7 @@ class MemberPhotoCard extends StatelessWidget {
             else if (image == null)
               Center(
                 child: onTakePhoto != null
-                    ? _TakePhotoButton(onPressed: onTakePhoto)
+                    ? TakePhotoButton(onPressed: onTakePhoto)
                     : const Icon(
                         CupertinoIcons.photo,
                         size: 32,
@@ -103,34 +104,6 @@ class MemberPhotoCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-/// 본인 미업로드 카드 가운데에 표시하는 '촬영하러 가기' 버튼.
-/// 둥근(pill) 흰색 배경 위에 라벨 텍스트를 둔다.
-class _TakePhotoButton extends StatelessWidget {
-  const _TakePhotoButton({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      minimumSize: Size.zero,
-      onPressed: onPressed,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s4,
-          vertical: AppSpacing.s2,
-        ),
-        decoration: const ShapeDecoration(
-          color: AppColors.textPrimary,
-          shape: StadiumBorder(),
-        ),
-        child: const AppText.label('촬영하러 가기', color: AppColors.textOnWarm),
       ),
     );
   }

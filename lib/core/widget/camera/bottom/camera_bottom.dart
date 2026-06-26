@@ -12,6 +12,7 @@ class CameraBottom extends StatefulWidget {
     this.showViewMode = false,
     required this.onViewModeChanged,
     required this.onSwitchCamera,
+    this.onCapture,
   });
 
   /// 모드 토글('코너 미니뷰'/'고스트 확대') 영역 표시 여부.
@@ -22,6 +23,9 @@ class CameraBottom extends StatefulWidget {
 
   /// 화면 전환 버튼을 눌렀을 때.
   final VoidCallback onSwitchCamera;
+
+  /// 촬영 버튼을 눌렀을 때. null 이면 아무 동작도 하지 않는다.
+  final VoidCallback? onCapture;
 
   @override
   State<CameraBottom> createState() => _CameraBottomState();
@@ -83,7 +87,14 @@ class _CameraBottomState extends State<CameraBottom> {
         mainAxisSize: MainAxisSize.min,
         spacing: AppSpacing.s4,
         children: [
-          if (widget.showViewMode) _buildModeToggle(),
+          // 모드 토글을 숨겨도 높이는 유지해, 하단 버튼 위치가 바뀌지 않게 한다.
+          Visibility(
+            visible: widget.showViewMode,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: _buildModeToggle(),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,7 +103,7 @@ class _CameraBottomState extends State<CameraBottom> {
                 icon: CupertinoIcons.photo,
                 onPressed: () {},
               ),
-              _CaptureButton(onPressed: () {}),
+              _CaptureButton(onPressed: widget.onCapture ?? () {}),
               _CircleIconButton(
                 icon: CupertinoIcons.arrow_2_circlepath,
                 onPressed: widget.onSwitchCamera,

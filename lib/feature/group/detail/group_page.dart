@@ -77,9 +77,7 @@ class GroupPage extends ConsumerWidget {
           GroupHeader(
             // 진행 중인 사이클을 그대로 전달. null 이면 헤더가 빈 상태를 보여준다.
             progress: groupDetail.currentCycle,
-            navigateToStart: () {
-              // TODO: 스타터(첫 따라찍기) 시작 화면으로 이동.
-            },
+            navigateToStart: () => context.push(RoutePath.starter),
             onTakePhoto: () => context.push(RoutePath.started),
           ),
           const AppText.headlineLarge('기록'),

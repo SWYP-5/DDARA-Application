@@ -7,6 +7,7 @@ import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
 import '../../feature/group/started/started_camera_page.dart';
 import '../../feature/group/started/started_page.dart';
+import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
 import '../../feature/group/join/group_join_page.dart';
 import '../../feature/home/home_page.dart';
@@ -108,6 +109,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.started,
         builder: (_, _) => const StartedPage(),
+      ),
+      GoRoute(
+        path: RoutePath.starter,
+        builder: (_, _) => const StarterPage(),
       ),
       GoRoute(
         path: RoutePath.startedCamera,
