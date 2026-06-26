@@ -19,6 +19,7 @@ class Camera extends StatefulWidget {
     this.onOpacityChanged,
     this.onViewModeChanged,
     this.onFlashPressed,
+    this.onCapture,
   });
 
   /// '원본사진 투명도' 영역 표시 여부.
@@ -38,6 +39,9 @@ class Camera extends StatefulWidget {
 
   /// 플래시 토글 후 호출되는 알림 콜백. 현재 켜짐 여부를 전달한다. (선택)
   final ValueChanged<bool>? onFlashPressed;
+
+  /// 촬영 버튼을 눌렀을 때. (선택)
+  final VoidCallback? onCapture;
 
   @override
   State<Camera> createState() => _CameraState();
@@ -197,6 +201,7 @@ class _CameraState extends State<Camera> {
           showViewMode: widget.showViewMode,
           onViewModeChanged: _onViewModeChanged,
           onSwitchCamera: _switchCamera,
+          onCapture: widget.onCapture,
         ),
       ],
     );
