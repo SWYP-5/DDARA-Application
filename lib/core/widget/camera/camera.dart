@@ -129,6 +129,12 @@ class _CameraState extends ConsumerState<Camera>
 
     try {
       final file = await controller.takePicture();
+      // 촬영 후 화면이 넘어가도 토치가 켜진 채 남지 않도록 끈다.
+      // (뒤로가기는 dispose 에서 처리되지만, 촬영 후 전환은 dispose 가 호출되지 않는다.)
+      if (_flashOn) {
+        await controller.setFlashMode(FlashMode.off);
+        if (mounted) setState(() => _flashOn = false);
+      }
       if (!mounted) return;
       widget.onCapture?.call(file.path);
     } catch (_) {
