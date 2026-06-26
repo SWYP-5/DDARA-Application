@@ -81,7 +81,7 @@ class GroupListPage extends StatelessWidget {
           right: AppSpacing.s5,
           bottom: AppSpacing.s5,
           child: _FloatingAddButton(
-            onPressed: () => context.push(RoutePath.groupCreate),
+            onPressed: () => context.push(RoutePath.groupJoin),
           ),
         ),
       ],

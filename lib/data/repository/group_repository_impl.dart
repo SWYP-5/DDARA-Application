@@ -1,8 +1,10 @@
 import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/group_list.dart';
+import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/data/datasource/group/group_datasource.dart';
 import 'package:ddara/domain/repository/group_repository.dart';
 import 'package:dio/dio.dart';
@@ -64,6 +66,39 @@ class GroupRepositoryImpl implements GroupRepository {
           throw GroupNotFoundException();
 
         default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<InviteGroup> getInviteGroup(String inviteCode) async {
+    try {
+      final response = await _groupDataSource.getInviteGroup(inviteCode);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupJoinErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case GroupJoinErrorCode.invalidInviteCode:
+          // 초대 코드 누락
+          throw InvalidInviteCodeException();
+
+        case GroupJoinErrorCode.groupNotFound:
+          // 잘못된 초대 코드
+          throw GroupNotFoundException();
+
+        case GroupJoinErrorCode.groupLimitExceeded:
+          // 정원 초과
+          throw GroupFullException();
+
+        case GroupJoinErrorCode.alreadyJoinedGroup:
+          // 이미 참여한 모임
+          throw AlreadyJoinedGroupException();
+
+        case GroupJoinErrorCode.unknown || null:
           throw NetworkException();
       }
     }
