@@ -40,8 +40,8 @@ class Camera extends StatefulWidget {
   /// 플래시 토글 후 호출되는 알림 콜백. 현재 켜짐 여부를 전달한다. (선택)
   final ValueChanged<bool>? onFlashPressed;
 
-  /// 촬영 버튼을 눌렀을 때. (선택)
-  final VoidCallback? onCapture;
+  /// 촬영이 끝났을 때, 저장된 이미지 파일 경로를 전달한다. (선택)
+  final ValueChanged<String>? onCapture;
 
   @override
   State<Camera> createState() => _CameraState();
@@ -55,6 +55,7 @@ class _CameraState extends State<Camera> {
   List<CameraDescription> _cameras = const [];
   int _cameraIndex = 0;
   GuideViewMode _guideMode = GuideViewMode.cornerMini;
+
   // 투명도 탭 기본 선택('40')과 맞춘다.
   double _guideOpacity = 0.4;
 
@@ -89,6 +90,23 @@ class _CameraState extends State<Camera> {
       return;
     }
     setState(() => _controller = controller);
+  }
+
+  /// 현재 프리뷰를 촬영해 앱 임시 디렉토리에 저장하고, 그 경로를 전달한다.
+  /// (OS 갤러리에는 저장하지 않는다.)
+  Future<void> _capture() async {
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
+    // 이미 촬영 중이면 중복 호출을 막는다.
+    if (controller.value.isTakingPicture) return;
+
+    try {
+      final file = await controller.takePicture();
+      if (!mounted) return;
+      widget.onCapture?.call(file.path);
+    } catch (_) {
+      // 촬영 실패는 무시한다. (필요 시 사용자 안내 추가)
+    }
   }
 
   Future<void> _toggleFlash() async {
@@ -160,7 +178,8 @@ class _CameraState extends State<Camera> {
       children: [
         CameraHeader(
           // 코너 미니뷰 모드에서는 투명도 조절이 의미 없어 숨긴다.
-          showOpacity: widget.showOpacity && _guideMode != GuideViewMode.cornerMini,
+          showOpacity:
+              widget.showOpacity && _guideMode != GuideViewMode.cornerMini,
           flashOn: _flashOn,
           onOpacityChanged: _onOpacityChanged,
           onFlashPressed: _toggleFlash,
@@ -201,7 +220,7 @@ class _CameraState extends State<Camera> {
           showViewMode: widget.showViewMode,
           onViewModeChanged: _onViewModeChanged,
           onSwitchCamera: _switchCamera,
-          onCapture: widget.onCapture,
+          onCapture: _capture,
         ),
       ],
     );

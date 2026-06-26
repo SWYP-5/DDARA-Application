@@ -2,7 +2,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/feature/group/starter/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/starter/starter_camera.dart';
 import 'package:ddara/feature/group/starter/starter_info.dart';
-import 'package:ddara/feature/group/starter/starter_photo_check.dart';
+import 'package:ddara/feature/group/widget/photo_check.dart';
 import 'package:ddara/feature/group/starter/util/starter_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +20,11 @@ class StarterPage extends ConsumerWidget {
     final body = switch (step) {
       StarterStep.info => const StarterInfo(),
       StarterStep.camera => const StarterCamera(),
-      StarterStep.photoCheck => const StarterPhotoCheck(),
+      StarterStep.photoCheck => PhotoCheck(
+        image: ref.watch(starterNotifierProvider.select((s) => s.captured)),
+        onRetake: notifier.retake,
+        onUpload: notifier.upload,
+      ),
     };
 
     return CupertinoPageScaffold(
