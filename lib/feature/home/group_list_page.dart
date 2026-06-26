@@ -1,3 +1,4 @@
+import 'package:ddara/core/designsystem/component/button/app_pill_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/router/route_path.dart';
@@ -16,14 +17,25 @@ const double _fabSize = 56;
 /// 차이만큼 우측 카드들이 위로 덜 내려오면서 자연스러운 지그재그가 만들어진다.
 ///
 /// 카드 높이가 균일하므로 Masonry 패키지 없이 `Row` + `Column` 2개로 충분하다.
-class GroupListPage extends StatelessWidget {
+class GroupListPage extends StatefulWidget {
   const GroupListPage({super.key, required this.groups});
 
   /// 표시할 모임 목록. (상위 HomePage 에서 조회 결과를 주입)
   final List<Group> groups;
 
   @override
+  State<GroupListPage> createState() => _GroupListPageState();
+}
+
+class _GroupListPageState extends State<GroupListPage> {
+  /// FAB(추가 버튼) 열림 여부. true 면 + 아이콘이 x 로 바뀐다.
+  bool _isMenuOpen = false;
+
+  void _toggleMenu() => setState(() => _isMenuOpen = !_isMenuOpen);
+
+  @override
   Widget build(BuildContext context) {
+    final groups = widget.groups;
     return Stack(
       // 콘텐츠가 짧아도(빈 목록 등) 화면 전체 높이를 채워 FAB 가 항상 바닥에 붙도록.
       fit: StackFit.expand,
@@ -76,12 +88,39 @@ class GroupListPage extends StatelessWidget {
             ],
           ),
         ),
-        // 우측 하단 고정 FAB. (모임 만들기)
+        // 우측 하단 고정 FAB. 열리면 바로 위에 액션 버튼 2개가 나타난다.
         Positioned(
           right: AppSpacing.s5,
           bottom: AppSpacing.s5,
-          child: _FloatingAddButton(
-            onPressed: () => context.push(RoutePath.groupJoin),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            spacing: AppSpacing.s3,
+            children: [
+              // 열린 상태에서만 액션 버튼을 보여준다.
+              // IntrinsicWidth + stretch 로 두 버튼 너비를 더 넓은 쪽에 맞춘다.
+              if (_isMenuOpen)
+                IntrinsicWidth(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: AppSpacing.s3,
+                    children: [
+                      AppPillButton(
+                        label: '모임 만들기',
+                        onPressed: () => context.push(RoutePath.groupCreate),
+                      ),
+                      AppPillButton.outline(
+                        label: '모임 들어가기',
+                        onPressed: () => context.push(RoutePath.groupJoin),
+                      ),
+                    ],
+                  ),
+                ),
+              _FloatingAddButton(
+                isOpen: _isMenuOpen,
+                onPressed: _toggleMenu,
+              ),
+            ],
           ),
         ),
       ],
@@ -93,11 +132,13 @@ class GroupListPage extends StatelessWidget {
   }
 }
 
-/// 우측 하단에 떠 있는 원형 추가(+) 버튼. (모임 만들기)
+/// 우측 하단에 떠 있는 원형 추가 버튼.
+/// [isOpen] 이면 + 대신 x(닫기) 아이콘을 보여준다.
 class _FloatingAddButton extends StatelessWidget {
-  const _FloatingAddButton({required this.onPressed});
+  const _FloatingAddButton({required this.onPressed, required this.isOpen});
 
   final VoidCallback onPressed;
+  final bool isOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +161,8 @@ class _FloatingAddButton extends StatelessWidget {
             ),
           ],
         ),
-        child: const Icon(
-          CupertinoIcons.add,
+        child: Icon(
+          isOpen ? CupertinoIcons.xmark : CupertinoIcons.add,
           size: 28,
           color: AppColors.textOnAccent,
         ),
