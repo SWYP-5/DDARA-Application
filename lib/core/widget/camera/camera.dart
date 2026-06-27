@@ -1,16 +1,20 @@
 import 'package:camera/camera.dart';
+import 'package:ddara/core/designsystem/component/button/app_button.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/camera/bottom/camera_bottom.dart';
 import 'package:ddara/core/widget/camera/header/camera_header.dart';
 import 'package:ddara/core/widget/camera/preview/corner_mini_view.dart';
 import 'package:ddara/core/widget/camera/preview/ghost_guide_view.dart';
+import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/widget/camera/preview/preview.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// 카메라 화면 본문. 상단(헤더) · 프리뷰 · 하단(컨트롤)으로 구성한다.
 /// 카메라 컨트롤러는 여기서 보유하고 하위 위젯에 전달한다.
 /// 헤더의 투명도/플래시 처리는 외부 콜백으로 위임한다.
-class Camera extends StatefulWidget {
+class Camera extends ConsumerStatefulWidget {
   const Camera({
     super.key,
     this.showOpacity = false,
@@ -40,31 +44,55 @@ class Camera extends StatefulWidget {
   /// 플래시 토글 후 호출되는 알림 콜백. 현재 켜짐 여부를 전달한다. (선택)
   final ValueChanged<bool>? onFlashPressed;
 
-  /// 촬영 버튼을 눌렀을 때. (선택)
-  final VoidCallback? onCapture;
+  /// 촬영이 끝났을 때, 저장된 이미지 파일 경로를 전달한다. (선택)
+  final ValueChanged<String>? onCapture;
 
   @override
-  State<Camera> createState() => _CameraState();
+  ConsumerState<Camera> createState() => _CameraState();
 }
 
-class _CameraState extends State<Camera> {
+class _CameraState extends ConsumerState<Camera>
+    with WidgetsBindingObserver {
   CameraController? _controller;
   Future<void>? _initFuture;
   bool _flashOn = false;
 
+  /// 카메라 권한이 거부된 상태. true 면 안내 화면을 보여준다.
+  bool _permissionDenied = false;
+
   List<CameraDescription> _cameras = const [];
   int _cameraIndex = 0;
   GuideViewMode _guideMode = GuideViewMode.cornerMini;
+
   // 투명도 탭 기본 선택('40')과 맞춘다.
   double _guideOpacity = 0.4;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initFuture = _initCamera();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 설정에서 권한을 켜고 돌아온 경우, 거부 상태였다면 다시 시도한다.
+    if (state == AppLifecycleState.resumed && _permissionDenied) {
+      _initFuture = _initCamera();
+    }
+  }
+
   Future<void> _initCamera() async {
+    // 권한을 한 번 더 확인하고, 허용된 경우에만 카메라를 켠다.
+    final granted = await ref.read(permissionServiceProvider).isCameraGranted();
+    if (!granted) {
+      if (mounted) setState(() => _permissionDenied = true);
+      return;
+    }
+    if (_permissionDenied && mounted) {
+      setState(() => _permissionDenied = false);
+    }
+
     _cameras = await availableCameras();
     if (_cameras.isEmpty) return;
 
@@ -89,6 +117,29 @@ class _CameraState extends State<Camera> {
       return;
     }
     setState(() => _controller = controller);
+  }
+
+  /// 현재 프리뷰를 촬영해 앱 임시 디렉토리에 저장하고, 그 경로를 전달한다.
+  /// (OS 갤러리에는 저장하지 않는다.)
+  Future<void> _capture() async {
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
+    // 이미 촬영 중이면 중복 호출을 막는다.
+    if (controller.value.isTakingPicture) return;
+
+    try {
+      final file = await controller.takePicture();
+      // 촬영 후 화면이 넘어가도 토치가 켜진 채 남지 않도록 끈다.
+      // (뒤로가기는 dispose 에서 처리되지만, 촬영 후 전환은 dispose 가 호출되지 않는다.)
+      if (_flashOn) {
+        await controller.setFlashMode(FlashMode.off);
+        if (mounted) setState(() => _flashOn = false);
+      }
+      if (!mounted) return;
+      widget.onCapture?.call(file.path);
+    } catch (_) {
+      // 촬영 실패는 무시한다. (필요 시 사용자 안내 추가)
+    }
   }
 
   Future<void> _toggleFlash() async {
@@ -133,6 +184,7 @@ class _CameraState extends State<Camera> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     final controller = _controller;
     _controller = null;
     if (controller != null) {
@@ -156,11 +208,44 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
+    // 권한이 거부된 경우: 카메라 대신 안내 + 설정 이동 버튼을 보여준다.
+    if (_permissionDenied) {
+      return Padding(
+        padding: const EdgeInsets.all(AppSpacing.s5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              CupertinoIcons.camera,
+              size: 48,
+              color: AppColors.textSecondary,
+            ),
+            const SizedBox(height: AppSpacing.s4),
+            const AppText.headlineMedium(
+              '카메라 권한이 필요해요',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.s2),
+            const AppText.body(
+              '촬영하려면 설정에서 카메라 권한을 허용해주세요.',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.s5),
+            AppButton(
+              label: '설정으로 이동',
+              onPressed: () => ref.read(permissionServiceProvider).openSettings(),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
       children: [
         CameraHeader(
           // 코너 미니뷰 모드에서는 투명도 조절이 의미 없어 숨긴다.
-          showOpacity: widget.showOpacity && _guideMode != GuideViewMode.cornerMini,
+          showOpacity:
+              widget.showOpacity && _guideMode != GuideViewMode.cornerMini,
           flashOn: _flashOn,
           onOpacityChanged: _onOpacityChanged,
           onFlashPressed: _toggleFlash,
@@ -201,7 +286,7 @@ class _CameraState extends State<Camera> {
           showViewMode: widget.showViewMode,
           onViewModeChanged: _onViewModeChanged,
           onSwitchCamera: _switchCamera,
-          onCapture: widget.onCapture,
+          onCapture: _capture,
         ),
       ],
     );

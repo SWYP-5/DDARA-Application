@@ -11,5 +11,6 @@ class RoutePath {
   static const started = '/group/started';
   static const starter = '/group/starter';
   static const startedCamera = '/group/camera';
+  static const startedPhotoCheck = '/group/photo-check';
   static const profile = '/profile';
 }

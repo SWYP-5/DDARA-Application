@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ddara/feature/group/starter/util/starter_state.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,9 +19,12 @@ class StarterNotifier extends Notifier<StarterState> {
     state = state.copyWith(step: StarterStep.camera);
   }
 
-  /// 촬영 완료 → 사진 확인 화면으로 전환.
-  void capture() {
-    state = state.copyWith(step: StarterStep.photoCheck);
+  /// 촬영 완료 → 촬영본을 들고 사진 확인 화면으로 전환.
+  void capture(String path) {
+    state = state.copyWith(
+      step: StarterStep.photoCheck,
+      captured: FileImage(File(path)),
+    );
   }
 
   /// 다시 찍기 → 촬영 화면으로.
@@ -27,13 +32,11 @@ class StarterNotifier extends Notifier<StarterState> {
     state = state.copyWith(step: StarterStep.camera);
   }
 
-  /// 올리기 → 촬영 사진을 본문(info)에 반영한다.
+  /// 올리기 → 방금 촬영한 사진을 본문(info)에 반영한다.
   void upload() {
-    state = state.copyWith(
-      step: StarterStep.info,
-      // TODO: 실제 촬영 이미지로 교체. (현재 테스트용 임시 이미지)
-      photo: const AssetImage('assets/images/temp_image.jpg'),
-    );
+    final captured = state.captured;
+    if (captured == null) return;
+    state = state.copyWith(step: StarterStep.info, photo: captured);
   }
 
   /// 본문(info)으로 돌아가기. (카메라에서 뒤로)
