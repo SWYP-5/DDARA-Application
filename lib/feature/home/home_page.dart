@@ -41,9 +41,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 width: 26,
                 height: 26,
               ),
-              onPressed: () {
-                // TODO: 알림 화면 이동
-              },
+              onPressed: () => context.push(RoutePath.notification),
             ),
             _NavIconButton(
               icon: SvgPicture.asset(

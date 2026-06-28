@@ -13,4 +13,5 @@ class RoutePath {
   static const startedCamera = '/group/camera';
   static const startedPhotoCheck = '/group/photo-check';
   static const profile = '/profile';
+  static const notification = '/notification';
 }

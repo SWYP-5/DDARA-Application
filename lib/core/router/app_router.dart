@@ -12,6 +12,7 @@ import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
 import '../../feature/group/join/group_join_page.dart';
 import '../../feature/home/home_page.dart';
+import '../../feature/notification/notification_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
 import '../../feature/permission/permission_page.dart';
@@ -96,6 +97,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => GroupPage(groupId: state.extra! as int),
       ),
       GoRoute(path: RoutePath.profile, builder: (_, _) => const ProfilePage()),
+      GoRoute(
+        path: RoutePath.notification,
+        builder: (_, _) => const NotificationPage(),
+      ),
       GoRoute(
         path: RoutePath.groupCreate,
         builder: (_, _) => const GroupCreatePage(),
