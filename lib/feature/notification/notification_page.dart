@@ -18,12 +18,14 @@ class NotificationPage extends StatelessWidget {
       message: '지원님이 ‘마라탕 맛있게 먹기’ 모임에 합류했어요',
       timeAgo: '5분 전',
       imageUrl: null,
+      isRead: false,
     ),
     (
       category: '따라찍기 시작',
       message: '‘마라탕 맛있게 먹기’ 모임에서 새로운 따라찍기가 시작됐어요',
       timeAgo: '1시간 전',
       imageUrl: null,
+      isRead: true,
     ),
   ];
 
@@ -40,7 +42,7 @@ class NotificationPage extends StatelessWidget {
 
   Widget _body() {
     // 빈 상태 확인용으로 _empty 적용 중. (실데이터 연동 시 _dummy → API 응답으로 교체)
-    const notifications = _empty;
+    const notifications = _dummy;
 
     // 알림이 없으면 빈 상태 화면을 중앙에 보여준다.
     if (notifications.isEmpty) {

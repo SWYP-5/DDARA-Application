@@ -6,6 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 /// 아바타 원 지름.
 const double _avatarSize = 40;
 
+/// 읽지 않음 표시 점의 지름.
+const double _unreadDotSize = 8;
+
 /// 알림 한 건의 표시 데이터.
 ///
 /// TODO: 알림 조회 API 모델로 대체. (백엔드 스펙 대기 — 임시 record)
@@ -21,6 +24,9 @@ typedef NotificationDisplay = ({
 
   /// 관련 프로필 이미지 URL. null·빈 값이면 기본 아바타를 보여준다.
   String? imageUrl,
+
+  /// 읽음 여부. false 면 우측 상단에 읽지 않음 표시 점을 보여준다.
+  bool isRead,
 });
 
 /// 알림 목록의 항목 한 개.
@@ -73,9 +79,24 @@ class NotificationItem extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        AppText.caption(
-                          data.timeAgo,
-                          color: AppColors.textTertiary,
+                        // 읽지 않은 알림이면 시간 텍스트의 우측 상단 모서리에 점을 띄운다.
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            AppText.caption(
+                              data.timeAgo,
+                              color: AppColors.textTertiary,
+                            ),
+                            if (!data.isRead)
+                              // 카드 상단 padding(s4) 기준 indicator 와 상단 간격이 s3 가
+                              // 되도록 (s4 - s3)=s1 만큼 위로 올린다. 우측도 카드 우측
+                              // padding(s6) 기준 간격이 s3 가 되도록 s3 만큼 내민다.
+                              const Positioned(
+                                top: -AppSpacing.s1,
+                                right: -AppSpacing.s3,
+                                child: _UnreadDot(),
+                              ),
+                          ],
                         ),
                       ],
                     ),
@@ -86,6 +107,23 @@ class NotificationItem extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// 읽지 않은 알림임을 나타내는 빨간 점.
+class _UnreadDot extends StatelessWidget {
+  const _UnreadDot();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: _unreadDotSize,
+      height: _unreadDotSize,
+      decoration: const BoxDecoration(
+        color: AppColors.statusDanger,
+        shape: BoxShape.circle,
       ),
     );
   }
