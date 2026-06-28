@@ -1,9 +1,9 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/widget/profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-/// 아바타 원 지름.
+/// 알림 아바타 원 지름.
 const double _avatarSize = 40;
 
 /// 읽지 않음 표시 점의 지름.
@@ -61,7 +61,7 @@ class NotificationItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              _Avatar(imageUrl: data.imageUrl),
+              ProfileAvatar(size: _avatarSize, imageUrl: data.imageUrl),
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -125,56 +125,6 @@ class _UnreadDot extends StatelessWidget {
         color: AppColors.statusDanger,
         shape: BoxShape.circle,
       ),
-    );
-  }
-}
-
-/// 알림 주체의 원형 아바타. 이미지가 없으면 기본 아바타 실루엣을 보여준다.
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.imageUrl});
-
-  final String? imageUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    final url = imageUrl;
-    final hasImage = url != null && url.isNotEmpty;
-
-    return Container(
-      width: _avatarSize,
-      height: _avatarSize,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
-        color: AppColors.bgSurfaceAlt,
-        shape: BoxShape.circle,
-        border: Border.fromBorderSide(
-          BorderSide(color: AppColors.borderDefault),
-        ),
-      ),
-      child: hasImage
-          ? Image.network(
-              url,
-              fit: BoxFit.cover,
-              // 로드 실패 시 기본 아바타로 대체.
-              errorBuilder: (context, error, stackTrace) =>
-                  const _DefaultAvatar(),
-            )
-          : const _DefaultAvatar(),
-    );
-  }
-}
-
-/// 이미지가 없거나 로드 실패했을 때의 기본 아바타.
-class _DefaultAvatar extends StatelessWidget {
-  const _DefaultAvatar();
-
-  @override
-  Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'assets/images/ic_avatar.svg',
-      width: _avatarSize,
-      height: _avatarSize,
-      fit: BoxFit.cover,
     );
   }
 }
