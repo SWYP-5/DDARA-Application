@@ -111,9 +111,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       AppTextButton(
                         label: '이용약관과 개인정보 처리방침 확인',
-                        onPressed: () {
-                          // TODO: 이용약관·개인정보 처리방침 화면 이동
-                        },
+                        onPressed: () => context.push(RoutePath.termsPolicy),
                       ),
                       const SizedBox(height: AppSpacing.s4),
                     ],
