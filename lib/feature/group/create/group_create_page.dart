@@ -73,8 +73,8 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const AppText.headlineLarge('모임 이름을 설정해주세요.'),
-              const AppText.body('내가 먼저 찍으면, 친구들이 이 주제를 따라 찍어요'),
+              const AppText.headlineLarge('모임 이름을 정해주세요'),
+              const AppText.body('내가 먼저 찍으면, 친구들이 따라 찍어요'),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
                 label: '모임 이름',
