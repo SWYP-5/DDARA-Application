@@ -1,4 +1,8 @@
+import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
+import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
+import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
+import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
@@ -26,7 +30,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ref.listen(loginNotifierProvider, (previous, next) {
       switch (next) {
         case LoginSuccess():
-          context.go(RoutePath.home);
+          // 보관된 초대코드가 있으면 모임 참여로 복귀, 없으면 홈으로.
+          routeAfterAuth(ref, GoRouter.of(context));
 
         case SignupRequired():
           context.push(RoutePath.signup, extra: next.social);
@@ -62,12 +67,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       spacing: 10,
                       children: [
                         const LogoLarge(),
-                        Text(
+                        const AppText.title(
                           '우리끼리 따라찍기',
                           textAlign: TextAlign.center,
-                          style: AppTypography.title.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                          color: AppColors.textSecondary,
                         ),
                       ],
                     ),
@@ -106,12 +109,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 SocialLoginType.google,
                               ),
                       ),
-                      Text(
-                        '이용약관과 개인정보 처리방침 확인',
-                        textAlign: TextAlign.center,
-                        style: AppTypography.caption.copyWith(
-                          color: AppColors.textTertiary,
-                        ),
+                      AppTextButton(
+                        label: '이용약관과 개인정보 처리방침 확인',
+                        onPressed: () {
+                          // TODO: 이용약관·개인정보 처리방침 화면 이동
+                        },
                       ),
                       const SizedBox(height: AppSpacing.s4),
                     ],
@@ -122,15 +124,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
 
           // 로그인 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
-          if (isLoading)
-            const Positioned.fill(
-              child: ColoredBox(
-                color: Color(0x66000000),
-                child: Center(
-                  child: CupertinoActivityIndicator(radius: AppRadius.md),
-                ),
-              ),
-            ),
+          if (isLoading) const AppLoadingOverlay(),
         ],
       ),
     );

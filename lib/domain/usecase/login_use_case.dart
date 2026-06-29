@@ -14,6 +14,8 @@ class LoginUseCase {
     if (!login.isNewUser) {
       await _authRepository.saveAccessToken(login.accessToken);
       await _authRepository.saveRefreshToken(login.refreshToken);
+      // 토큰 만료 시 무중단 재인증에서 분기하도록 소셜 종류도 저장.
+      await _authRepository.saveSocialLoginType(social);
     }
 
     return login;

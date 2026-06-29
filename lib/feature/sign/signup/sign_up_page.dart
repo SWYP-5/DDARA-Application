@@ -1,12 +1,14 @@
-import 'package:ddara/core/designsystem/theme/app_colors.dart';
+import 'package:ddara/core/deeplink/pending_invite.dart';
+import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
+import 'package:ddara/core/designsystem/component/loading/app_loading_overlay.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
-import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/error_message_dialog.dart';
 import 'package:ddara/feature/sign/signup/provider/notifier_provider.dart';
 import 'package:ddara/feature/sign/signup/step/birth_page.dart';
 import 'package:ddara/feature/sign/signup/step/nick_name_page.dart';
 import 'package:ddara/feature/sign/signup/step/terms_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AppBar;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,25 +28,15 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     ref.listen(signNotifierProvider(social), (prev, next) {
       if (prev?.isSuccess == false && next.isSuccess) {
-        context.go(RoutePath.home);
+        // 보관된 초대코드가 있으면 모임 참여로 복귀, 없으면 홈으로.
+        routeAfterAuth(ref, GoRouter.of(context));
         return;
       }
 
       final errorMessage = next.errorMessage;
 
       if (errorMessage.isNotEmpty) {
-        showCupertinoDialog(
-          context: context,
-          builder: (dialogContext) => CupertinoAlertDialog(
-            content: Text(errorMessage),
-            actions: [
-              CupertinoDialogAction(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('확인'),
-              ),
-            ],
-          ),
-        );
+        showErrorMessageDialog(context, message: errorMessage);
       }
     });
 
@@ -60,20 +52,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         }
       },
       child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          padding: const EdgeInsetsDirectional.only(start: 12, end: 16),
-          leading: CupertinoButton(
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-            onPressed: () {
-              if (state.step > 1) {
-                notifier.backButtonClicked();
-              } else {
-                context.pop();
-              }
-            },
-            child: const Icon(CupertinoIcons.back, color: Colors.white),
-          ),
+        navigationBar: AppBar(
+          onBack: () {
+            if (state.step > 1) {
+              notifier.backButtonClicked();
+            } else {
+              context.pop();
+            }
+          },
         ),
         child: SafeArea(
           // birth/nickname 스텝이 아직 Material 위젯(TextField/ElevatedButton)을
@@ -105,15 +91,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 },
 
                 // 회원가입 처리 중 로딩 오버레이 (입력 차단 + 인디케이터)
-                if (state.isLoading)
-                  const Positioned.fill(
-                    child: ColoredBox(
-                      color: AppColors.overlayScrim,
-                      child: Center(
-                        child: CupertinoActivityIndicator(radius: 16),
-                      ),
-                    ),
-                  ),
+                if (state.isLoading) const AppLoadingOverlay(),
               ],
             ),
           ),

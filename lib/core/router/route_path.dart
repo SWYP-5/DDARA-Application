@@ -5,4 +5,12 @@ class RoutePath {
   static const signup = '/signup';
   static const permission = '/permission';
   static const requiredPermission = '/required-permission';
+  static const group = '/group';
+  static const groupCreate = '/group/create';
+  static const groupJoin = '/group/join';
+  static const started = '/group/started';
+  static const starter = '/group/starter';
+  static const startedCamera = '/group/camera';
+  static const startedPhotoCheck = '/group/photo-check';
+  static const profile = '/profile';
 }

@@ -282,7 +282,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Firebase 는 SPM(우선) 또는 CocoaPods 로 설치될 수 있어 양쪽 경로를 탐지한다.\nSPM_RUN=\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nPODS_RUN=\"${PODS_ROOT}/FirebaseCrashlytics/run\"\nif [ -f \"$SPM_RUN\" ]; then\n  \"$SPM_RUN\"\nelif [ -f \"$PODS_RUN\" ]; then\n  \"$PODS_RUN\"\nelse\n  echo \"warning: Crashlytics run script 를 찾지 못해 dSYM 업로드를 건너뜁니다 (SPM/Pods 모두 없음).\"\nfi\n";
+			shellScript = "# PR/디버그(Debug) 빌드에서는 dSYM 업로드를 건너뛴다. (GOOGLE_APP_ID 불필요)\nif [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n  echo \"Debug 빌드 → Crashlytics dSYM 업로드 건너뜀.\"\n  exit 0\nfi\n# Firebase 는 SPM(우선) 또는 CocoaPods 로 설치될 수 있어 양쪽 경로를 탐지한다.\nSPM_RUN=\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nPODS_RUN=\"${PODS_ROOT}/FirebaseCrashlytics/run\"\nif [ -f \"$SPM_RUN\" ]; then\n  \"$SPM_RUN\"\nelif [ -f \"$PODS_RUN\" ]; then\n  \"$PODS_RUN\"\nelse\n  echo \"warning: Crashlytics run script 를 찾지 못해 dSYM 업로드를 건너뜁니다 (SPM/Pods 모두 없음).\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -459,7 +459,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -516,7 +516,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

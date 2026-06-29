@@ -1,0 +1,106 @@
+import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/core/exception/group_join_error_code.dart';
+import 'package:ddara/core/exception/login_exception.dart';
+import 'package:ddara/core/model/group/create_group.dart';
+import 'package:ddara/core/model/group/group_detail.dart';
+import 'package:ddara/core/model/group/group_list.dart';
+import 'package:ddara/core/model/group/invite_group.dart';
+import 'package:ddara/data/datasource/group/group_datasource.dart';
+import 'package:ddara/domain/repository/group_repository.dart';
+import 'package:dio/dio.dart';
+
+import 'mapper/group_mapper.dart';
+
+class GroupRepositoryImpl implements GroupRepository {
+  final GroupDataSource _groupDataSource;
+
+  GroupRepositoryImpl(this._groupDataSource);
+
+  @override
+  Future<CreateGroup> createGroup(String groupName, String description) async {
+    try {
+      final response = await _groupDataSource.createGroup(
+        groupName,
+        description,
+      );
+      return response.toDomain();
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 400:
+          // name 누락 또는 길이 초과
+          throw InvalidGroupNameException();
+
+        case 401:
+          // 토큰 없음·만료 (인터셉터 복구도 실패한 경우)
+          throw UnauthorizedException();
+
+        case 409:
+          // 모임 최대 개수(20개) 초과
+          throw GroupLimitExceededException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<GroupList> getGroupList() async {
+    final response = await _groupDataSource.getGroupList();
+    return response.toDomain();
+  }
+
+  @override
+  Future<GroupDetail> getGroupDetail(int groupId) async {
+    try {
+      final response = await _groupDataSource.getGroupDetail(groupId);
+      return response.toDomain();
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 403:
+          // 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case 404:
+          // 모임 없음
+          throw GroupNotFoundException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<InviteGroup> getInviteGroup(String inviteCode) async {
+    try {
+      final response = await _groupDataSource.getInviteGroup(inviteCode);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupJoinErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case GroupJoinErrorCode.invalidInviteCode:
+          // 초대 코드 누락
+          throw InvalidInviteCodeException();
+
+        case GroupJoinErrorCode.groupNotFound:
+          // 잘못된 초대 코드
+          throw GroupNotFoundException();
+
+        case GroupJoinErrorCode.groupLimitExceeded:
+          // 정원 초과
+          throw GroupFullException();
+
+        case GroupJoinErrorCode.alreadyJoinedGroup:
+          // 이미 참여한 모임
+          throw AlreadyJoinedGroupException();
+
+        case GroupJoinErrorCode.unknown || null:
+          throw NetworkException();
+      }
+    }
+  }
+}

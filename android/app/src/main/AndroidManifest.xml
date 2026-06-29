@@ -52,6 +52,12 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Flutter 기본 딥링크 핸들러를 끄고 app_links 로 단일 처리한다.
+                 (딥링크 핸들러 이중화 방지 — research.md 섹션 5) -->
+            <meta-data
+              android:name="flutter_deeplinking_enabled"
+              android:value="false"
+              />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
