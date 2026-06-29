@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
+import 'package:ddara/core/designsystem/component/surface/app_surface.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_checkbox.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
@@ -81,18 +82,10 @@ class _TermsPageState extends State<TermsPage> {
               ),
 
               // 동의 목록 카드
-              Container(
-                width: double.infinity,
+              AppSurface(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 4,
-                ),
-                clipBehavior: Clip.antiAlias,
-                decoration: ShapeDecoration(
-                  color: AppColors.bgSurface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

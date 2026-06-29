@@ -1,7 +1,8 @@
+import 'package:ddara/core/designsystem/component/surface/app_surface.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/profile_avatar.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// 알림 아바타 원 지름.
 const double _avatarSize = 40;
@@ -43,70 +44,65 @@ class NotificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.bgSurface,
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          // 우측은 시간 텍스트가 모서리에 붙지 않도록 넓게 둔다.
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.s4,
-            AppSpacing.s4,
-            AppSpacing.s6,
-            AppSpacing.s4,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: AppSpacing.s3,
-            children: [
-              ProfileAvatar(size: _avatarSize, imageUrl: data.imageUrl),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+    return AppSurface(
+      onTap: onTap,
+      // 누르는 동안 살짝 밝게. (앱 전반의 Cupertino 페이드와 일관)
+      pressedColor: AppColors.bgSurfaceAlt,
+      // 우측은 시간 텍스트가 모서리에 붙지 않도록 넓게 둔다.
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.s4,
+        AppSpacing.s4,
+        AppSpacing.s6,
+        AppSpacing.s4,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: AppSpacing.s3,
+        children: [
+          ProfileAvatar(size: _avatarSize, imageUrl: data.imageUrl),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: AppSpacing.s2,
+              children: [
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: AppSpacing.s2,
+                  spacing: AppSpacing.s1,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: AppSpacing.s1,
+                    Expanded(
+                      child: AppText.caption(
+                        data.category,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    // 읽지 않은 알림이면 시간 텍스트의 우측 상단 모서리에 점을 띄운다.
+                    Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        Expanded(
-                          child: AppText.caption(
-                            data.category,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                        AppText.caption(
+                          data.timeAgo,
+                          color: AppColors.textTertiary,
+                        ),
+                        if (!data.isRead)
+                          // 카드 상단 padding(s4) 기준 indicator 와 상단 간격이 s3 가
+                          // 되도록 (s4 - s3)=s1 만큼 위로 올린다. 우측도 카드 우측
+                          // padding(s6) 기준 간격이 s3 가 되도록 s3 만큼 내민다.
+                          const Positioned(
+                            top: -AppSpacing.s1,
+                            right: -AppSpacing.s3,
+                            child: _UnreadDot(),
                           ),
-                        ),
-                        // 읽지 않은 알림이면 시간 텍스트의 우측 상단 모서리에 점을 띄운다.
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            AppText.caption(
-                              data.timeAgo,
-                              color: AppColors.textTertiary,
-                            ),
-                            if (!data.isRead)
-                              // 카드 상단 padding(s4) 기준 indicator 와 상단 간격이 s3 가
-                              // 되도록 (s4 - s3)=s1 만큼 위로 올린다. 우측도 카드 우측
-                              // padding(s6) 기준 간격이 s3 가 되도록 s3 만큼 내민다.
-                              const Positioned(
-                                top: -AppSpacing.s1,
-                                right: -AppSpacing.s3,
-                                child: _UnreadDot(),
-                              ),
-                          ],
-                        ),
                       ],
                     ),
-                    AppText.body(data.message, color: AppColors.textPrimary),
                   ],
                 ),
-              ),
-            ],
+                AppText.body(data.message, color: AppColors.textPrimary),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

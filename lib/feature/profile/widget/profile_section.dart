@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/designsystem/component/surface/app_surface.dart';
 import '../../../core/designsystem/component/text/app_text.dart';
 
 /// 프로필 화면의 "라벨 + 카드" 섹션.
@@ -20,7 +21,11 @@ import '../../../core/designsystem/component/text/app_text.dart';
 /// );
 /// ```
 class ProfileSection extends StatelessWidget {
-  const ProfileSection({super.key, required this.label, required this.children});
+  const ProfileSection({
+    super.key,
+    required this.label,
+    required this.children,
+  });
 
   /// 카드 위에 표시할 섹션 라벨.
   final String label;
@@ -36,13 +41,7 @@ class ProfileSection extends StatelessWidget {
       children: [
         AppText.label(label),
         const SizedBox(height: AppSpacing.s3),
-        Container(
-          width: double.infinity,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: AppColors.bgSurface,
-            borderRadius: BorderRadius.circular(AppRadius.md),
-          ),
+        AppSurface(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,

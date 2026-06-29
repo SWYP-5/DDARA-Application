@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
+import 'package:ddara/core/designsystem/component/surface/app_surface.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/permission/permission_service.dart';
@@ -197,15 +198,10 @@ class _SettingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return AppSurface(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.s5,
         vertical: AppSpacing.s3,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.bgSurface,
-        borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
