@@ -1,0 +1,39 @@
+{
+  "@@locale": "ko",
+
+  "onboardingFirstTitle": "한 장 찍으면 인증샷이 시작",
+  "@onboardingFirstTitle": {
+    "description": "온보딩 1페이지 제목"
+  },
+  "onboardingFirstBody": "내가 한 포즈, 친구들이 똑같이 따라 찍어요",
+  "@onboardingFirstBody": {
+    "description": "온보딩 1페이지 설명"
+  },
+
+  "onboardingSecondTitle": "나중에 보면 더 웃겨",
+  "@onboardingSecondTitle": {
+    "description": "온보딩 2페이지 제목"
+  },
+  "onboardingSecondBody": "따라 찍은 사진들이 모여 기록이 돼요",
+  "@onboardingSecondBody": {
+    "description": "온보딩 2페이지 설명"
+  },
+
+  "onboardingThirdTitle": "아는 친구끼리만, 초대로만",
+  "@onboardingThirdTitle": {
+    "description": "온보딩 3페이지 제목"
+  },
+  "onboardingThirdBody": "초대받은 친구만 들어올 수 있어요",
+  "@onboardingThirdBody": {
+    "description": "온보딩 3페이지 설명"
+  },
+
+  "onboardingNext": "다음",
+  "@onboardingNext": {
+    "description": "온보딩 하단 버튼 - 다음 페이지로"
+  },
+  "onboardingStart": "시작하기",
+  "@onboardingStart": {
+    "description": "온보딩 마지막 페이지 하단 버튼 - 시작"
+  }
+}

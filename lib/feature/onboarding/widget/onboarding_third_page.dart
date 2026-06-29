@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// 온보딩 3페이지의 스와이프 콘텐츠 (제목 + 설명).
@@ -11,17 +12,18 @@ class OnboardingThirdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final l10n = AppLocalizations.of(context);
+    return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: AppSpacing.s3,
       children: [
-        AppText.headlineLarge('아는 친구끼리만, 초대로만', textAlign: TextAlign.center),
-        AppText.body(
-          '초대 링크를 받은 친구만 들어올 수 있어요.\n모르는 사람 없이, 우리끼리 편하게.',
+        AppText.headlineLarge(
+          l10n.onboardingThirdTitle,
           textAlign: TextAlign.center,
         ),
+        AppText.body(l10n.onboardingThirdBody, textAlign: TextAlign.center),
       ],
     );
   }

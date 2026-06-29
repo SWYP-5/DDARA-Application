@@ -3,6 +3,7 @@ import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/page_indicator.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:ddara/feature/onboarding/provider/onboarding_provider.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_first_page.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_second_page.dart';
@@ -50,6 +51,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final isLastPage = _index == _pageCount - 1;
 
     return Scaffold(
@@ -94,7 +96,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: AppButton(
-                label: isLastPage ? '시작하기' : '다음',
+                label: isLastPage ? l10n.onboardingStart : l10n.onboardingNext,
                 onPressed: isLastPage ? _start : _goNext,
               ),
             ),
