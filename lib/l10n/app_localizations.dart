@@ -141,6 +141,90 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'시작하기'**
   String get onboardingStart;
+
+  /// 로그인 화면 슬로건
+  ///
+  /// In ko, this message translates to:
+  /// **'우리끼리 따라찍기'**
+  String get loginSlogan;
+
+  /// 카카오 로그인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'카카오 로그인'**
+  String get loginKakao;
+
+  /// 구글 로그인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'Google 로그인'**
+  String get loginGoogle;
+
+  /// 로그인 화면 약관·정책 확인 링크
+  ///
+  /// In ko, this message translates to:
+  /// **'이용약관과 개인정보 처리방침 확인'**
+  String get loginViewPolicies;
+
+  /// 약관 동의 화면 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'약관에 동의해 주세요'**
+  String get termsTitle;
+
+  /// 약관 동의 화면 설명
+  ///
+  /// In ko, this message translates to:
+  /// **'서비스 이용을 위해선 이용약관 동의가 필요해요'**
+  String get termsSubtitle;
+
+  /// No description provided for @termsAgreeAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 동의'**
+  String get termsAgreeAll;
+
+  /// No description provided for @termsServiceLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'[필수] 이용약관'**
+  String get termsServiceLabel;
+
+  /// No description provided for @termsPrivacyLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'[필수] 개인정보 처리방침'**
+  String get termsPrivacyLabel;
+
+  /// No description provided for @termsAgeLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'[필수] 만 14세 이상 사용자 이용동의'**
+  String get termsAgeLabel;
+
+  /// No description provided for @termsContinueButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'동의하고 계속'**
+  String get termsContinueButton;
+
+  /// No description provided for @policyServiceTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'서비스 이용 약관'**
+  String get policyServiceTitle;
+
+  /// No description provided for @policyPrivacyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보 처리방침'**
+  String get policyPrivacyTitle;
+
+  /// No description provided for @policyYouthTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'청소년 보호정책'**
+  String get policyYouthTitle;
 }
 
 class _AppLocalizationsDelegate

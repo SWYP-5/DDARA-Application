@@ -6,6 +6,7 @@ import 'package:ddara/core/widget/app_checkbox.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/profile/policy/policy_viewer_page.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -64,6 +65,7 @@ class _TermsPageState extends State<TermsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -81,14 +83,14 @@ class _TermsPageState extends State<TermsPage> {
             spacing: 24,
             children: [
               // 헤더
-              const Column(
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 12,
                 children: [
-                  AppText.headlineLarge('약관에 동의해 주세요'),
-                  AppText.body('서비스 이용을 위해선 이용약관 동의가 필요해요'),
+                  AppText.headlineLarge(l10n.termsTitle),
+                  AppText.body(l10n.termsSubtitle),
                 ],
               ),
 
@@ -119,9 +121,9 @@ class _TermsPageState extends State<TermsPage> {
                               onChanged: _toggleAll,
                               size: 22,
                             ),
-                            const Expanded(
+                            Expanded(
                               child: AppText.label(
-                                '전체 동의',
+                                l10n.termsAgreeAll,
                                 color: AppColors.textPrimary,
                               ),
                             ),
@@ -135,13 +137,13 @@ class _TermsPageState extends State<TermsPage> {
 
                     // [필수] 이용약관
                     _TermItem(
-                      label: '[필수] 이용약관',
+                      label: l10n.termsServiceLabel,
                       value: _termsOfService,
                       onChanged: _toggleTermsOfService,
                       onDetailTap: () => context.push(
                         RoutePath.policyViewer,
-                        extra: const PolicyViewerArgs(
-                          title: '서비스 이용 약관',
+                        extra: PolicyViewerArgs(
+                          title: l10n.policyServiceTitle,
                           assetPath: 'assets/policy/terms_of_service.md',
                         ),
                       ),
@@ -149,13 +151,13 @@ class _TermsPageState extends State<TermsPage> {
 
                     // [필수] 개인정보 처리방침
                     _TermItem(
-                      label: '[필수] 개인정보 처리방침',
+                      label: l10n.termsPrivacyLabel,
                       value: _privacyPolicy,
                       onChanged: _togglePrivacyPolicy,
                       onDetailTap: () => context.push(
                         RoutePath.policyViewer,
-                        extra: const PolicyViewerArgs(
-                          title: '개인정보 처리방침',
+                        extra: PolicyViewerArgs(
+                          title: l10n.policyPrivacyTitle,
                           assetPath: 'assets/policy/privacy_policy.md',
                         ),
                       ),
@@ -163,13 +165,13 @@ class _TermsPageState extends State<TermsPage> {
 
                     // [필수] 만 14세 이상 사용자 이용동의
                     _TermItem(
-                      label: '[필수] 만 14세 이상 사용자 이용동의',
+                      label: l10n.termsAgeLabel,
                       value: _ageOver14,
                       onChanged: _toggleAgeOver14,
                       onDetailTap: () => context.push(
                         RoutePath.policyViewer,
-                        extra: const PolicyViewerArgs(
-                          title: '청소년 보호정책',
+                        extra: PolicyViewerArgs(
+                          title: l10n.policyYouthTitle,
                           assetPath: 'assets/policy/youth_protection_policy.md',
                         ),
                       ),
@@ -184,7 +186,7 @@ class _TermsPageState extends State<TermsPage> {
 
           // 하단 버튼 (필수 약관 전체 동의 시에만 활성화)
           AppButton(
-            label: '동의하고 계속',
+            label: l10n.termsContinueButton,
             onPressed: _allAgreed ? widget.onNextButtonClicked : null,
           ),
         ],
