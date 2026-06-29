@@ -60,13 +60,7 @@ class HomeWidget extends StatelessWidget {
           const SizedBox(height: AppSpacing.s1),
           // 하단 페이지 인디케이터. (첫 점 활성)
           // todo 기능 추가되면 주석 해제
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   spacing: AppSpacing.s1,
-          //   children: [
-          //     for (var i = 0; i < _dotCount; i++) Indicator(active: i == 0),
-          //   ],
-          // ),
+          // PageIndicator(currentIndex: 0, count: _dotCount, size: 6, spacing: AppSpacing.s1),
         ],
       ),
     );

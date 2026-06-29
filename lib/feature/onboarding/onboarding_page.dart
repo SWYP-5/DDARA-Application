@@ -2,9 +2,9 @@ import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/page_indicator.dart';
 import 'package:ddara/feature/onboarding/provider/onboarding_provider.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_first_page.dart';
-import 'package:ddara/feature/onboarding/widget/onboarding_page_indicator.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_second_page.dart';
 import 'package:ddara/feature/onboarding/widget/onboarding_third_page.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +87,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                   const SizedBox(height: AppSpacing.s6),
                   // 페이지가 바뀌어도 고정되며, 활성 점만 애니메이션으로 전환되는 인디케이터
-                  OnboardingPageIndicator(currentIndex: _index),
+                  PageIndicator(currentIndex: _index),
                 ],
               ),
             ),
