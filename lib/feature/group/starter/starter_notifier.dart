@@ -4,7 +4,7 @@ import 'package:ddara/feature/group/starter/util/starter_state.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class StarterNotifier extends Notifier<StarterState> {
+class StarterNotifier extends AutoDisposeNotifier<StarterState> {
   @override
   StarterState build() {
     return const StarterState();

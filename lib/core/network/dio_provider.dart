@@ -2,6 +2,7 @@ import 'package:ddara/core/local/provider/local_provider.dart';
 import 'package:ddara/core/local/storage_key.dart';
 import 'package:ddara/core/network/auth_interceptor.dart';
 import 'package:ddara/core/router/app_router.dart';
+import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/data/provider/repository_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -39,8 +40,11 @@ final Provider<Dio> dioProvider = Provider<Dio>((ref) {
         await storage.delete(key: StorageKey.refreshToken);
         await storage.delete(key: StorageKey.socialLoginType);
 
-        // 라우터가 인증 상태를 다시 계산하도록 무효화 → 로그인 화면으로 분기.
+        // 인증 상태 무효화(라우터 redirect 재평가용) 후, 로그인 화면으로 직접 이동.
+        // 라우터를 재생성하지 않으므로 명시적으로 보낸다. (invalidate 를 먼저 해야
+        // isLoggedIn=false 가 되어 login→home 바운스가 일어나지 않는다)
         ref.invalidate(authStateProvider);
+        ref.read(routerProvider).go(RoutePath.login);
       },
     ),
   );

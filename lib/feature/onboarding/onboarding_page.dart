@@ -40,6 +40,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Future<void> _start() async {
     // 온보딩 완료 플래그 저장 → 다음 실행부터는 노출되지 않는다.
     await ref.read(onboardingControllerProvider).complete();
+    // 캐싱된 onboardingSeenProvider 를 무효화해 즉시 최신 값(true)을 읽도록 한다.
+    // (이게 없으면 로그아웃 등으로 라우터가 재생성될 때 stale false 로 온보딩이 다시 뜬다)
+    ref.invalidate(onboardingSeenProvider);
     if (!mounted) return;
 
     context.go(RoutePath.login);

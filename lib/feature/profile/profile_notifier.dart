@@ -3,7 +3,7 @@ import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/profile/util/profile_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileNotifier extends Notifier<ProfileState> {
+class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
   @override
   ProfileState build() {
     // 진입 시 프로필 정보를 자동 조회. (build 는 동기라 fire-and-forget)

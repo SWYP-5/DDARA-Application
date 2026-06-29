@@ -1,5 +1,6 @@
 import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,13 +43,24 @@ final authStateProvider = FutureProvider<bool>((ref) async {
   }
 });
 
+/// authStateProvider 변화를 GoRouter 의 refreshListenable 로 잇는 브리지.
+/// 인증 상태가 바뀌면 라우터를 재생성하지 않고 redirect 만 다시 평가하게 한다.
+class _AuthRefreshNotifier extends ChangeNotifier {
+  void refresh() => notifyListeners();
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   final loginRoute = ref.read(initialRouteProvider);
-  final auth = ref.watch(authStateProvider);
 
-  // 네이티브 스플래시가 유지되는 동안 main 에서 authStateProvider 를 미리
-  // 확정하므로, 라우터가 만들어질 때 인증 상태는 이미 결정되어 있다.
-  final isLoggedIn = auth.valueOrNull ?? false;
+  // 인증 상태가 바뀌면(로그아웃 등) 라우터를 재생성하지 않고 redirect 만 다시
+  // 평가하도록 알린다. (이전엔 ref.watch 로 라우터 자체를 재생성해 스택이 초기화됐다)
+  final refresh = _AuthRefreshNotifier();
+  ref.onDispose(refresh.dispose);
+  ref.listen(authStateProvider, (_, _) => refresh.refresh());
+
+  // 초기 위치는 라우터 생성 시점(스플래시 단계에서 인증 상태가 이미 확정됨)에
+  // 한 번만 계산한다. 이후 인증 변화는 refreshListenable + redirect 로 처리한다.
+  final isLoggedIn = ref.read(authStateProvider).valueOrNull ?? false;
   final hasSeenOnboarding = ref.read(onboardingSeenProvider);
 
   // 앱 최초 실행이면 온보딩, 그 외에는 인증 상태에 따라 분기한다.
@@ -58,7 +70,11 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     initialLocation: initialLocation,
+    refreshListenable: refresh,
     redirect: (context, state) async {
+      // 라우터를 재생성하지 않으므로 매 평가 시 최신 인증 상태를 읽는다.
+      final isLoggedIn = ref.read(authStateProvider).valueOrNull ?? false;
+
       // 로그인 상태에서 로그인 화면으로 가려 하면 홈으로 보낸다.
       if (isLoggedIn && state.matchedLocation == RoutePath.login) {
         return RoutePath.home;

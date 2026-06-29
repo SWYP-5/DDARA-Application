@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/exception/group_exception.dart';
 import '../../../core/exception/login_exception.dart';
 
-class CreateGroupNotifier extends Notifier<CreateGroupState> {
+class CreateGroupNotifier extends AutoDisposeNotifier<CreateGroupState> {
   @override
   CreateGroupState build() {
     return CreateGroupState();
