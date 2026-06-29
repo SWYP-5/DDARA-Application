@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/widget/effect/bottom_scrim.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 모임 카드. (대표 이미지 위에 상태·이름·멤버 요약을 얹은 형태) — 비율 균일
@@ -13,6 +14,7 @@ class MeetingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final cycle = group.currentCycle;
 
     return CupertinoButton(
@@ -51,7 +53,7 @@ class MeetingCard extends StatelessWidget {
                   left: AppSpacing.s3,
                   right: AppSpacing.s3,
                   child: AppText.caption(
-                    '${_formatDate(cycle.startedAt)} · ${_statusLabel(cycle.status)}',
+                    '${_formatDate(cycle.startedAt)} · ${_statusLabel(l10n, cycle.status)}',
                     color: AppColors.textPrimary,
                     textAlign: TextAlign.right,
                   ),
@@ -76,7 +78,7 @@ class MeetingCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      AppText.caption(_memberSummary(group)),
+                      AppText.caption(_memberSummary(l10n, group)),
                     ],
                   ),
                 ),
@@ -109,18 +111,20 @@ class _EmptyThumbnail extends StatelessWidget {
 }
 
 /// '${owner}님 외 N명' 형태의 멤버 요약. (멤버가 owner 뿐이면 '외 N명' 생략)
-String _memberSummary(Group group) {
-  if (group.memberCount <= 1) return '${group.ownerNickname}님';
-  return '${group.ownerNickname}님 외 ${group.memberCount - 1}명';
+String _memberSummary(AppLocalizations l10n, Group group) {
+  if (group.memberCount <= 1) {
+    return l10n.meetingMemberOwner(group.ownerNickname);
+  }
+  return l10n.meetingMemberOthers(group.ownerNickname, group.memberCount - 1);
 }
 
 /// 사이클 상태 문자열을 한국어 라벨로. (TODO: 서버 status 값 확정 후 보완)
-String _statusLabel(String status) {
+String _statusLabel(AppLocalizations l10n, String status) {
   switch (status) {
     case 'in_progress':
-      return '진행 중';
+      return l10n.meetingStatusInProgress;
     case 'completed':
-      return '종료';
+      return l10n.meetingStatusCompleted;
     default:
       return status;
   }

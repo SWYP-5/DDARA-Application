@@ -31,4 +31,46 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get onboardingStart => '시작하기';
+
+  @override
+  String get emptyGroupTitle => '아직 참여한 모임이 없어요';
+
+  @override
+  String get emptyGroupDescription => '모임을 만들어 친구들을 초대해 보세요';
+
+  @override
+  String get groupCreate => '모임 만들기';
+
+  @override
+  String get groupJoin => '모임 참여하기';
+
+  @override
+  String get groupEnter => '모임 들어가기';
+
+  @override
+  String get groupCountLabel => '현재 모임 개수';
+
+  @override
+  String groupCountValue(int count, int maxCount) {
+    return '$count/$maxCount개';
+  }
+
+  @override
+  String get groupCountCaption => '모임에 속해 있어요';
+
+  @override
+  String get meetingStatusInProgress => '진행 중';
+
+  @override
+  String get meetingStatusCompleted => '종료';
+
+  @override
+  String meetingMemberOwner(String name) {
+    return '$name님';
+  }
+
+  @override
+  String meetingMemberOthers(String name, int others) {
+    return '$name님 외 $others명';
+  }
 }

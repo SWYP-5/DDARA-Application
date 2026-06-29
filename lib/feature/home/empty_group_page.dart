@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,6 +12,7 @@ class EmptyGroupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       // 콘텐츠 영역을 전체폭으로 펴서 자식들이 화면 가로 중앙에 오도록 한다.
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -20,12 +22,12 @@ class EmptyGroupPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const AppText.headlineLarge(
-                '아직 참여한 모임이 없어요',
+              AppText.headlineLarge(
+                l10n.emptyGroupTitle,
                 textAlign: TextAlign.center,
               ),
-              const AppText.body(
-                '첫 판을 시작해 친구들에게 보내보세요',
+              AppText.body(
+                l10n.emptyGroupDescription,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: AppSpacing.s3),
@@ -47,11 +49,11 @@ class EmptyGroupPage extends StatelessWidget {
             spacing: AppSpacing.s3,
             children: [
               AppButton(
-                label: '모임 만들기',
+                label: l10n.groupCreate,
                 onPressed: () => context.push(RoutePath.groupCreate),
               ),
               AppButton.outline(
-                label: '모임 참여하기',
+                label: l10n.groupJoin,
                 onPressed: () => context.push(RoutePath.groupJoin),
               ),
             ],
