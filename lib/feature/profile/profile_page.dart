@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/app_router.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/data/provider/repository_provider.dart';
 import 'package:ddara/feature/profile/provider/profile_provider.dart';
 import 'package:ddara/feature/profile/widget/profile_header.dart';
@@ -80,7 +81,7 @@ class ProfilePage extends ConsumerWidget {
                   ProfileRow(
                     label: '로그아웃',
                     labelColor: AppColors.statusDanger,
-                    onTap: () => _logout(context, ref),
+                    onTap: () => _confirmLogout(context, ref),
                   ),
                   ProfileRow(
                     label: '회원 탈퇴',
@@ -102,6 +103,16 @@ class ProfilePage extends ConsumerWidget {
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '${date.year}.$month.$day';
+  }
+
+  /// 로그아웃 확인 다이얼로그를 띄우고, 확인 시에만 로그아웃을 진행한다.
+  Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
+    final ok = await AppDialog.show(
+      context,
+      title: '로그아웃 할까요?',
+      confirmLabel: '로그아웃',
+    );
+    if (ok && context.mounted) await _logout(context, ref);
   }
 
   /// 로그아웃. 저장된 토큰을 비우고 로그인 화면으로 보낸다.
