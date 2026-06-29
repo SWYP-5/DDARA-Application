@@ -8,9 +8,7 @@ abstract class SignUpRequest with _$SignUpRequest {
   const factory SignUpRequest({
     required String provider,
     required String accessToken,
-    required String birthDate,
     required bool termsAgreed,
-    required String nickname,
   }) = _SignUpRequest;
 
   factory SignUpRequest.fromJson(Map<String, dynamic> json) =>

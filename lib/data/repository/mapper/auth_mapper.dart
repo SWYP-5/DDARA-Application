@@ -18,9 +18,7 @@ extension SignUpMapper on SignUpCommand {
     return SignUpRequest(
       provider: provider,
       accessToken: accessToken,
-      birthDate: birthDate,
       termsAgreed: termsAgreed,
-      nickname: nickname,
     );
   }
 }

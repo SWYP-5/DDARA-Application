@@ -7,8 +7,6 @@ abstract class SignUpCommand with _$SignUpCommand {
   const factory SignUpCommand({
     required String provider,
     required String accessToken,
-    required String birthDate,
     required bool termsAgreed,
-    required String nickname,
   }) = _SignUpCommand;
 }
