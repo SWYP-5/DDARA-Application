@@ -48,9 +48,7 @@ class ProfilePage extends ConsumerWidget {
                   ProfileRow(
                     label: '알림 설정',
                     trailing: const ProfileChevron(),
-                    onTap: () {
-                      // TODO: 알림 설정 화면으로 이동.
-                    },
+                    onTap: () => context.push(RoutePath.notificationSettings),
                   ),
                 ],
               ),

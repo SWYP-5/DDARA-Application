@@ -17,6 +17,7 @@ import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
 import '../../feature/permission/permission_page.dart';
 import '../../feature/profile/profile_page.dart';
+import '../../feature/profile/settings/notification_settings.dart';
 import '../../feature/permission/required_permission_page.dart';
 import '../../feature/sign/login/login_page.dart';
 import '../../feature/sign/signup/sign_up_page.dart';
@@ -97,6 +98,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => GroupPage(groupId: state.extra! as int),
       ),
       GoRoute(path: RoutePath.profile, builder: (_, _) => const ProfilePage()),
+      GoRoute(
+        path: RoutePath.notificationSettings,
+        builder: (_, _) => const NotificationSettings(),
+      ),
       GoRoute(
         path: RoutePath.notification,
         builder: (_, _) => const NotificationPage(),
