@@ -6,7 +6,7 @@ import '../../../core/exception/group_exception.dart';
 import '../../../core/exception/group_join_error_code.dart';
 import '../../../core/exception/login_exception.dart';
 
-class GroupJoinNotifier extends Notifier<GroupJoinState> {
+class GroupJoinNotifier extends AutoDisposeNotifier<GroupJoinState> {
   @override
   GroupJoinState build() {
     return GroupJoinState();

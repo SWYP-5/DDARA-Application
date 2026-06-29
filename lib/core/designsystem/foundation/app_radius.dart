@@ -7,6 +7,7 @@ abstract final class AppRadius {
   static const double sm = 12;
   static const double md = 16;
   static const double lg = 20;
+  static const double xl = 28;
 
   /// 완전한 원형/Pill 형태.
   static const double full = 999;

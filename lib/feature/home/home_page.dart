@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/logo.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/profile_avatar.dart';
 import 'package:ddara/feature/home/empty_group_page.dart';
 import 'package:ddara/feature/home/group_list_page.dart';
 import 'package:ddara/feature/home/provider/notifier_provider.dart';
@@ -41,16 +42,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                 width: 26,
                 height: 26,
               ),
-              onPressed: () {
-                // TODO: 알림 화면 이동
-              },
+              onPressed: () => context.push(RoutePath.notification),
             ),
             _NavIconButton(
-              icon: SvgPicture.asset(
-                'assets/images/ic_avatar.svg',
-                width: 26,
-                height: 26,
-              ),
+              // TODO: 사용자 프로필 이미지 URL 연동. (현재는 기본 아바타)
+              icon: const ProfileAvatar(size: 32),
               onPressed: () => context.push(RoutePath.profile),
             ),
           ],

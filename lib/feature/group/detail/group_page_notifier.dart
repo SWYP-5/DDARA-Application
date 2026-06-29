@@ -3,7 +3,7 @@ import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GroupPageNotifier extends FamilyNotifier<GroupPageState, int> {
+class GroupPageNotifier extends AutoDisposeFamilyNotifier<GroupPageState, int> {
   @override
   GroupPageState build(int groupId) {
     // GroupPage 가 넘긴 groupId 로 진입 시 자동 조회. (build 는 동기라 fire-and-forget)

@@ -2,7 +2,7 @@ import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/home/util/home_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeNotifier extends Notifier<HomeState> {
+class HomeNotifier extends AutoDisposeNotifier<HomeState> {
   @override
   HomeState build() {
     _load();

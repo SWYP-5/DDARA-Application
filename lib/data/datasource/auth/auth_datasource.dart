@@ -1,11 +1,12 @@
 import 'package:ddara/core/local/storage_key.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
+import 'package:ddara/core/network/dto/auth/logout_response.dart';
 import 'package:ddara/core/network/dto/auth/refresh_access_token_response.dart';
 import 'package:ddara/core/network/dto/auth/sign_up_request.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../core/network/dto/auth/login_response.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthRemoteDataSource {
   AuthRemoteDataSource(this._dio, this._storage);
@@ -52,6 +53,17 @@ class AuthRemoteDataSource {
     }
   }
 
+  Future<LogoutResponse> logOut(String refreshToken) async {
+    final response = await _dio.post('/api/auth/logout', data: {'refreshToken': refreshToken});
+
+    final data = response.data;
+    // 서버가 JSON 객체 대신 평문 메시지(String)나 빈 본문을 반환할 수 있어 분기한다.
+    if (data is Map<String, dynamic>) {
+      return LogoutResponse.fromJson(data);
+    }
+    return LogoutResponse(message: data?.toString() ?? '');
+  }
+
   Future<Response> _googleLogin(String token) async {
     return await _dio.post('/api/auth/google', data: {'accessToken': token});
   }
@@ -77,10 +89,7 @@ class AuthRemoteDataSource {
   }
 
   Future<void> saveSocialLoginType(SocialLoginType? social) async {
-    await _storage.write(
-      key: StorageKey.socialLoginType,
-      value: social?.value,
-    );
+    await _storage.write(key: StorageKey.socialLoginType, value: social?.value);
   }
 
   Future<SocialLoginType?> getSocialLoginType() async {

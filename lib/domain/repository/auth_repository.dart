@@ -8,6 +8,8 @@ abstract interface class AuthRepository {
 
   Future<Login> signUp(SignUpCommand signUp);
 
+  Future<bool> logOut(String refreshToken);
+
   Future<void> saveAccessToken(String? token);
 
   Future<void> saveRefreshToken(String? token);
