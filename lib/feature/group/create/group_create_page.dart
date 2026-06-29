@@ -3,7 +3,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/widget/error_message_dialog.dart';
+import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +55,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
       final errorMessage = next.errorMessage;
 
       if (errorMessage.isNotEmpty) {
-        showErrorMessageDialog(context, message: errorMessage);
+        Toast.showToast(context, errorMessage, type: ToastType.error);
       }
     });
 
