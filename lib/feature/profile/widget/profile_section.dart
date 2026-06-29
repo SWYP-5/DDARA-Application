@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/designsystem/component/divider/app_divider.dart';
 import '../../../core/designsystem/component/surface/app_surface.dart';
 import '../../../core/designsystem/component/text/app_text.dart';
 
@@ -56,22 +57,10 @@ class ProfileSection extends StatelessWidget {
   List<Widget> _withDividers(List<Widget> items) {
     return [
       for (var i = 0; i < items.length; i++) ...[
-        if (i > 0) const _SectionDivider(),
+        if (i > 0) const AppDivider(),
         items[i],
       ],
     ];
-  }
-}
-
-/// [ProfileSection] 카드 내부 항목을 나누는 가로 구분선.
-///
-/// 카드 폭을 꽉 채우며(여백 없음), 색은 디자인 시스템의 borderDefault(#454549).
-class _SectionDivider extends StatelessWidget {
-  const _SectionDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(height: 1, color: AppColors.borderDefault);
   }
 }
 

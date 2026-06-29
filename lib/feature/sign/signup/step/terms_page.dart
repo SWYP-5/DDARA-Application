@@ -1,4 +1,5 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
+import 'package:ddara/core/designsystem/component/divider/app_divider.dart';
 import 'package:ddara/core/designsystem/component/surface/app_surface.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_checkbox.dart';
@@ -115,11 +116,7 @@ class _TermsPageState extends State<TermsPage> {
                     ),
 
                     // 구분선
-                    Container(
-                      width: double.infinity,
-                      height: 1,
-                      color: AppColors.borderDefault,
-                    ),
+                    const AppDivider(),
 
                     // [필수] 이용약관
                     _TermItem(
