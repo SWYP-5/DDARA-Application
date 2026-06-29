@@ -36,7 +36,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get emptyGroupTitle => '아직 참여한 모임이 없어요';
 
   @override
-  String get emptyGroupDescription => '모임을 만들어 친구들을 초대해 보세요';
+  String get emptyGroupDescription => '첫 판을 시작해 친구들에게 보내보세요';
 
   @override
   String get groupCreate => '모임 만들기';
