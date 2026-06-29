@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
 /// 홈 화면 우측 상단에 고정되는 요약 위젯.
@@ -21,6 +22,7 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       // 높이는 카드보다 낮게 고정해 지그재그 오프셋을 만든다. (폭은 열에 맞춰 stretch)
       height: 142,
@@ -44,14 +46,17 @@ class HomeWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppText.title('현재 모임 개수', color: AppColors.textAccent),
+                AppText.title(
+                  l10n.groupCountLabel,
+                  color: AppColors.textAccent,
+                ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: AppSpacing.s1,
                   children: [
-                    AppText.display('$count/$maxCount개'),
-                    const AppText.caption('모임에 속해 있어요'),
+                    AppText.display(l10n.groupCountValue(count, maxCount)),
+                    AppText.caption(l10n.groupCountCaption),
                   ],
                 ),
               ],

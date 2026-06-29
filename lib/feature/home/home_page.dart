@@ -20,9 +20,6 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  /// 빈 상태에서 '나중에 추가할게요'를 누르면 빈 목록 화면으로 넘어간다.
-  bool _skipEmptyState = false;
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(homeNotifierProvider);
@@ -57,7 +54,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   /// 조회 결과에 따라 화면을 분기한다.
-  /// 로딩 → 인디케이터 / 에러 → 안내 / 모임 없음 → 빈 상태 / 있으면(또는 '나중에') 목록.
+  /// 로딩 → 인디케이터 / 에러 → 안내 / 모임 없음 → 빈 상태 / 있으면 목록.
   Widget _body(HomeState state) {
     if (state.isLoading) {
       return const Center(child: CupertinoActivityIndicator());
@@ -65,14 +62,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (state.errorMessage.isNotEmpty) {
       return Center(child: AppText.body(state.errorMessage));
     }
-    // 모임이 있거나, 빈 상태에서 '나중에 추가할게요'를 눌렀으면 목록을 보여준다.
-    // (후자의 경우 groups 는 빈 리스트라 FAB 만 있는 화면이 된다)
-    if (state.groups.isNotEmpty || _skipEmptyState) {
+    if (state.groups.isNotEmpty) {
       return GroupListPage(groups: state.groups);
     }
-    return EmptyGroupPage(
-      onLater: () => setState(() => _skipEmptyState = true),
-    );
+    return const EmptyGroupPage();
   }
 }
 

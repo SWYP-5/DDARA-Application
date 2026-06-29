@@ -16,10 +16,7 @@ class HomeNotifier extends AutoDisposeNotifier<HomeState> {
       final groupList = await getGroupListUseCase.getGroupList();
       state = state.copyWith(isLoading: false, groups: groupList.groups);
     } catch (_) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: '목록을 불러오지 못했어요.',
-      );
+      state = state.copyWith(isLoading: false, errorMessage: '목록을 불러오지 못했어요.');
     }
   }
 }

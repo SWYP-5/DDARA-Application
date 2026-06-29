@@ -141,6 +141,78 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'시작하기'**
   String get onboardingStart;
+
+  /// No description provided for @emptyGroupTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 참여한 모임이 없어요'**
+  String get emptyGroupTitle;
+
+  /// No description provided for @emptyGroupDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'첫 판을 시작해 친구들에게 보내보세요'**
+  String get emptyGroupDescription;
+
+  /// No description provided for @groupCreate.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 만들기'**
+  String get groupCreate;
+
+  /// No description provided for @groupJoin.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 참여하기'**
+  String get groupJoin;
+
+  /// No description provided for @groupEnter.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 들어가기'**
+  String get groupEnter;
+
+  /// No description provided for @groupCountLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 모임 개수'**
+  String get groupCountLabel;
+
+  /// 현재/최대 모임 개수 표시
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}/{maxCount}개'**
+  String groupCountValue(int count, int maxCount);
+
+  /// No description provided for @groupCountCaption.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임에 속해 있어요'**
+  String get groupCountCaption;
+
+  /// No description provided for @meetingStatusInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중'**
+  String get meetingStatusInProgress;
+
+  /// No description provided for @meetingStatusCompleted.
+  ///
+  /// In ko, this message translates to:
+  /// **'종료'**
+  String get meetingStatusCompleted;
+
+  /// 멤버가 모임장 1명뿐일 때의 요약
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님'**
+  String meetingMemberOwner(String name);
+
+  /// 모임장 외 여러 명일 때의 멤버 요약
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님 외 {others}명'**
+  String meetingMemberOthers(String name, int others);
 }
 
 class _AppLocalizationsDelegate
