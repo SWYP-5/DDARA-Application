@@ -51,6 +51,9 @@ class AppTextField extends StatefulWidget {
 }
 
 class _AppTextFieldState extends State<AppTextField> {
+  // 박스 어디를 눌러도 포커스가 잡히도록 직접 관리하는 포커스 노드.
+  final FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +71,7 @@ class _AppTextFieldState extends State<AppTextField> {
     if (widget.highlightWhenFilled) {
       widget.controller.removeListener(_onChanged);
     }
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -91,29 +95,35 @@ class _AppTextFieldState extends State<AppTextField> {
       borderColor = AppColors.borderDefault;
     }
 
-    final field = Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: ShapeDecoration(
-        color: AppColors.bgSurface,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: borderColor),
-          borderRadius: BorderRadius.circular(AppRadius.sm),
+    final field = GestureDetector(
+      // 패딩 등 박스 빈 영역을 눌러도 입력에 포커스가 잡히도록.
+      behavior: HitTestBehavior.opaque,
+      onTap: _focusNode.requestFocus,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: ShapeDecoration(
+          color: AppColors.bgSurface,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 1, color: borderColor),
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+          ),
         ),
-      ),
-      child: CupertinoTextField(
-        controller: widget.controller,
-        onChanged: widget.onChanged,
-        keyboardType: widget.keyboardType,
-        inputFormatters: widget.inputFormatters,
-        maxLength: widget.maxLength,
-        textInputAction: widget.textInputAction,
-        padding: EdgeInsets.zero,
-        decoration: null,
-        placeholder: widget.placeholder,
-        placeholderStyle: hintStyle,
-        style: hintStyle.copyWith(color: AppColors.textPrimary),
-        cursorColor: AppColors.accentDefault,
+        child: CupertinoTextField(
+          controller: widget.controller,
+          focusNode: _focusNode,
+          onChanged: widget.onChanged,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
+          maxLength: widget.maxLength,
+          textInputAction: widget.textInputAction,
+          padding: EdgeInsets.zero,
+          decoration: null,
+          placeholder: widget.placeholder,
+          placeholderStyle: hintStyle,
+          style: hintStyle.copyWith(color: AppColors.textPrimary),
+          cursorColor: AppColors.accentDefault,
+        ),
       ),
     );
 
