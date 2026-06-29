@@ -1,0 +1,71 @@
+/// 로그아웃 진행 상태.
+enum LogoutStatus {
+  /// 대기(미진행).
+  idle,
+
+  /// 로그아웃 진행 중.
+  loading,
+
+  /// 로그아웃 완료. (로컬 인증 정보를 비웠으므로 로그인 화면으로 이동한다)
+  success,
+
+  /// 서버 로그아웃 실패. (로컬 인증 정보는 이미 비워진 상태)
+  fail,
+}
+
+/// 프로필 화면 상태.
+///
+/// 사용자 이름·가입일·앱 버전·연동 계정 등 서버에서 내려받는 정보와
+/// 로그아웃 진행 상태를 함께 보관한다.
+class ProfileState {
+  /// 사용자 이름(닉네임).
+  final String name;
+
+  /// 가입일.
+  final DateTime? joinedAt;
+
+  /// 앱 버전. (예: 'v1.0.0')
+  final String appVersion;
+
+  /// 연동된 소셜 계정 이름. (예: '카카오')
+  final String linkedAccount;
+
+  /// 프로필 정보 로딩 여부.
+  final bool isLoading;
+
+  /// 프로필 정보 로딩 실패 메시지. (없으면 빈 문자열)
+  final String errorMessage;
+
+  /// 로그아웃 진행 상태.
+  final LogoutStatus logoutStatus;
+
+  const ProfileState({
+    this.name = '',
+    this.joinedAt,
+    this.appVersion = '',
+    this.linkedAccount = '',
+    this.isLoading = false,
+    this.errorMessage = '',
+    this.logoutStatus = LogoutStatus.idle,
+  });
+
+  ProfileState copyWith({
+    String? name,
+    DateTime? joinedAt,
+    String? appVersion,
+    String? linkedAccount,
+    bool? isLoading,
+    String? errorMessage,
+    LogoutStatus? logoutStatus,
+  }) {
+    return ProfileState(
+      name: name ?? this.name,
+      joinedAt: joinedAt ?? this.joinedAt,
+      appVersion: appVersion ?? this.appVersion,
+      linkedAccount: linkedAccount ?? this.linkedAccount,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
+      logoutStatus: logoutStatus ?? this.logoutStatus,
+    );
+  }
+}

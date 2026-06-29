@@ -187,4 +187,14 @@ class AuthRepositoryImpl implements AuthRepository {
         return await _kakaoAuthService.getKakaoAccessToken();
     }
   }
+
+  @override
+  Future<bool> logOut(String refreshToken) async {
+    try {
+      await _authRemoteDataSource.logOut(refreshToken);
+      return true;
+    } on DioException {
+      return false;
+    }
+  }
 }

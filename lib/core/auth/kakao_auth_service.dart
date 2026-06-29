@@ -62,4 +62,15 @@ class KakaoAuthService {
       return false;
     }
   }
+
+  // 카카오 로그아웃 (토큰 만료 처리)
+  Future<void> logout() async {
+    try {
+      await UserApi.instance.logout();
+      print('카카오 로그아웃 성공');
+    } catch (error) {
+      // 이미 토큰이 없는 경우 등은 로그아웃된 것으로 간주.
+      print('카카오 로그아웃 실패 $error');
+    }
+  }
 }

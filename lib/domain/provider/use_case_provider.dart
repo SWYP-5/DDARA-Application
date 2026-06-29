@@ -2,6 +2,7 @@ import 'package:ddara/core/auth/provider/auth_provider.dart';
 import 'package:ddara/domain/usecase/group/create_group_use_case.dart';
 import 'package:ddara/domain/usecase/group/get_group_list_use_case.dart';
 import 'package:ddara/domain/usecase/auth/login_use_case.dart';
+import 'package:ddara/domain/usecase/auth/logout_use_case.dart';
 import 'package:ddara/domain/usecase/auth/signup_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +12,14 @@ import '../usecase/group/get_invite_group_use_case.dart';
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
   return LoginUseCase(ref.read(authRepositoryProvider));
+});
+
+final logoutUseCaseProvider = Provider<LogoutUseCase>((ref) {
+  return LogoutUseCase(
+    ref.read(authRepositoryProvider),
+    ref.read(kakaoAuthProvider),
+    ref.read(googleAuthProvider),
+  );
 });
 
 final signUpUseCaseProvider = Provider<SignUpUseCase>((ref) {
