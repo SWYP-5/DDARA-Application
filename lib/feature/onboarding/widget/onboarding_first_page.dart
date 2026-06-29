@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// 온보딩 1페이지의 스와이프 콘텐츠 (제목 + 설명).
@@ -11,17 +12,18 @@ class OnboardingFirstPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final l10n = AppLocalizations.of(context);
+    return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: AppSpacing.s3,
       children: [
-        AppText.headlineLarge('한 장 찍으면 인증샷이 시작', textAlign: TextAlign.center),
-        AppText.body(
-          '내가 한 포즈, 친구들이 똑같이 따라 찍어요',
+        AppText.headlineLarge(
+          l10n.onboardingFirstTitle,
           textAlign: TextAlign.center,
         ),
+        AppText.body(l10n.onboardingFirstBody, textAlign: TextAlign.center),
       ],
     );
   }
