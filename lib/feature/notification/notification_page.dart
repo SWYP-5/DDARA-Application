@@ -29,9 +29,6 @@ class NotificationPage extends StatelessWidget {
     ),
   ];
 
-  // 빈 상태 확인용 임시 리스트.
-  static const List<NotificationDisplay> _empty = [];
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -41,7 +38,7 @@ class NotificationPage extends StatelessWidget {
   }
 
   Widget _body() {
-    // 빈 상태 확인용으로 _empty 적용 중. (실데이터 연동 시 _dummy → API 응답으로 교체)
+    // 실데이터 연동 시 _dummy → API 응답으로 교체. (빈 상태 확인은 const [] 로 대체)
     const notifications = _dummy;
 
     // 알림이 없으면 빈 상태 화면을 중앙에 보여준다.
