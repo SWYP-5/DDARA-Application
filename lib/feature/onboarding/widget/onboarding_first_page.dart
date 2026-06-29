@@ -17,9 +17,9 @@ class OnboardingFirstPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: AppSpacing.s3,
       children: [
-        AppText.headlineLarge('한 장 찍으면 인증샷이 시작돼', textAlign: TextAlign.center),
+        AppText.headlineLarge('한 장 찍으면 인증샷이 시작', textAlign: TextAlign.center),
         AppText.body(
-          '내가 찍은 포즈를 친구가 따라 찍고,\n다음 친구에게 넘어가요.\n우리만의 앨범이 차곡차곡 쌓여요.',
+          '내가 한 포즈, 친구들이 똑같이 따라 찍어요',
           textAlign: TextAlign.center,
         ),
       ],

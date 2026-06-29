@@ -17,9 +17,9 @@ class OnboardingSecondPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: AppSpacing.s3,
       children: [
-        AppText.headlineLarge('제일 비슷하게 찍은 친구가 우승', textAlign: TextAlign.center),
+        AppText.headlineLarge('나중에 보면 더 웃겨', textAlign: TextAlign.center),
         AppText.body(
-          '인증샷이 끝나면\n베스트 따라쟁이를 투표해요.\n우승한 친구가 다음 인증샷을 열어요.',
+          '따라 찍은 사진들이 모여 기록이 돼요',
           textAlign: TextAlign.center,
         ),
       ],

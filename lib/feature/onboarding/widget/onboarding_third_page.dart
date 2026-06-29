@@ -19,7 +19,7 @@ class OnboardingThirdPage extends StatelessWidget {
       children: [
         AppText.headlineLarge('아는 친구끼리만, 초대로만', textAlign: TextAlign.center),
         AppText.body(
-          '초대 링크를 받은 친구만 들어올 수 있어요.\n모르는 사람 없이, 우리끼리 편하게.',
+          '초대받은 친구만 들어올 수 있어요',
           textAlign: TextAlign.center,
         ),
       ],
