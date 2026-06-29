@@ -31,8 +31,16 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
 
   void _onNameChanged() => setState(() {});
 
-  /// 모임 이름이 비어있지 않아야 생성 가능.
-  bool get _canSubmit => _nameController.text.trim().isNotEmpty;
+  /// 모임 이름 최대 길이.
+  static const _nameMaxLength = 20;
+
+  /// 이름이 [_nameMaxLength] 를 초과하면 에러 문구, 아니면 null.
+  String? get _nameError =>
+      _nameController.text.length > _nameMaxLength ? '20자 이하로 입력해주세요' : null;
+
+  /// 모임 이름이 비어있지 않고 길이 제한을 지켜야 생성 가능.
+  bool get _canSubmit =>
+      _nameController.text.trim().isNotEmpty && _nameError == null;
 
   @override
   void dispose() {
@@ -81,6 +89,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                 placeholder: '예) 마라탕 걸즈',
                 controller: _nameController,
                 highlightWhenFilled: true,
+                errorText: _nameError,
                 onChanged: notifier.groupNameOnChanged,
               ),
               const SizedBox(height: AppSpacing.s2),
