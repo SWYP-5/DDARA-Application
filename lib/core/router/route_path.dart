@@ -14,5 +14,7 @@ class RoutePath {
   static const startedPhotoCheck = '/group/photo-check';
   static const profile = '/profile';
   static const notificationSettings = '/profile/notification-settings';
+  static const termsPolicy = '/profile/terms-policy';
+  static const policyViewer = '/profile/terms-policy/viewer';
   static const notification = '/notification';
 }

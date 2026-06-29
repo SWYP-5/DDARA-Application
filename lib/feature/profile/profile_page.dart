@@ -58,9 +58,7 @@ class ProfilePage extends ConsumerWidget {
                   ProfileRow(
                     label: '약관 및 정책',
                     trailing: const ProfileChevron(),
-                    onTap: () {
-                      // TODO: 약관 및 정책 화면으로 이동.
-                    },
+                    onTap: () => context.push(RoutePath.termsPolicy),
                   ),
                   ProfileRow(
                     label: '문의하기',

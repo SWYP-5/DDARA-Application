@@ -17,6 +17,8 @@ import '../../feature/onboarding/onboarding_page.dart';
 import '../../feature/onboarding/provider/onboarding_provider.dart';
 import '../../feature/permission/permission_page.dart';
 import '../../feature/profile/profile_page.dart';
+import '../../feature/profile/policy/policy_viewer_page.dart';
+import '../../feature/profile/policy/terms_policy_page.dart';
 import '../../feature/profile/settings/notification_settings.dart';
 import '../../feature/permission/required_permission_page.dart';
 import '../../feature/sign/login/login_page.dart';
@@ -101,6 +103,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.notificationSettings,
         builder: (_, _) => const NotificationSettings(),
+      ),
+      GoRoute(
+        path: RoutePath.termsPolicy,
+        builder: (_, _) => const TermsPolicyPage(),
+      ),
+      GoRoute(
+        path: RoutePath.policyViewer,
+        builder: (_, state) =>
+            PolicyViewerPage(args: state.extra! as PolicyViewerArgs),
       ),
       GoRoute(
         path: RoutePath.notification,
