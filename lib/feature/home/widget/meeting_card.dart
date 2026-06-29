@@ -1,8 +1,8 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_list.dart';
+import 'package:ddara/core/widget/effect/bottom_scrim.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Colors;
 
 /// 모임 카드. (대표 이미지 위에 상태·이름·멤버 요약을 얹은 형태) — 비율 균일
 class MeetingCard extends StatelessWidget {
@@ -42,6 +42,8 @@ class MeetingCard extends StatelessWidget {
                       )
                     : const _EmptyThumbnail(),
               ),
+              // 하단 스크림. (텍스트 가독성 + 하단 경계를 배경과 자연스럽게 잇기)
+              const BottomScrim(),
               // 상단: 시작일 · 진행 상태 (진행 중인 사이클이 있을 때만)
               if (cycle != null)
                 Positioned(
@@ -54,22 +56,15 @@ class MeetingCard extends StatelessWidget {
                     textAlign: TextAlign.right,
                   ),
                 ),
-              // 하단: 텍스트 가독성을 위한 그라데이션 + 이름 · 멤버 요약
+              // 하단: 이름 · 멤버 요약 (가독성은 위의 스크림 레이어가 담당)
               Positioned(
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Container(
+                child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.s3,
                     vertical: AppSpacing.s3,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: const Alignment(0.50, 1.00),
-                      end: const Alignment(0.50, 0.26),
-                      colors: [Colors.black, Colors.black.withValues(alpha: 0)],
-                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
