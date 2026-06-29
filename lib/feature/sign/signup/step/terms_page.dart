@@ -4,6 +4,7 @@ import 'package:ddara/core/designsystem/component/surface/app_surface.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/app_checkbox.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:flutter/widgets.dart';
 
 class TermsPage extends StatefulWidget {
@@ -71,15 +72,9 @@ class _TermsPageState extends State<TermsPage> {
             spacing: 24,
             children: [
               // 헤더
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  AppText.headlineLarge('약관에 동의해 주세요'),
-                  AppText.body('서비스 이용을 위해선 이용약관 동의가 필요해요'),
-                ],
+              const TitleDescription(
+                title: '약관에 동의해 주세요',
+                description: '서비스 이용을 위해선 이용약관 동의가 필요해요',
               ),
 
               // 동의 목록 카드

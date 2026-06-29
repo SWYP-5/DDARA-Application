@@ -1,6 +1,6 @@
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
-import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,8 +53,10 @@ class _SetGroupNameState extends ConsumerState<SetGroupName> {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.s1,
       children: [
-        const AppText.headlineLarge('모임 이름을 정해주세요'),
-        const AppText.body('내가 먼저 찍으면, 친구들이 따라 찍어요'),
+        const TitleDescription(
+          title: '모임 이름을 정해주세요',
+          description: '내가 먼저 찍으면, 친구들이 따라 찍어요',
+        ),
         // body 다음 간격 s6. (spacing s1 이 SizedBox 양옆에 붙으므로 s1+s4+s1=s6)
         const SizedBox(height: AppSpacing.s4),
         AppTextField(

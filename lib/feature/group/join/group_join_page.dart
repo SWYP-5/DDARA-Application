@@ -1,10 +1,10 @@
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
-import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/error_message_dialog.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,8 +82,10 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const AppText.headlineLarge('받은 초대 코드를 입력해주세요'),
-              const AppText.body('링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요'),
+              const TitleDescription(
+                title: '받은 초대 코드를 입력해주세요',
+                description: '링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요',
+              ),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
                 label: '초대 코드',

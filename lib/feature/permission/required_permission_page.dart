@@ -3,8 +3,8 @@ import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
-import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/widget/permission_dialog.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -70,14 +70,11 @@ class RequiredPermissionPage extends ConsumerWidget {
                   children: [
                     Image.asset('assets/images/permission.png'),
                     const SizedBox(height: AppSpacing.s3),
-                    const AppText.headlineLarge(
-                      '필수 권한을 허용해 주세요',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: AppSpacing.s3),
-                    const AppText.body(
-                      '필수 권한을 거부하면 ddara를\n정상적으로 이용할 수 없어요.\n권한이 필요할 때 허용해 주세요.',
-                      textAlign: TextAlign.center,
+                    const TitleDescription(
+                      title: '필수 권한을 허용해 주세요',
+                      description:
+                          '필수 권한을 거부하면 ddara를\n정상적으로 이용할 수 없어요.\n권한이 필요할 때 허용해 주세요.',
+                      centered: true,
                     ),
                   ],
                 ),

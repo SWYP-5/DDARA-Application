@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:flutter/widgets.dart';
 
 /// 모임에서 사용할 닉네임을 입력받는 폼.
@@ -46,15 +47,9 @@ class _SetNicknameState extends State<SetNickname> {
       // 바깥 간격 s2 → 입력 필드와 caption 사이가 s2.
       spacing: AppSpacing.s2,
       children: [
-        // 제목·설명은 한 묶음(사이 s1).
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: AppSpacing.s1,
-          children: [
-            AppText.headlineLarge('${widget.groupName} 안에서\n어떻게 불러드릴까요?'),
-            const AppText.body('친구들에게 보이는 이름이에요'),
-          ],
+        TitleDescription(
+          title: '${widget.groupName} 안에서\n어떻게 불러드릴까요?',
+          description: '친구들에게 보이는 이름이에요',
         ),
         // body 다음 간격 s6. (바깥 spacing s2 가 SizedBox 양옆에 붙으므로 s2+s2+s2=s6)
         const SizedBox(height: AppSpacing.s2),
