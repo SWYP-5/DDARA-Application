@@ -1,15 +1,16 @@
 import 'package:ddara/domain/provider/use_case_provider.dart';
-import 'package:ddara/feature/group/join/util/group_join_state.dart';
+import 'package:ddara/feature/group/join/util/invite_code_input_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/exception/group_exception.dart';
-import '../../../core/exception/group_join_error_code.dart';
-import '../../../core/exception/login_exception.dart';
+import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/core/exception/group_join_error_code.dart';
+import 'package:ddara/core/exception/login_exception.dart';
 
-class GroupJoinNotifier extends AutoDisposeNotifier<GroupJoinState> {
+class InviteCodeInputNotifier
+    extends AutoDisposeNotifier<InviteCodeInputState> {
   @override
-  GroupJoinState build() {
-    return GroupJoinState();
+  InviteCodeInputState build() {
+    return InviteCodeInputState();
   }
 
   void inviteCodeOnChanged(String inviteCode) {

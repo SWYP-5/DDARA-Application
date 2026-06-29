@@ -11,7 +11,7 @@ import '../../feature/group/started/started_photo_check_page.dart';
 import '../../feature/group/started/started_page.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
-import '../../feature/group/join/group_join_page.dart';
+import '../../feature/group/join/invite/invite_code_input_page.dart';
 import '../../feature/home/home_page.dart';
 import '../../feature/notification/notification_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
@@ -141,17 +141,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RoutePath.groupJoin,
         // 딥링크로 전달된 초대코드를 쿼리 파라미터에서 읽는다.
         // 코드가 없으면 빈 문자열로 두어 페이지가 안내를 처리한다.
-        builder: (_, state) =>
-            GroupJoinPage(inviteCode: state.uri.queryParameters['code'] ?? ''),
+        builder: (_, state) => InviteCodeInputPage(
+          inviteCode: state.uri.queryParameters['code'] ?? '',
+        ),
       ),
-      GoRoute(
-        path: RoutePath.started,
-        builder: (_, _) => const StartedPage(),
-      ),
-      GoRoute(
-        path: RoutePath.starter,
-        builder: (_, _) => const StarterPage(),
-      ),
+      GoRoute(path: RoutePath.started, builder: (_, _) => const StartedPage()),
+      GoRoute(path: RoutePath.starter, builder: (_, _) => const StarterPage()),
       GoRoute(
         path: RoutePath.startedCamera,
         builder: (_, _) => const StartedCameraPage(),

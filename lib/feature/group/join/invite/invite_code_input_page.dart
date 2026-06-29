@@ -15,17 +15,18 @@ import 'package:go_router/go_router.dart';
 ///
 /// 딥링크에서 파싱한 [inviteCode] 가 있으면 입력 필드에 미리 채워준다.
 /// 실제 참여 API 연동(research.md 작업 7번)은 백엔드 스펙 확정 후 연결한다.
-class GroupJoinPage extends ConsumerStatefulWidget {
-  const GroupJoinPage({super.key, required this.inviteCode});
+class InviteCodeInputPage extends ConsumerStatefulWidget {
+  const InviteCodeInputPage({super.key, required this.inviteCode});
 
   /// 딥링크로 전달받은 초대코드. (직접 입력으로 들어온 경우 빈 문자열)
   final String inviteCode;
 
   @override
-  ConsumerState<GroupJoinPage> createState() => _GroupJoinPageState();
+  ConsumerState<InviteCodeInputPage> createState() =>
+      _InviteCodeInputPageState();
 }
 
-class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
+class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
   late final TextEditingController _codeController;
 
   @override
@@ -38,7 +39,7 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
     if (widget.inviteCode.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
-            .read(groupJoinNotifierProvider.notifier)
+            .read(inviteCodeInputNotifierProvider.notifier)
             .inviteCodeOnChanged(widget.inviteCode);
       });
     }
@@ -52,9 +53,9 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.read(groupJoinNotifierProvider.notifier);
+    final notifier = ref.read(inviteCodeInputNotifierProvider.notifier);
 
-    ref.listen(groupJoinNotifierProvider, (prev, next) {
+    ref.listen(inviteCodeInputNotifierProvider, (prev, next) {
       // 참여 성공 시 모임 홈으로 이동.
       if (prev?.groupId == -1 && next.groupId > -1) {
         context.pushReplacement(RoutePath.group, extra: next.groupId);
