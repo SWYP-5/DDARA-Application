@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/feature/group/starter/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/widget/take_photo_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,14 +91,34 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                         onChanged: notifier.conceptChanged,
                       ),
                       const Spacer(),
-                      AppButton(
-                        label: '멤버들에게 보내기',
-                        // 사진이 없으면 비활성화.
-                        onPressed: hasPhoto
-                            ? () {
-                                // TODO: 스타터 컨셉을 멤버들에게 전송. (백엔드 스펙 대기)
-                              }
-                            : null,
+                      Row(
+                        spacing: AppSpacing.s3,
+                        children: [
+                          Expanded(
+                            child: AppButton.outline(
+                              label: '다시 찍기',
+                              onPressed: notifier.goToCamera,
+                            ),
+                          ),
+                          Expanded(
+                            child: AppButton(
+                              label: '올리기',
+                              // 사진이 없으면 비활성화.
+                              onPressed: hasPhoto
+                                  ? () async {
+                                      // 게시는 되돌릴 수 없으므로 확인을 한 번 받는다.
+                                      final ok = await AppDialog.show(
+                                        context,
+                                        title: '게시되면 수정이 불가능합니다.',
+                                        confirmLabel: '확인',
+                                      );
+                                      if (!ok) return;
+                                      // TODO: 스타터 컨셉을 멤버들에게 전송. (백엔드 스펙 대기)
+                                    }
+                                  : null,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

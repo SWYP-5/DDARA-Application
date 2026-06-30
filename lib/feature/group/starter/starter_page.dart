@@ -2,13 +2,12 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/feature/group/starter/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/starter/starter_camera.dart';
 import 'package:ddara/feature/group/starter/starter_info.dart';
-import 'package:ddara/feature/group/widget/photo_check.dart';
 import 'package:ddara/feature/group/starter/util/starter_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-/// 스타터 시작 화면. 본문(정보 입력 · 촬영 · 사진 확인)만 단계별로 교체한다.
+/// 스타터 시작 화면. 본문(촬영 · 정보 입력)만 단계별로 교체한다.
 class StarterPage extends ConsumerWidget {
   const StarterPage({super.key});
 
@@ -18,13 +17,8 @@ class StarterPage extends ConsumerWidget {
     final notifier = ref.read(starterNotifierProvider.notifier);
 
     final body = switch (step) {
-      StarterStep.info => const StarterInfo(),
       StarterStep.camera => const StarterCamera(),
-      StarterStep.photoCheck => PhotoCheck(
-        image: ref.watch(starterNotifierProvider.select((s) => s.captured)),
-        onRetake: notifier.retake,
-        onUpload: notifier.upload,
-      ),
+      StarterStep.info => const StarterInfo(),
     };
 
     return CupertinoPageScaffold(
@@ -32,12 +26,11 @@ class StarterPage extends ConsumerWidget {
         title: '스타터 시작하기',
         // 단계에 따라 뒤로가기 동작을 달리한다.
         onBack: () {
-          if (step == StarterStep.info) {
+          // 촬영(시작 단계)에서는 화면을 닫고, 본문에서는 촬영으로 돌아간다.
+          if (step == StarterStep.camera) {
             context.pop();
-          } else if (step == StarterStep.photoCheck) {
-            notifier.retake();
           } else {
-            notifier.backToInfo();
+            notifier.goToCamera();
           }
         },
       ),
