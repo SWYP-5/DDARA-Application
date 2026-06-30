@@ -3,6 +3,7 @@ import 'dart:ui' show ImageFilter;
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
+import 'package:ddara/core/widget/effect/bottom_scrim.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,66 +48,58 @@ class _StartedHeaderState extends State<StartedHeader> {
     );
   }
 
-  /// 펼친 상태: 대표 이미지 + 진행 정보 + 하단 그라데이션.
+  /// 펼친 상태: 대표 이미지 + 진행 정보 + 하단 스크림.
   Widget _buildExpanded() {
-    return Container(
-      width: double.infinity,
-      height: 478,
-      padding: const EdgeInsets.only(top: AppSpacing.s4),
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        // TODO: API 연동 시 NetworkImage(imageUri) 로 교체. (현재는 임시 에셋)
-        image: const DecorationImage(
-          image: AssetImage('assets/images/temp_image.jpg'),
-          fit: BoxFit.cover,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-        ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: AppSpacing.s4,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              spacing: AppSpacing.s4,
-              children: [
-                AppText.caption(
-                  '진행 중 · ${_remainingText(widget.progress.deadlineAt)} 남음',
-                  textAlign: TextAlign.center,
-                  color: AppColors.textPrimary,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 202,
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.s5),
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: const Alignment(0.50, 1.00),
-                end: const Alignment(0.50, 0.26),
-                colors: [Colors.black, Colors.black.withValues(alpha: 0)],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: SizedBox(
+        width: double.infinity,
+        height: 478,
+        child: Stack(
+          children: [
+            // 배경: 대표 이미지.
+            // TODO: API 연동 시 NetworkImage(imageUri) 로 교체. (현재는 임시 에셋)
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/temp_image.jpg',
+                fit: BoxFit.cover,
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [_buildInfoRow()],
+            // 하단 진행 정보의 가독성을 위한 스크림.
+            const BottomScrim(heightFactor: 0.45, color: Colors.black),
+            // 콘텐츠: 상단 남은 시간 + 하단 진행 정보.
+            Padding(
+              padding: const EdgeInsets.only(
+                top: AppSpacing.s4,
+                bottom: AppSpacing.s5,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.s4,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AppText.caption(
+                          '진행 중 · ${_remainingText(widget.progress.deadlineAt)} 남음',
+                          textAlign: TextAlign.center,
+                          color: AppColors.textPrimary,
+                        ),
+                      ],
+                    ),
+                  ),
+                  _buildInfoRow(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
