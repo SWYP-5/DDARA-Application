@@ -1,24 +1,26 @@
+import 'dart:io';
+
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/camera/bottom/camera_bottom.dart';
 import 'package:ddara/core/widget/camera/header/camera_header.dart';
 import 'package:flutter/cupertino.dart';
 
-/// 촬영한 사진을 확인하는 본문.
+/// 따라찍기 촬영 후 사진을 확인하는 본문.
 ///
 /// 카메라와 동일한 구조를 쓰되, 프리뷰 영역만 촬영 이미지로 바꾸고
-/// 나머지 컨트롤(헤더 플래시 · 하단 갤러리/촬영/전환)은 영역만 남긴 채 숨긴다.
+/// 나머지 컨트롤(헤더 · 하단 영역)은 영역만 남긴 채 숨긴다.
 /// 하단에는 '다시 찍기'(테두리) · '올리기'(채움) 버튼을 둔다.
-class PhotoCheck extends StatelessWidget {
-  const PhotoCheck({
+class StartedPhotoCheck extends StatelessWidget {
+  const StartedPhotoCheck({
     super.key,
-    this.image,
+    required this.imagePath,
     required this.onRetake,
     required this.onUpload,
   });
 
-  /// 확인할 촬영 이미지. null 이면 임시 이미지로 대체한다.
-  final ImageProvider? image;
+  /// 촬영된 이미지 파일 경로.
+  final String imagePath;
 
   /// '다시 찍기' 를 눌렀을 때.
   final VoidCallback onRetake;
@@ -42,7 +44,7 @@ class PhotoCheck extends StatelessWidget {
         Expanded(
           child: SizedBox.expand(
             child: Image(
-              image: image ?? const AssetImage('assets/images/temp_image.jpg'),
+              image: FileImage(File(imagePath)),
               fit: BoxFit.cover,
             ),
           ),
@@ -65,16 +67,10 @@ class PhotoCheck extends StatelessWidget {
                 spacing: AppSpacing.s3,
                 children: [
                   Expanded(
-                    child: AppButton.outline(
-                      label: '다시 찍기',
-                      onPressed: onRetake,
-                    ),
+                    child: AppButton.outline(label: '다시 찍기', onPressed: onRetake),
                   ),
                   Expanded(
-                    child: AppButton(
-                      label: '올리기',
-                      onPressed: onUpload,
-                    ),
+                    child: AppButton(label: '올리기', onPressed: onUpload),
                   ),
                 ],
               ),

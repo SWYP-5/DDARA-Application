@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
 import '../../feature/group/started/started_camera_page.dart';
-import '../../feature/group/started/started_photo_check_page.dart';
 import '../../feature/group/started/started_page.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
@@ -155,11 +154,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.startedCamera,
         builder: (_, _) => const StartedCameraPage(),
-      ),
-      GoRoute(
-        path: RoutePath.startedPhotoCheck,
-        builder: (_, state) =>
-            StartedPhotoCheckPage(imagePath: state.extra! as String),
       ),
     ],
   );
