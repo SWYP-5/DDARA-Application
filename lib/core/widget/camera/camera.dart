@@ -246,9 +246,7 @@ class _CameraState extends ConsumerState<Camera>
           // 코너 미니뷰 모드에서는 투명도 조절이 의미 없어 숨긴다.
           showOpacity:
               widget.showOpacity && _guideMode != GuideViewMode.cornerMini,
-          flashOn: _flashOn,
           onOpacityChanged: _onOpacityChanged,
-          onFlashPressed: _toggleFlash,
         ),
         Expanded(
           child: Stack(
@@ -279,16 +277,54 @@ class _CameraState extends ConsumerState<Camera>
                     ),
                   ),
                 },
+              // 프리뷰 우측 하단: 플래시 · 카메라 전환 (배경 없이 흰색 아이콘).
+              Positioned(
+                right: AppSpacing.s4,
+                bottom: AppSpacing.s4,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: AppSpacing.s2,
+                  children: [
+                    _PreviewControlButton(
+                      icon: _flashOn
+                          ? CupertinoIcons.bolt_fill
+                          : CupertinoIcons.bolt_slash_fill,
+                      onPressed: _toggleFlash,
+                    ),
+                    _PreviewControlButton(
+                      icon: CupertinoIcons.arrow_2_circlepath,
+                      onPressed: _switchCamera,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         CameraBottom(
           showViewMode: widget.showViewMode,
           onViewModeChanged: _onViewModeChanged,
-          onSwitchCamera: _switchCamera,
           onCapture: _capture,
         ),
       ],
+    );
+  }
+}
+
+/// 프리뷰 위에 얹는 컨트롤 버튼. (배경 없이 흰색 아이콘만)
+class _PreviewControlButton extends StatelessWidget {
+  const _PreviewControlButton({required this.icon, required this.onPressed});
+
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoButton(
+      padding: const EdgeInsets.all(AppSpacing.s2),
+      minimumSize: Size.zero,
+      onPressed: onPressed,
+      child: Icon(icon, size: 24, color: AppColors.textPrimary),
     );
   }
 }

@@ -2,30 +2,22 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/cupertino.dart';
 
-/// 카메라 상단 영역. 좌측에 '원본사진 투명도' 라벨 + 선택 탭, 우측에 플래시 버튼.
+/// 카메라 상단 영역. '원본사진 투명도' 라벨 + 선택 탭을 둔다. (고스트 확대 모드에서만 노출)
 ///
 /// 선택 상태(어떤 탭이 켜졌는지)는 내부에서 관리하고,
-/// 그에 따른 처리(투명도 적용 · 플래시 토글)는 외부 콜백으로 위임한다.
+/// 그에 따른 투명도 적용은 외부 콜백으로 위임한다.
 class CameraHeader extends StatelessWidget {
   const CameraHeader({
     super.key,
     this.showOpacity = false,
-    this.flashOn = false,
     required this.onOpacityChanged,
-    required this.onFlashPressed,
   });
 
   /// '원본사진 투명도' 영역(라벨 + 탭) 표시 여부.
   final bool showOpacity;
 
-  /// 플래시 켜짐 여부. 버튼 표시에 반영한다.
-  final bool flashOn;
-
   /// 투명도 탭이 바뀌었을 때. 선택된 라벨('0'/'20'/'40')을 전달한다.
   final ValueChanged<String> onOpacityChanged;
-
-  /// 플래시 버튼을 눌렀을 때.
-  final VoidCallback onFlashPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +27,24 @@ class CameraHeader extends StatelessWidget {
         vertical: AppSpacing.s3,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (showOpacity)
-            Row(
+          // 투명도 영역을 숨겨도 높이는 유지해, 모드 전환 시 헤더 높이가 변해
+          // Preview 가 줄었다 늘었다 하지 않게 한다.
+          Visibility(
+            visible: showOpacity,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: AppSpacing.s3,
               children: [
                 const AppText.label('원본사진 투명도'),
                 _OpacityTabs(onChanged: onOpacityChanged),
               ],
-            )
-          else
-            const SizedBox.shrink(),
-          _FlashButton(active: flashOn, onPressed: onFlashPressed),
+            ),
+          ),
         ],
       ),
     );
@@ -179,40 +174,6 @@ class _OpacityOption extends StatelessWidget {
             ),
             child: Text(label),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _FlashButton extends StatelessWidget {
-  const _FlashButton({required this.active, required this.onPressed});
-
-  /// 플래시 켜짐 여부. 켜지면 배경/아이콘 색을 반전한다.
-  final bool active;
-  final VoidCallback onPressed;
-
-  static const double _size = 32;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      minimumSize: Size.zero,
-      onPressed: onPressed,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-        width: _size,
-        height: _size,
-        decoration: BoxDecoration(
-          color: active ? AppColors.bgWarm : AppColors.bgSurfaceAlt,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          CupertinoIcons.bolt_fill,
-          size: 18,
-          color: active ? AppColors.textOnWarm : AppColors.textPrimary,
         ),
       ),
     );

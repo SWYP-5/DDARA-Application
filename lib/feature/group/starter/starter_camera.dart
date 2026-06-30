@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// 스타터(첫 따라찍기) 촬영 본문.
 ///
 /// 가이드 사진이 없어 투명도·모드 영역은 띄우지 않는다.
-/// → 플래시 · 프리뷰 · 갤러리 · 촬영 · 전환 버튼만 표시된다.
+/// → 프리뷰 · 플래시 · 전환 · 촬영 버튼만 표시된다.
 class StarterCamera extends ConsumerWidget {
   const StarterCamera({super.key});
 

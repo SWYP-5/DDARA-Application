@@ -4,14 +4,12 @@ import 'package:flutter/cupertino.dart';
 /// 프리뷰 보조 모드. (원본 사진을 어떻게 겹쳐 보여줄지)
 enum GuideViewMode { cornerMini, ghostZoom }
 
-/// 카메라 하단 컨트롤 영역. 모드 토글 + 갤러리 · 촬영 · 화면 전환 버튼을 둔다.
-/// (갤러리 · 촬영 동작은 추후 구현)
+/// 카메라 하단 컨트롤 영역. 모드 토글 + 촬영 버튼을 둔다.
 class CameraBottom extends StatefulWidget {
   const CameraBottom({
     super.key,
     this.showViewMode = false,
     required this.onViewModeChanged,
-    required this.onSwitchCamera,
     this.onCapture,
   });
 
@@ -20,9 +18,6 @@ class CameraBottom extends StatefulWidget {
 
   /// 모드가 바뀌었을 때 선택된 모드를 전달한다.
   final ValueChanged<GuideViewMode> onViewModeChanged;
-
-  /// 화면 전환 버튼을 눌렀을 때.
-  final VoidCallback onSwitchCamera;
 
   /// 촬영 버튼을 눌렀을 때. null 이면 아무 동작도 하지 않는다.
   final VoidCallback? onCapture;
@@ -96,19 +91,9 @@ class _CameraBottomState extends State<CameraBottom> {
             child: _buildModeToggle(),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _CircleIconButton(
-                icon: CupertinoIcons.photo,
-                onPressed: () {},
-              ),
-              _CaptureButton(onPressed: widget.onCapture ?? () {}),
-              _CircleIconButton(
-                icon: CupertinoIcons.arrow_2_circlepath,
-                onPressed: widget.onSwitchCamera,
-              ),
-            ],
+            children: [_CaptureButton(onPressed: widget.onCapture ?? () {})],
           ),
           const SizedBox(height: AppSpacing.s3),
         ],
@@ -148,35 +133,6 @@ class _ModeButton extends StatelessWidget {
           ),
           child: Text(label),
         ),
-      ),
-    );
-  }
-}
-
-/// 갤러리 · 화면 전환에 쓰는 52 원형 아이콘 버튼.
-class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({required this.icon, required this.onPressed});
-
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  static const double _size = 52;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      minimumSize: Size.zero,
-      onPressed: onPressed,
-      child: Container(
-        width: _size,
-        height: _size,
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: AppColors.bgSurfaceAlt,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, size: 24, color: AppColors.textPrimary),
       ),
     );
   }

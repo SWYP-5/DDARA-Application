@@ -36,10 +36,7 @@ class PhotoCheck extends StatelessWidget {
           maintainSize: true,
           maintainAnimation: true,
           maintainState: true,
-          child: CameraHeader(
-            onOpacityChanged: (_) {},
-            onFlashPressed: () {},
-          ),
+          child: CameraHeader(onOpacityChanged: (_) {}),
         ),
         // 프리뷰 영역 → 촬영 이미지.
         Expanded(
@@ -58,10 +55,7 @@ class PhotoCheck extends StatelessWidget {
               maintainSize: true,
               maintainAnimation: true,
               maintainState: true,
-              child: CameraBottom(
-                onViewModeChanged: (_) {},
-                onSwitchCamera: () {},
-              ),
+              child: CameraBottom(onViewModeChanged: (_) {}),
             ),
             Positioned(
               left: AppSpacing.s5,
