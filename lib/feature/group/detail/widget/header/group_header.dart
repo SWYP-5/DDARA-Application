@@ -43,7 +43,7 @@ class GroupHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cycle = progress;// ?? _dummyCycle;
+    final cycle = progress ?? _dummyCycle;
     // 진행 중인 사이클이 없으면 빈 상태 헤더 + 시작 버튼.
     if (cycle == null) {
       return Column(
@@ -61,7 +61,7 @@ class GroupHeader extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         StartedHeader(imageUri: imageUri ?? "", progress: cycle),
-        const SizedBox(height: AppSpacing.s6),
+        const SizedBox(height: AppSpacing.s5),
         AppButton(label: '따라찍으러 가기', onPressed: onTakePhoto),
       ],
     );

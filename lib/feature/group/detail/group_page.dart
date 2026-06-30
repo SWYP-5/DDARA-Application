@@ -61,9 +61,9 @@ class GroupPage extends ConsumerWidget {
     return SingleChildScrollView(
       // 끝에서 더 당겨지는 바운스(overscroll)를 막고 가장자리에서 멈춘다.
       physics: const ClampingScrollPhysics(),
-      // 상하 s6, 좌우 s5 여백.
+      // 상하 s6, 좌우 s4 여백.
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.s5,
+        horizontal: AppSpacing.s4,
         vertical: AppSpacing.s6,
       ),
       child: Column(
