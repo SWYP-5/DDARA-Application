@@ -22,6 +22,13 @@ class GroupPage extends ConsumerWidget {
   /// 진입 시 전달받은 모임 식별자. (이 id 로 모임 상세를 조회)
   final int groupId;
 
+  /// 초대 공유 카드에 넣을 모임 대표 이미지. (카카오가 접근 가능한 공개 https URL)
+  // TODO: 모임 대표 이미지로 대체. (현재 응답에 없음 — 임시 placeholder)
+  static const _shareImageUrl = 'https://placehold.co/800x400.png';
+
+  /// 초대 시트를 자동으로 띄우는 인원 기준. (이 수 미만이면 띄운다)
+  static const _inviteThreshold = 3;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // groupId 를 그대로 provider 에 넘기면 notifier.build(int groupId) 가 받아 로드한다.
@@ -32,6 +39,24 @@ class GroupPage extends ConsumerWidget {
 
       if (errorMessage.isNotEmpty) {
         Toast.showToast(context, errorMessage, type: ToastType.error);
+      }
+
+      // 진입해 상세가 처음 로드됐을 때, 인원이 기준 미만이면 초대 시트를 띄운다.
+      final detail = next.groupDetail;
+      if (prev?.groupDetail == null &&
+          detail != null &&
+          detail.members.length < _inviteThreshold) {
+        // 빌드/네비게이션 도중 모달을 띄우지 않도록 다음 프레임에 연다.
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!context.mounted) return;
+          InviteShareSheet.show(
+            context,
+            inviteCode: detail.inviteCode,
+            imageUrl: _shareImageUrl,
+            // 인원 부족으로 자동으로 띄운 경우라 머리말을 안내 문구로 바꾼다.
+            memberShortage: true,
+          );
+        });
       }
     });
 
@@ -92,9 +117,7 @@ class GroupPage extends ConsumerWidget {
               onAddMember: () => InviteShareSheet.show(
                 context,
                 inviteCode: groupDetail.inviteCode,
-                // 카카오가 접근 가능한 공개 https URL 이어야 한다. (로컬 에셋 불가)
-                // TODO: 모임 대표 이미지로 대체. (현재 응답에 없음 — 임시 placeholder)
-                imageUrl: 'https://placehold.co/800x400.png',
+                imageUrl: _shareImageUrl,
               ),
             ),
           ),
