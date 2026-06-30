@@ -2,13 +2,10 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-/// 기본 아이콘이 아바타 지름에서 차지하는 비율.
-const double _iconRatio = 0.6;
-
 /// 원형 프로필 아바타.
 ///
-/// [imageUrl] 이 있으면 네트워크 이미지를, 없거나 로드 실패하면
-/// 기본 프로필(사람) 아이콘을 [size] 지름의 원 안에 보여준다.
+/// [imageUrl] 이 있으면 네트워크 이미지를 [size] 지름의 원 안에 보여주고,
+/// 없거나 로드 실패하면 자체 원형 형태를 가진 기본 프로필 아이콘을 보여준다.
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({super.key, required this.size, this.imageUrl});
 
@@ -23,6 +20,10 @@ class ProfileAvatar extends StatelessWidget {
     final url = imageUrl;
     final hasImage = url != null && url.isNotEmpty;
 
+    // 기본 아이콘은 자체적으로 원형 형태를 가지므로 Container 로 감싸지 않는다.
+    // (감싸면 배경이 중복된다)
+    if (!hasImage) return _DefaultIcon(size: size);
+
     return Container(
       width: size,
       height: size,
@@ -34,20 +35,18 @@ class ProfileAvatar extends StatelessWidget {
           BorderSide(color: AppColors.borderDefault),
         ),
       ),
-      child: hasImage
-          ? Image.network(
-              url,
-              fit: BoxFit.cover,
-              // 로드 실패 시 기본 아이콘으로 대체.
-              errorBuilder: (context, error, stackTrace) =>
-                  _DefaultIcon(size: size),
-            )
-          : _DefaultIcon(size: size),
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+        // 로드 실패 시 기본 아이콘으로 대체.
+        errorBuilder: (context, error, stackTrace) => _DefaultIcon(size: size),
+      ),
     );
   }
 }
 
 /// 이미지가 없거나 로드 실패했을 때의 기본 프로필 아이콘.
+/// 자체적으로 원형 형태를 가지므로 [size] 지름을 그대로 채운다.
 class _DefaultIcon extends StatelessWidget {
   const _DefaultIcon({required this.size});
 
@@ -55,17 +54,10 @@ class _DefaultIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SvgPicture.asset(
-        'assets/images/ic_user.svg',
-        width: size * _iconRatio,
-        height: size * _iconRatio,
-        // 아이콘 원본 색이 배경과 같으므로 밝은 회색으로 덮어 대비를 준다.
-        colorFilter: const ColorFilter.mode(
-          AppColors.textSecondary,
-          BlendMode.srcIn,
-        ),
-      ),
+    return SvgPicture.asset(
+      'assets/images/ic_person_circle_fill.svg',
+      width: size,
+      height: size,
     );
   }
 }
