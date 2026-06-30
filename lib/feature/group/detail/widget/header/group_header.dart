@@ -29,21 +29,9 @@ class GroupHeader extends StatelessWidget {
   /// 시작된 상태에서 '촬영하러 가기' 버튼을 눌렀을 때 실행할 콜백.
   final VoidCallback onTakePhoto;
 
-  /// 테스트용 더미 사이클. (진행 중인 사이클이 없을 때 시작된 헤더를 확인하려고 임시 사용)
-  /// TODO: 실제 데이터 연동 후 제거.
-  static GroupCycle get _dummyCycle => GroupCycle(
-    cycleId: 1,
-    cycleNumber: 1,
-    topic: '오늘의 점심',
-    starterUserId: 1,
-    status: 'STARTED',
-    startedAt: DateTime(2026, 6, 30, 12),
-    deadlineAt: DateTime(2026, 6, 30, 18),
-  );
-
   @override
   Widget build(BuildContext context) {
-    final cycle = progress ?? _dummyCycle;
+    final cycle = progress;
     // 진행 중인 사이클이 없으면 빈 상태 헤더 + 시작 버튼.
     if (cycle == null) {
       return Column(
