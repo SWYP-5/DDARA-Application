@@ -39,6 +39,12 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
     final photo = ref.watch(starterNotifierProvider.select((s) => s.photo));
     final hasPhoto = photo != null;
 
+    final concept = ref.watch(
+      starterNotifierProvider.select((s) => s.concept),
+    );
+    // 컨셉 설명은 20자 이내. 초과하면 에러 문구를 보여준다.
+    final conceptError = concept.length > 20 ? '20자 이내로 입력해 주세요' : null;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -88,6 +94,7 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                         placeholder: '예) 마라탕 또 먹기',
                         controller: _conceptController,
                         highlightWhenFilled: true,
+                        errorText: conceptError,
                         onChanged: notifier.conceptChanged,
                       ),
                       const Spacer(),
@@ -103,8 +110,12 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                           Expanded(
                             child: AppButton(
                               label: '올리기',
-                              // 사진이 없으면 비활성화.
-                              onPressed: hasPhoto
+                              // 사진이 없거나 컨셉이 비어 있거나(공백 포함) 20자를
+                              // 넘으면 비활성화.
+                              onPressed:
+                                  hasPhoto &&
+                                      concept.trim().isNotEmpty &&
+                                      conceptError == null
                                   ? () async {
                                       // 게시는 되돌릴 수 없으므로 확인을 한 번 받는다.
                                       final ok = await AppDialog.show(
