@@ -65,20 +65,15 @@ class _AddMemberButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CircleLabel(
-      label: '초대',
+      label: '추가하기',
       onTap: onPressed,
-      child: Container(
+      child: const SizedBox(
         width: _circleSize,
         height: _circleSize,
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: AppColors.bgSurface,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
+        child: Icon(
           CupertinoIcons.add,
           size: 28,
-          color: AppColors.textTertiary,
+          color: AppColors.textPrimary,
         ),
       ),
     );
