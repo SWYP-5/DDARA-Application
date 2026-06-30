@@ -154,7 +154,6 @@ class _StartedHeaderState extends State<StartedHeader> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
-        spacing: 10,
         children: [
           Expanded(
             child: Column(
@@ -168,23 +167,15 @@ class _StartedHeaderState extends State<StartedHeader> {
                   textAlign: TextAlign.center,
                   color: AppColors.textAccent,
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: AppSpacing.s1,
-                  children: [
-                    AppText.display(
-                      widget.progress.topic,
-                      textAlign: TextAlign.center,
-                    ),
-                    // TODO: 멤버 조회 API 생기면 starterUserId 로 닉네임 조회해 표시.
-                    // 임시: 이름이 없어 시작자 id 를 그대로 노출.
-                    AppText.body(
-                      '${widget.progress.starterUserId}님이 시작했어요',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                AppText.display(
+                  widget.progress.topic,
+                  textAlign: TextAlign.center,
+                ),
+                // TODO: 멤버 조회 API 생기면 starterUserId 로 닉네임 조회해 표시.
+                // 임시: 이름이 없어 시작자 id 를 그대로 노출.
+                AppText.body(
+                  '${widget.progress.starterUserId}님이 시작했어요',
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),

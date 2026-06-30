@@ -1,5 +1,5 @@
 import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/feature/group/detail/widget/header/header_title.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 모임에 아직 따라찍기가 하나도 없을 때 상단에 보여주는 빈 상태 헤더.
@@ -20,17 +20,12 @@ class EmptyHeader extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: AppSpacing.s1,
+        spacing: AppSpacing.s2,
         children: [
-          const AppText.headlineLarge(
-            '아직 따라찍기가 없어요',
-            textAlign: TextAlign.center,
+          const HeaderTitle(
+            title: '아직 따라찍기가 없어요',
+            caption: '첫 판을 시작해 친구들에게 보내보세요',
           ),
-          const AppText.caption(
-            '첫 판을 시작해 친구들에게 보내보세요',
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppSpacing.s1),
           Image.asset(
             'assets/images/photo_image.png',
             width: 160,
