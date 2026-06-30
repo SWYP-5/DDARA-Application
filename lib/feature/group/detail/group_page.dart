@@ -7,7 +7,6 @@ import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:ddara/feature/group/detail/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
-import 'package:ddara/feature/group/detail/widget/body/record.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,9 +77,6 @@ class GroupPage extends ConsumerWidget {
             navigateToStart: () => context.push(RoutePath.starter),
             onTakePhoto: () => context.push(RoutePath.started),
           ),
-          const AppText.headlineLarge('기록'),
-          // TODO: 통계 값은 모임 조회 API 응답으로 대체. (현재 응답에 없음 — 임시 더미)
-          const Record(ddaraCount: 0, photoCount: 0),
           const SizedBox(height: AppSpacing.s3),
           const AppText.headlineLarge('사람들'),
           Members(
