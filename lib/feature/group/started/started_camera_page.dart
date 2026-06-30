@@ -1,5 +1,4 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
-import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/feature/group/started/started_camera.dart';
 import 'package:ddara/feature/group/started/started_photo_check.dart';
@@ -43,7 +42,10 @@ class _StartedCameraPageState extends State<StartedCameraPage> {
                 if (!ok) return;
                 // TODO: 따라찍기 사진 업로드. (백엔드 스펙 대기)
                 if (!context.mounted) return;
-                context.go(RoutePath.started);
+                // 스택을 유지한 채(go 로 초기화하지 않고) 바로 아래의
+                // StartedPage(/group/started) 로 돌아간다.
+                // TODO: provider 연동 시 업로드한 사진이 반영되도록 갱신 추가.
+                context.pop();
               },
             ),
     );
