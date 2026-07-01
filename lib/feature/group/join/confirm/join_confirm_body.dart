@@ -13,7 +13,7 @@ class JoinConfirmBody extends StatelessWidget {
     required this.groupName,
     required this.subtitle,
     required this.memberSummary,
-    required this.memberImageUrls,
+    required this.memberAvatarUrls,
   });
 
   /// 참여할 모임 이름.
@@ -25,8 +25,9 @@ class JoinConfirmBody extends StatelessWidget {
   /// 멤버 아바타 묶음 아래 요약. (예: '마라탕 킬러님 외 2명이 함께하고 있어요')
   final String memberSummary;
 
-  /// 멤버 아바타 이미지 URL 목록. (앞에서부터 최대 2개를 겹쳐 보여준다)
-  final List<String> memberImageUrls;
+  /// 보여줄 멤버 아바타 슬롯. 각 원소가 null·빈 값이면 기본 아바타로 표시한다.
+  /// (0~2개가 넘어오며, 2개일 때 겹쳐 보여준다)
+  final List<String?> memberAvatarUrls;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class JoinConfirmBody extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: AppSpacing.s3,
             children: [
-              _MemberAvatars(imageUrls: memberImageUrls),
+              _MemberAvatars(avatarUrls: memberAvatarUrls),
               AppText.body(memberSummary, textAlign: TextAlign.center),
             ],
           ),
@@ -59,12 +60,12 @@ class JoinConfirmBody extends StatelessWidget {
 
 /// 멤버 아바타를 겹쳐 보여주는 묶음.
 ///
-/// 멤버가 몇 명이든 **앞에서부터 최대 2개**만 보여주고, 두 번째 아바타를
-/// 첫 아바타의 5시 방향(우하단)에 겹쳐 올린다.
+/// 넘어온 [avatarUrls] 슬롯(최대 2개)을 그대로 보여주고, 두 번째 아바타를
+/// 첫 아바타의 5시 방향(우하단)에 겹쳐 올린다. 각 슬롯이 null 이면 기본 아바타.
 class _MemberAvatars extends StatelessWidget {
-  const _MemberAvatars({required this.imageUrls});
+  const _MemberAvatars({required this.avatarUrls});
 
-  final List<String> imageUrls;
+  final List<String?> avatarUrls;
 
   /// 아바타 한 변 크기.
   static const double _size = 56;
@@ -74,7 +75,7 @@ class _MemberAvatars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shown = imageUrls.take(2).toList();
+    final shown = avatarUrls.take(2).toList();
     if (shown.isEmpty) return const SizedBox(height: _size);
     if (shown.length == 1) return _Avatar(url: shown.first);
 
@@ -105,7 +106,8 @@ class _Avatar extends StatelessWidget {
   /// 링 두께.
   static const double _ring = 4;
 
-  final String url;
+  /// null·빈 값이면 [ProfileAvatar] 가 기본 아바타를 보여준다.
+  final String? url;
 
   @override
   Widget build(BuildContext context) {

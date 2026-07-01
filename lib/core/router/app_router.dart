@@ -197,12 +197,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               );
             },
             child: JoinConfirmPage(
-              // 조회 실패(null) 시 잘못된 초대 안내.
-              groupName: group?.name ?? '잘못된 초대입니다',
-              // TODO: 개설일·인원·멤버 아바타는 확장된 API 응답으로 대체.
-              subtitle: '',
-              memberSummary: '',
-              memberImageUrls: const [],
+              group: group,
               // TODO: 실제 모임 참여 API 연결 후 모임 홈으로 이동.
               onJoin: () {},
             ),

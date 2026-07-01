@@ -83,22 +83,10 @@ class GroupRepositoryImpl implements GroupRepository {
 
       switch (code) {
         case GroupJoinErrorCode.invalidInviteCode:
-          // 초대 코드 누락
+          // 404 — 유효하지 않은 초대 코드
           throw InvalidInviteCodeException();
 
-        case GroupJoinErrorCode.groupNotFound:
-          // 잘못된 초대 코드
-          throw GroupNotFoundException();
-
-        case GroupJoinErrorCode.groupLimitExceeded:
-          // 정원 초과
-          throw GroupFullException();
-
-        case GroupJoinErrorCode.alreadyJoinedGroup:
-          // 이미 참여한 모임
-          throw AlreadyJoinedGroupException();
-
-        case GroupJoinErrorCode.unknown || null:
+        default:
           throw NetworkException();
       }
     }

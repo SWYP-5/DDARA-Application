@@ -12,7 +12,7 @@ class NotGroupMemberException extends GroupException {}
 /// 404 — 모임 없음.
 class GroupNotFoundException extends GroupException {}
 
-/// 400 — 초대 코드 누락.
+/// 404 — 유효하지 않은 초대 코드.
 class InvalidInviteCodeException extends GroupException {}
 
 /// 409 — 모임 정원 초과.

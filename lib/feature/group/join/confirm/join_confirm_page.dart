@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/group/join/confirm/join_confirm_body.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,24 +15,12 @@ import 'package:go_router/go_router.dart';
 class JoinConfirmPage extends StatelessWidget {
   const JoinConfirmPage({
     super.key,
-    required this.groupName,
-    required this.subtitle,
-    required this.memberSummary,
-    required this.memberImageUrls,
+    required this.group,
     required this.onJoin,
   });
 
-  /// 참여할 모임 이름.
-  final String groupName;
-
-  /// 이름 아래 보조 정보. (예: '2026. 06.28 개설 · 7명')
-  final String subtitle;
-
-  /// 멤버 아바타 묶음 아래 요약. (예: '마라탕 킬러님 외 2명이 함께하고 있어요')
-  final String memberSummary;
-
-  /// 멤버 아바타 이미지 URL 목록.
-  final List<String> memberImageUrls;
+  /// 참여할 모임 정보. 초대 코드 조회 실패 시 null.
+  final InviteGroup? group;
 
   /// '모임 참여하기' 를 눌렀을 때 실행할 콜백.
   final VoidCallback onJoin;
@@ -47,6 +36,26 @@ class JoinConfirmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final group = this.group;
+    // 조회 실패(null) 시 잘못된 초대 안내로 대체한다.
+    final groupName = group?.name ?? '잘못된 초대입니다';
+    final subtitle = group == null
+        ? ''
+        : '${_formatDate(group.createdAt.toLocal())} 개설 · ${group.memberCount}명';
+    final memberSummary = group == null
+        ? ''
+        : group.memberCount <= 1
+        ? '${group.ownerNickname}님이 함께하고 있어요'
+        : '${group.ownerNickname}님 외 ${group.memberCount - 1}명이 함께하고 있어요';
+    // 멤버 수만큼(1명이면 1개, 2명 이상이면 2개) 아바타를 보여준다.
+    // 목록에 없거나 null(이미지 미설정)인 슬롯은 null 로 둬 기본 아바타로 표시한다.
+    final memberAvatars = group?.memberAvatars ?? const <String?>[];
+    final avatarCount = group == null ? 0 : (group.memberCount <= 1 ? 1 : 2);
+    final memberAvatarUrls = List<String?>.generate(
+      avatarCount,
+      (i) => i < memberAvatars.length ? memberAvatars[i] : null,
+    );
+
     return PopScope(
       // 스택이 없을 땐 기본 pop(앱 종료)을 막고 홈으로 보낸다.
       canPop: context.canPop(),
@@ -66,7 +75,7 @@ class JoinConfirmPage extends StatelessWidget {
                     groupName: groupName,
                     subtitle: subtitle,
                     memberSummary: memberSummary,
-                    memberImageUrls: memberImageUrls,
+                    memberAvatarUrls: memberAvatarUrls,
                   ),
                 ),
                 AppButton(label: '모임 참여하기', onPressed: onJoin),
@@ -78,4 +87,11 @@ class JoinConfirmPage extends StatelessWidget {
       ),
     );
   }
+}
+
+/// DateTime → 'yyyy.MM.dd'.
+String _formatDate(DateTime date) {
+  final month = date.month.toString().padLeft(2, '0');
+  final day = date.day.toString().padLeft(2, '0');
+  return '${date.year}.$month.$day';
 }

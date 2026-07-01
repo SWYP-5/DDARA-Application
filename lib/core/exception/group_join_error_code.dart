@@ -1,6 +1,6 @@
 /// 모임 참여(`POST /groups/join`) 실패 시 서버가 내려주는 에러 코드.
 enum GroupJoinErrorCode {
-  invalidInviteCode('INVALID_INVITE_CODE', '초대 코드를 입력해주세요.'),
+  invalidInviteCode('INVALID_INVITE_CODE', '유효하지 않은 초대 코드입니다.'),
   groupNotFound('GROUP_NOT_FOUND', '존재하지 않는 초대 코드입니다.'),
   groupLimitExceeded('GROUP_LIMIT_EXCEEDED', '모임 정원이 가득 찼습니다.'),
   alreadyJoinedGroup('ALREADY_JOINED_GROUP', '이미 참여 중인 모임입니다.'),

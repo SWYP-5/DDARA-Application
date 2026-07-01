@@ -35,10 +35,7 @@ class GroupDataSource {
   }
 
   Future<InviteGroupResponse> getInviteGroup(String inviteCode) async {
-    final response = await _dio.post(
-      '$_baseUrl/join',
-      data: {'inviteCode': inviteCode},
-    );
+    final response = await _dio.get('$_baseUrl/preview?inviteCode=$inviteCode');
 
     return InviteGroupResponse.fromJson(response.data);
   }

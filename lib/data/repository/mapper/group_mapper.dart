@@ -16,7 +16,16 @@ extension CreateGroupMapper on CreateGroupResponse {
 
 extension InviteGroupMapper on InviteGroupResponse {
   InviteGroup toDomain() {
-    return InviteGroup(groupId: groupId, name: name);
+    return InviteGroup(
+      groupId: groupId,
+      name: name,
+      ownerNickname: ownerNickname,
+      memberCount: memberCount,
+      isFull: isFull,
+      memberAvatars: memberAvatars,
+      alreadyJoined: alreadyJoined,
+      createdAt: createdAt,
+    );
   }
 }
 
