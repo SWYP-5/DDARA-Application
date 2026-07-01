@@ -213,6 +213,246 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{name}님 외 {others}명'**
   String meetingMemberOthers(String name, int others);
+
+  /// 공용 다이얼로그 확인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'확인'**
+  String get commonConfirm;
+
+  /// 촬영 후 다시 찍기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 찍기'**
+  String get photoRetake;
+
+  /// 촬영한 사진 올리기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'올리기'**
+  String get photoUpload;
+
+  /// 게시 전 되돌릴 수 없음을 알리는 확인 다이얼로그 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'게시되면 수정이 불가능합니다.'**
+  String get photoPostWarningTitle;
+
+  /// 촬영 화면으로 이동하는 알약 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'촬영하러 가기'**
+  String get photoTakeAction;
+
+  /// No description provided for @groupCreateTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 이름을 설정해주세요.'**
+  String get groupCreateTitle;
+
+  /// No description provided for @groupCreateSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 먼저 찍으면, 친구들이 이 주제를 따라 찍어요'**
+  String get groupCreateSubtitle;
+
+  /// No description provided for @groupCreateNameLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 이름'**
+  String get groupCreateNameLabel;
+
+  /// No description provided for @groupCreateNamePlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'예) 마라탕 걸즈'**
+  String get groupCreateNamePlaceholder;
+
+  /// No description provided for @groupCreateIntroLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'한 줄 소개 (선택)'**
+  String get groupCreateIntroLabel;
+
+  /// No description provided for @groupCreateIntroPlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'어떤 모임인지 알려주세요'**
+  String get groupCreateIntroPlaceholder;
+
+  /// No description provided for @groupCreateSubmit.
+  ///
+  /// In ko, this message translates to:
+  /// **'만들기'**
+  String get groupCreateSubmit;
+
+  /// No description provided for @groupJoinTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 참여'**
+  String get groupJoinTitle;
+
+  /// No description provided for @groupJoinHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'받은 초대 코드를 입력해주세요'**
+  String get groupJoinHeadline;
+
+  /// No description provided for @groupJoinSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요'**
+  String get groupJoinSubtitle;
+
+  /// No description provided for @groupJoinCodeLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'초대 코드'**
+  String get groupJoinCodeLabel;
+
+  /// No description provided for @groupJoinCodePlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'예) ASKD23NSK12'**
+  String get groupJoinCodePlaceholder;
+
+  /// No description provided for @starterTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'스타터 시작하기'**
+  String get starterTitle;
+
+  /// No description provided for @starterConceptLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'컨셉 설명'**
+  String get starterConceptLabel;
+
+  /// No description provided for @starterConceptPlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'예) 마라탕 또 먹기'**
+  String get starterConceptPlaceholder;
+
+  /// No description provided for @starterConceptLengthError.
+  ///
+  /// In ko, this message translates to:
+  /// **'20자 이내로 입력해 주세요'**
+  String get starterConceptLengthError;
+
+  /// No description provided for @startedCameraTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍기'**
+  String get startedCameraTitle;
+
+  /// No description provided for @groupHeaderStart.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 먼저 시작하기'**
+  String get groupHeaderStart;
+
+  /// No description provided for @groupHeaderTakePhoto.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍으러 가기'**
+  String get groupHeaderTakePhoto;
+
+  /// No description provided for @groupDetailEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 따라찍기가 없어요'**
+  String get groupDetailEmptyTitle;
+
+  /// No description provided for @groupDetailLoadError.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 정보를 불러오지 못했어요.'**
+  String get groupDetailLoadError;
+
+  /// No description provided for @groupMembersTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'사람들'**
+  String get groupMembersTitle;
+
+  /// No description provided for @groupMembersAdd.
+  ///
+  /// In ko, this message translates to:
+  /// **'추가하기'**
+  String get groupMembersAdd;
+
+  /// No description provided for @groupHistoryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'지난 따라찍기'**
+  String get groupHistoryTitle;
+
+  /// No description provided for @groupHistoryMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'더보기'**
+  String get groupHistoryMore;
+
+  /// No description provided for @groupHistoryEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'지난 따라찍기가 아직 없어요'**
+  String get groupHistoryEmpty;
+
+  /// No description provided for @recordCycleLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍기'**
+  String get recordCycleLabel;
+
+  /// No description provided for @recordPhotoLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'함께한 사진'**
+  String get recordPhotoLabel;
+
+  /// 지난 따라찍기 카드의 참여 인원 수
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}명 참여'**
+  String historyParticipantCount(int count);
+
+  /// 진행 중인 따라찍기의 남은 시간 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중 · {time} 남음'**
+  String startedHeaderRemaining(String time);
+
+  /// 현재 따라찍기 회차
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}번째 따라찍기'**
+  String startedHeaderCycle(int count);
+
+  /// 따라찍기를 시작한 사람 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님이 시작했어요'**
+  String startedHeaderStarter(String name);
+
+  /// 마감 시간이 지난 경우 표시
+  ///
+  /// In ko, this message translates to:
+  /// **'마감'**
+  String get remainingDeadline;
+
+  /// 남은 시간(시간 단위)
+  ///
+  /// In ko, this message translates to:
+  /// **'{hours}시간'**
+  String remainingHours(int hours);
+
+  /// 남은 시간(분 단위)
+  ///
+  /// In ko, this message translates to:
+  /// **'{minutes}분'**
+  String remainingMinutes(int minutes);
 }
 
 class _AppLocalizationsDelegate

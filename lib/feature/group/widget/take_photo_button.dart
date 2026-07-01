@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// '촬영하러 가기' 알약(pill) 버튼. 흰 배경 위에 라벨 텍스트를 둔다.
@@ -36,7 +37,10 @@ class TakePhotoButton extends StatelessWidget {
           color: AppColors.textPrimary,
           shape: StadiumBorder(),
         ),
-        child: const AppText.label('촬영하러 가기', color: AppColors.textOnWarm),
+        child: AppText.label(
+          AppLocalizations.of(context).photoTakeAction,
+          color: AppColors.textOnWarm,
+        ),
       ),
     );
   }

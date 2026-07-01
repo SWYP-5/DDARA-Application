@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/feature/group/detail/widget/header/header_title.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 모임에 아직 따라찍기가 하나도 없을 때 상단에 보여주는 빈 상태 헤더.
@@ -11,6 +12,7 @@ class EmptyHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       // 상하 s7, 좌우 s5 여백.
       padding: const EdgeInsets.symmetric(
@@ -22,9 +24,9 @@ class EmptyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: AppSpacing.s2,
         children: [
-          const HeaderTitle(
-            title: '아직 따라찍기가 없어요',
-            caption: '첫 판을 시작해 친구들에게 보내보세요',
+          HeaderTitle(
+            title: l10n.groupDetailEmptyTitle,
+            caption: l10n.emptyGroupDescription,
           ),
           Image.asset(
             'assets/images/photo_image.png',

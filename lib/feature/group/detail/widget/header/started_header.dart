@@ -4,6 +4,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/widget/effect/bottom_scrim.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -87,7 +88,9 @@ class _StartedHeaderState extends State<StartedHeader> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         AppText.caption(
-                          '진행 중 · ${_remainingText(widget.progress.deadlineAt)} 남음',
+                          AppLocalizations.of(context).startedHeaderRemaining(
+                            _remainingText(widget.progress.deadlineAt),
+                          ),
                           textAlign: TextAlign.center,
                           color: AppColors.textPrimary,
                         ),
@@ -140,6 +143,7 @@ class _StartedHeaderState extends State<StartedHeader> {
 
   /// 진행 정보(회차·제목·시작자) + 펼침/접힘 토글 버튼 한 줄.
   Widget _buildInfoRow() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4),
@@ -156,7 +160,7 @@ class _StartedHeaderState extends State<StartedHeader> {
               spacing: AppSpacing.s1,
               children: [
                 AppText.label(
-                  '${widget.progress.cycleNumber}번째 따라찍기',
+                  l10n.startedHeaderCycle(widget.progress.cycleNumber),
                   textAlign: TextAlign.center,
                   color: AppColors.textAccent,
                 ),
@@ -167,7 +171,9 @@ class _StartedHeaderState extends State<StartedHeader> {
                 // TODO: 멤버 조회 API 생기면 starterUserId 로 닉네임 조회해 표시.
                 // 임시: 이름이 없어 시작자 id 를 그대로 노출.
                 AppText.body(
-                  '${widget.progress.starterUserId}님이 시작했어요',
+                  l10n.startedHeaderStarter(
+                    widget.progress.starterUserId.toString(),
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -181,10 +187,11 @@ class _StartedHeaderState extends State<StartedHeader> {
 
   /// 마감(deadline)까지 남은 시간 표시 문자열. ('14시간' / '30분' / '마감')
   String _remainingText(DateTime deadline) {
+    final l10n = AppLocalizations.of(context);
     final remaining = deadline.difference(DateTime.now());
-    if (remaining.isNegative) return '마감';
-    if (remaining.inHours >= 1) return '${remaining.inHours}시간';
-    return '${remaining.inMinutes}분';
+    if (remaining.isNegative) return l10n.remainingDeadline;
+    if (remaining.inHours >= 1) return l10n.remainingHours(remaining.inHours);
+    return l10n.remainingMinutes(remaining.inMinutes);
   }
 
   /// 펼침/접힘 토글 버튼. (펼침: ∧ / 접힘: ∨)

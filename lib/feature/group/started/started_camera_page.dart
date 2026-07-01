@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/feature/group/started/started_camera.dart';
 import 'package:ddara/feature/group/started/started_photo_check.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,9 +21,10 @@ class _StartedCameraPageState extends State<StartedCameraPage> {
   @override
   Widget build(BuildContext context) {
     final capturedPath = _capturedPath;
+    final l10n = AppLocalizations.of(context);
 
     return CupertinoPageScaffold(
-      navigationBar: const AppBar(title: '따라찍기'),
+      navigationBar: AppBar(title: l10n.startedCameraTitle),
       child: capturedPath == null
           ? StartedCamera(
               // 촬영하면 사진 확인 단계로 전환한다.
@@ -36,8 +38,8 @@ class _StartedCameraPageState extends State<StartedCameraPage> {
                 // 게시는 되돌릴 수 없으므로 확인을 한 번 받는다.
                 final ok = await AppDialog.show(
                   context,
-                  title: '게시되면 수정이 불가능합니다.',
-                  confirmLabel: '확인',
+                  title: l10n.photoPostWarningTitle,
+                  confirmLabel: l10n.commonConfirm,
                 );
                 if (!ok) return;
                 // TODO: 따라찍기 사진 업로드. (백엔드 스펙 대기)

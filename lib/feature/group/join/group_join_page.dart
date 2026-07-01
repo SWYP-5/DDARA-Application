@@ -6,6 +6,7 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -52,6 +53,7 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final notifier = ref.read(groupJoinNotifierProvider.notifier);
 
     ref.listen(groupJoinNotifierProvider, (prev, next) {
@@ -69,7 +71,7 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
     });
 
     return CupertinoPageScaffold(
-      navigationBar: AppBar(title: '모임 참여', onBack: () => context.pop()),
+      navigationBar: AppBar(title: l10n.groupJoinTitle, onBack: () => context.pop()),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -82,19 +84,19 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const AppText.headlineLarge('받은 초대 코드를 입력해주세요'),
-              const AppText.body('링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요'),
+              AppText.headlineLarge(l10n.groupJoinHeadline),
+              AppText.body(l10n.groupJoinSubtitle),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
-                label: '초대 코드',
-                placeholder: '예) ASKD23NSK12',
+                label: l10n.groupJoinCodeLabel,
+                placeholder: l10n.groupJoinCodePlaceholder,
                 controller: _codeController,
                 highlightWhenFilled: true,
                 onChanged: notifier.inviteCodeOnChanged,
               ),
               const Spacer(),
               AppButton(
-                label: '모임 참여하기',
+                label: l10n.groupJoin,
                 onPressed: () => notifier.joinGroup(),
               ),
             ],

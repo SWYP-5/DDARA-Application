@@ -5,6 +5,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +45,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final notifier = ref.read(createGroupNotifierProvider.notifier);
 
     ref.listen(createGroupNotifierProvider, (prev, next) {
@@ -60,7 +62,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
     });
 
     return CupertinoPageScaffold(
-      navigationBar: AppBar(title: '모임 만들기', onBack: () => context.pop()),
+      navigationBar: AppBar(title: l10n.groupCreate, onBack: () => context.pop()),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -73,27 +75,27 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const AppText.headlineLarge('모임 이름을 설정해주세요.'),
-              const AppText.body('내가 먼저 찍으면, 친구들이 이 주제를 따라 찍어요'),
+              AppText.headlineLarge(l10n.groupCreateTitle),
+              AppText.body(l10n.groupCreateSubtitle),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
-                label: '모임 이름',
-                placeholder: '예) 마라탕 걸즈',
+                label: l10n.groupCreateNameLabel,
+                placeholder: l10n.groupCreateNamePlaceholder,
                 controller: _nameController,
                 highlightWhenFilled: true,
                 onChanged: notifier.groupNameOnChanged,
               ),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
-                label: '한 줄 소개 (선택)',
-                placeholder: '어떤 모임인지 알려주세요',
+                label: l10n.groupCreateIntroLabel,
+                placeholder: l10n.groupCreateIntroPlaceholder,
                 controller: _introController,
                 highlightWhenFilled: true,
                 onChanged: notifier.descriptionOnChanged,
               ),
               const Spacer(),
               AppButton(
-                label: '만들기',
+                label: l10n.groupCreateSubmit,
                 onPressed: _canSubmit
                     ? () {
                         notifier.createGroup();

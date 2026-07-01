@@ -3,6 +3,7 @@ import 'package:ddara/feature/group/starter/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/starter/starter_camera.dart';
 import 'package:ddara/feature/group/starter/starter_info.dart';
 import 'package:ddara/feature/group/starter/util/starter_state.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,7 @@ class StarterPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final step = ref.watch(starterNotifierProvider.select((s) => s.step));
     final notifier = ref.read(starterNotifierProvider.notifier);
 
@@ -23,7 +25,7 @@ class StarterPage extends ConsumerWidget {
 
     return CupertinoPageScaffold(
       navigationBar: AppBar(
-        title: '스타터 시작하기',
+        title: l10n.starterTitle,
         // 단계에 따라 뒤로가기 동작을 달리한다.
         onBack: () {
           // 촬영(시작 단계)에서는 화면을 닫고, 본문에서는 촬영으로 돌아간다.

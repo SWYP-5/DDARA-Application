@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
 /// 모임 기록 요약 카드. (따라찍기 수 · 함께한 사진 수)
@@ -14,6 +15,7 @@ class Record extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(
@@ -34,10 +36,10 @@ class Record extends StatelessWidget {
         spacing: AppSpacing.s3,
         children: [
           Expanded(
-            child: _StatItem(value: '$ddaraCount', label: '따라찍기'),
+            child: _StatItem(value: '$ddaraCount', label: l10n.recordCycleLabel),
           ),
           Expanded(
-            child: _StatItem(value: '$photoCount', label: '함께한 사진'),
+            child: _StatItem(value: '$photoCount', label: l10n.recordPhotoLabel),
           ),
         ],
       ),

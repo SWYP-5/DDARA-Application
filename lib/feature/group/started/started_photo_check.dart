@@ -4,6 +4,7 @@ import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/camera/bottom/camera_bottom.dart';
 import 'package:ddara/core/widget/camera/header/camera_header.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 따라찍기 촬영 후 사진을 확인하는 본문.
@@ -30,6 +31,7 @@ class StartedPhotoCheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
         // 헤더: 구성은 빠지지만 높이는 유지해 이미지 영역을 카메라와 맞춘다.
@@ -67,10 +69,13 @@ class StartedPhotoCheck extends StatelessWidget {
                 spacing: AppSpacing.s3,
                 children: [
                   Expanded(
-                    child: AppButton.outline(label: '다시 찍기', onPressed: onRetake),
+                    child: AppButton.outline(
+                      label: l10n.photoRetake,
+                      onPressed: onRetake,
+                    ),
                   ),
                   Expanded(
-                    child: AppButton(label: '올리기', onPressed: onUpload),
+                    child: AppButton(label: l10n.photoUpload, onPressed: onUpload),
                   ),
                 ],
               ),

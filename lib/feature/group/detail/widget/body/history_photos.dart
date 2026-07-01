@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
 /// 지난 따라찍기 사진들. (살짝 회전된 카드들을 가로로 나열)
@@ -157,7 +158,9 @@ class _PhotoCard extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: AppText.caption(
-                  '$participantCount명 참여',
+                  AppLocalizations.of(context).historyParticipantCount(
+                    participantCount,
+                  ),
                   color: AppColors.textPrimary,
                 ),
               ),

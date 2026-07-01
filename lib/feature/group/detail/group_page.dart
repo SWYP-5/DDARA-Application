@@ -9,6 +9,7 @@ import 'package:ddara/feature/group/detail/util/group_page_state.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
 import 'package:ddara/feature/group/detail/widget/group_section.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -70,6 +71,7 @@ class GroupPage extends ConsumerWidget {
   }
 
   Widget _body(BuildContext context, GroupPageState state) {
+    final l10n = AppLocalizations.of(context);
     if (state.isLoading) {
       return const Center(child: CupertinoActivityIndicator());
     }
@@ -78,7 +80,9 @@ class GroupPage extends ConsumerWidget {
     if (groupDetail == null) {
       return Center(
         child: AppText.body(
-          state.errorMessage.isEmpty ? '모임 정보를 불러오지 못했어요.' : state.errorMessage,
+          state.errorMessage.isEmpty
+              ? l10n.groupDetailLoadError
+              : state.errorMessage,
         ),
       );
     }
@@ -104,7 +108,7 @@ class GroupPage extends ConsumerWidget {
             onTakePhoto: () => context.push(RoutePath.started),
           ),
           GroupSection(
-            title: const AppText.headlineLarge('사람들'),
+            title: AppText.headlineLarge(l10n.groupMembersTitle),
             body: Members(
               members: groupDetail.members
                   .map(
@@ -126,9 +130,9 @@ class GroupPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const AppText.headlineLarge('지난 따라찍기'),
+                AppText.headlineLarge(l10n.groupHistoryTitle),
                 AppTextButton(
-                  label: '더보기',
+                  label: l10n.groupHistoryMore,
                   onPressed: () {
                     // TODO: 지난 따라찍기 전체 보기 화면으로 이동.
                   },
@@ -138,7 +142,7 @@ class GroupPage extends ConsumerWidget {
             // HistoryPhotos 는 2차 MVP 예정 — 같은 높이(카드 225 + 상하 여백)로 빈 상태 안내.
             body: SizedBox(
               height: 225 + AppSpacing.s4 * 2,
-              child: const Center(child: AppText.body('지난 따라찍기가 아직 없어요')),
+              child: Center(child: AppText.body(l10n.groupHistoryEmpty)),
             ),
           ),
         ],

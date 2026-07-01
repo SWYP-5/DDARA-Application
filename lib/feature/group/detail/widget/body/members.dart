@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/foundation/app_spacing.dart';
 import 'package:ddara/core/designsystem/theme/app_colors.dart';
 import 'package:ddara/core/widget/profile_avatar.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 멤버 아바타·추가 버튼의 원 지름.
@@ -65,7 +66,7 @@ class _AddMemberButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CircleLabel(
-      label: '추가하기',
+      label: AppLocalizations.of(context).groupMembersAdd,
       onTap: onPressed,
       child: const SizedBox(
         width: _circleSize,
