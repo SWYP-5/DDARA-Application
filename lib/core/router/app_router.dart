@@ -150,7 +150,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const GroupCreatePage(),
       ),
       GoRoute(
-        path: RoutePath.groupJoin,
+        path: RoutePath.inviteCodeInput,
         // 딥링크로 전달된 초대코드를 쿼리 파라미터에서 읽는다.
         // 코드가 없으면 빈 문자열로 두어 페이지가 안내를 처리한다.
         builder: (_, state) => InviteCodeInputPage(
