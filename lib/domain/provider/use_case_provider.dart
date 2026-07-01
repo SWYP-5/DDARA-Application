@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/provider/repository_provider.dart';
 import '../usecase/group/get_group_detail_use_case.dart';
 import '../usecase/group/get_invite_group_use_case.dart';
+import '../usecase/group/join_group_use_case.dart';
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
   return LoginUseCase(ref.read(authRepositoryProvider));
@@ -44,4 +45,8 @@ final getGroupDetailUseCaseProvider = Provider<GetGroupDetailUseCase>((ref) {
 
 final getInviteGroupUseCaseProvider = Provider<GetInviteGroupUseCase>((ref) {
   return GetInviteGroupUseCase(ref.read(groupRepositoryProvider));
+});
+
+final joinGroupUseCaseProvider = Provider<JoinGroupUseCase>((ref) {
+  return JoinGroupUseCase(ref.read(groupRepositoryProvider));
 });

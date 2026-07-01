@@ -40,7 +40,7 @@ class InviteCodeInputNotifier
       if (inviteGroup.isFull) {
         state = state.copyWith(
           isLoading: false,
-          errorCode: GroupJoinErrorCode.groupLimitExceeded,
+          errorCode: GroupJoinErrorCode.groupFull,
         );
         return;
       }

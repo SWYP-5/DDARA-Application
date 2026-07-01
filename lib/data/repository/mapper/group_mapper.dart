@@ -1,16 +1,24 @@
 import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
+import 'package:ddara/core/model/group/join_group.dart';
 import 'package:ddara/core/network/dto/group/create_group_response.dart';
 import 'package:ddara/core/network/dto/group/group_detail_response.dart';
 import 'package:ddara/core/network/dto/group/group_list_response.dart';
 import 'package:ddara/core/network/dto/group/invite_group_response.dart';
+import 'package:ddara/core/network/dto/group/join_group_response.dart';
 
 import '../../../core/model/group/group_list.dart';
 
 extension CreateGroupMapper on CreateGroupResponse {
   CreateGroup toDomain() {
     return CreateGroup(groupId: groupId);
+  }
+}
+
+extension JoinGroupMapper on JoinGroupResponse {
+  JoinGroup toDomain() {
+    return JoinGroup(groupId: groupId);
   }
 }
 

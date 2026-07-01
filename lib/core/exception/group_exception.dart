@@ -20,3 +20,9 @@ class GroupFullException extends GroupException {}
 
 /// 409 — 이미 참여 중인 모임.
 class AlreadyJoinedGroupException extends GroupException {}
+
+/// 400 — 초대 코드·닉네임 누락 또는 닉네임 길이(2~10자) 위반.
+class InvalidJoinInputException extends GroupException {}
+
+/// 409 — 모임 내 닉네임 중복.
+class DuplicateGroupNicknameException extends GroupException {}

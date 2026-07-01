@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
@@ -76,7 +77,12 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
     final state = ref.watch(joinGroupNotifierProvider);
     final notifier = ref.read(joinGroupNotifierProvider.notifier);
 
-    final nicknameError = validateNickname(state.nickname);
+    // 닉네임 필드 에러: 클라이언트 검증 우선, 없으면 서버의 닉네임 중복 에러.
+    final nicknameError =
+        validateNickname(state.nickname) ??
+        (state.errorCode == GroupJoinErrorCode.duplicateGroupNickname
+            ? GroupJoinErrorCode.duplicateGroupNickname.message
+            : null);
 
     // 스텝별 다음 진행 가능 조건.
     final canSubmit = switch (_step) {
@@ -85,16 +91,19 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
     };
 
     ref.listen(joinGroupNotifierProvider, (prev, next) {
-      // 참여 성공 시 모임 홈으로 이동. (홈 목록을 무효화해 새 모임이 반영되게 한다)
+      // 참여 성공 시 모임 화면으로 이동. (홈 목록을 무효화해 새 모임이 반영되게 한다)
+      // 모임 화면의 뒤로가기(AppBar·OS)는 GroupPage 가 항상 홈으로 처리한다.
       if (prev?.joinedGroupId == -1 && next.joinedGroupId > -1) {
         ref.invalidate(homeNotifierProvider);
         context.pushReplacement(RoutePath.group, extra: next.joinedGroupId);
         return;
       }
 
-      final errorMessage = next.errorMessage;
-      if (errorMessage.isNotEmpty) {
-        Toast.showToast(context, errorMessage, type: ToastType.error);
+      final errorCode = next.errorCode;
+      // 닉네임 중복은 입력 필드 인라인으로 보여주므로 토스트에서 제외.
+      if (errorCode != null &&
+          errorCode != GroupJoinErrorCode.duplicateGroupNickname) {
+        Toast.showToast(context, errorCode.message, type: ToastType.error);
       }
     });
 

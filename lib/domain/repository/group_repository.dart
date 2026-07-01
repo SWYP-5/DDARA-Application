@@ -3,6 +3,7 @@ import 'package:ddara/core/model/group/invite_group.dart';
 
 import '../../core/model/group/group_detail.dart';
 import '../../core/model/group/group_list.dart';
+import '../../core/model/group/join_group.dart';
 
 abstract interface class GroupRepository {
   Future<CreateGroup> createGroup(
@@ -16,4 +17,6 @@ abstract interface class GroupRepository {
   Future<GroupDetail> getGroupDetail(int groupId);
 
   Future<InviteGroup> getInviteGroup(String inviteCode);
+
+  Future<JoinGroup> joinGroup(String inviteCode, String nickName);
 }

@@ -20,7 +20,7 @@ import 'package:go_router/go_router.dart';
 /// 토스트 대신 입력 필드 아래 인라인 에러(errorText)로 보여줄 에러 코드.
 const _inlineErrorCodes = {
   GroupJoinErrorCode.invalidInviteCode,
-  GroupJoinErrorCode.groupLimitExceeded,
+  GroupJoinErrorCode.groupFull,
   GroupJoinErrorCode.alreadyJoinedGroup,
 };
 
