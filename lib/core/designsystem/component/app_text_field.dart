@@ -141,10 +141,11 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
     ];
 
-    // 라벨·에러가 모두 없으면 박스만 반환.
-    if (children.length == 1) return field;
-
+    // 에러 유무에 따라 루트 위젯 타입이 바뀌면(Column↔단일 박스) 그 위치의
+    // CupertinoTextField 엘리먼트가 재생성돼 포커스가 풀리고 키보드가 내려간다.
+    // 라벨·에러가 없어도 항상 같은 Column 구조를 유지해 포커스를 보존한다.
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.s2,
       children: children,
