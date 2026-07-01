@@ -13,7 +13,7 @@ import '../../feature/group/started/started_page.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
 import '../../core/model/group/invite_group.dart';
-import '../../feature/group/join/confirm/join_confirm_page.dart';
+import '../../feature/group/join/join_group_page.dart';
 import '../../feature/group/join/invite/invite_code_input_page.dart';
 import '../../feature/group/join/landing/invite_landing_page.dart';
 import '../../feature/home/home_page.dart';
@@ -175,7 +175,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(
-        path: RoutePath.joinConfirm,
+        path: RoutePath.joinGroup,
         // 랜딩 애니메이션이 끝난 뒤라 슬라이드 대신 페이드로 자연스럽게 전환한다.
         pageBuilder: (_, state) {
           final group = state.extra as InviteGroup?;
@@ -196,11 +196,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ),
               );
             },
-            child: JoinConfirmPage(
-              group: group,
-              // TODO: 실제 모임 참여 API 연결 후 모임 홈으로 이동.
-              onJoin: () {},
-            ),
+            child: JoinGroupPage(group: group),
           );
         },
       ),

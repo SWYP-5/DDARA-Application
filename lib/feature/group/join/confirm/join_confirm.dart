@@ -1,36 +1,47 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/widget/profile_avatar.dart';
 import 'package:flutter/widgets.dart';
 
 /// 모임 참여 확인 화면의 본문. (모임 정보 + 멤버 미리보기)
 ///
-/// 스캐폴드·하단 버튼은 상위 [JoinConfirmPage] 가 들고 있고, 이 위젯은 가운데에
-/// 모일 콘텐츠만 그린다. (참여 버튼 클릭 후 다른 본문으로 교체할 수 있도록 분리)
-class JoinConfirmBody extends StatelessWidget {
-  const JoinConfirmBody({
-    super.key,
-    required this.groupName,
-    required this.subtitle,
-    required this.memberSummary,
-    required this.memberAvatarUrls,
-  });
+/// 스캐폴드·하단 버튼은 상위 화면([JoinGroupPage])이 들고 있고,
+/// 이 위젯은 [group] 으로부터 표시 값을 파생해 가운데 콘텐츠만 그린다.
+/// (조회 실패·이미 참여 중·정원 초과면 이름 대신 안내 문구를 보여준다)
+class JoinConfirm extends StatelessWidget {
+  const JoinConfirm({super.key, required this.group});
 
-  /// 참여할 모임 이름.
-  final String groupName;
-
-  /// 이름 아래 보조 정보. (예: '2026. 06.28 개설 · 7명')
-  final String subtitle;
-
-  /// 멤버 아바타 묶음 아래 요약. (예: '마라탕 킬러님 외 2명이 함께하고 있어요')
-  final String memberSummary;
-
-  /// 보여줄 멤버 아바타 슬롯. 각 원소가 null·빈 값이면 기본 아바타로 표시한다.
-  /// (0~2개가 넘어오며, 2개일 때 겹쳐 보여준다)
-  final List<String?> memberAvatarUrls;
+  /// 참여할 모임 정보. 조회 실패 시 null.
+  final InviteGroup? group;
 
   @override
   Widget build(BuildContext context) {
+    final group = this.group;
+    final groupName = group == null
+        ? '잘못된 초대입니다'
+        : group.alreadyJoined
+        ? '이미 참여 중인 방입니다'
+        : group.isFull
+        ? '정원이 초과되었어요'
+        : group.name;
+    final subtitle = group == null
+        ? ''
+        : '${_formatDate(group.createdAt.toLocal())} 개설 · ${group.memberCount}명';
+    final memberSummary = group == null
+        ? ''
+        : group.memberCount <= 1
+        ? '${group.ownerNickname}님이 함께하고 있어요'
+        : '${group.ownerNickname}님 외 ${group.memberCount - 1}명이 함께하고 있어요';
+    // 멤버 수만큼(1명이면 1개, 2명 이상이면 2개) 아바타를 보여준다.
+    // 목록에 없거나 null(이미지 미설정)인 슬롯은 null 로 둬 기본 아바타로 표시한다.
+    final memberAvatars = group?.memberAvatars ?? const <String?>[];
+    final avatarCount = group == null ? 0 : (group.memberCount <= 1 ? 1 : 2);
+    final memberAvatarUrls = List<String?>.generate(
+      avatarCount,
+      (i) => i < memberAvatars.length ? memberAvatars[i] : null,
+    );
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -56,6 +67,13 @@ class JoinConfirmBody extends StatelessWidget {
       ),
     );
   }
+}
+
+/// DateTime → 'yyyy.MM.dd'.
+String _formatDate(DateTime date) {
+  final month = date.month.toString().padLeft(2, '0');
+  final day = date.day.toString().padLeft(2, '0');
+  return '${date.year}.$month.$day';
 }
 
 /// 멤버 아바타를 겹쳐 보여주는 묶음.

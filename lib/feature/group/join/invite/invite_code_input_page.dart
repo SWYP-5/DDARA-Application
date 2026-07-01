@@ -75,7 +75,7 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
       // 모든 검증 통과 시 참여 확인 화면으로 inviteGroup 을 담아 이동.
       final inviteGroup = next.inviteGroup;
       if (prev?.inviteGroup == null && inviteGroup != null) {
-        context.push(RoutePath.joinConfirm, extra: inviteGroup);
+        context.push(RoutePath.joinGroup, extra: inviteGroup);
         return;
       }
 

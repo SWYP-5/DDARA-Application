@@ -40,7 +40,7 @@ Future<void> routeAfterAuth(WidgetRef ref, GoRouter router) async {
   if (pending != null && pending.isNotEmpty) {
     ref.read(pendingInviteCodeProvider.notifier).state = null;
     // 홈을 거치지 않고 곧바로 랜딩으로 진입한다. (홈이 잠깐 비쳤다 사라지는 깜빡임 제거)
-    // 뒤로가기는 참여 화면(JoinConfirmPage) 에서 홈으로 보내도록 처리한다.
+    // 뒤로가기는 참여 화면(JoinGroupPage) 에서 홈으로 보내도록 처리한다.
     router.go('${RoutePath.inviteLanding}?code=$pending');
     return;
   }

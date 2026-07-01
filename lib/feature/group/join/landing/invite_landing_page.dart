@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 /// 초대 링크(카카오 공유 등)로 진입했을 때 보여주는 랜딩 화면.
 ///
 /// [DdaraInvitationAnimation] 을 재생하는 동안 [inviteCode] 로 모임 정보를
-/// 조회하고, **애니메이션이 끝나고 조회(성공·실패)도 끝나면** [JoinConfirmPage]
+/// 조회하고, **애니메이션이 끝나고 조회(성공·실패)도 끝나면** [JoinGroupPage]
 /// 로 전환한다. 조회에 실패해도 같은 화면으로 넘어간다.
 class InviteLandingPage extends ConsumerStatefulWidget {
   const InviteLandingPage({super.key, required this.inviteCode});
@@ -90,7 +90,7 @@ class _InviteLandingPageState extends ConsumerState<InviteLandingPage> {
   /// 콘텐츠 페이드아웃이 끝나면 참여 확인 화면으로 전환한다.
   void _onFadeOutEnd() {
     if (!mounted || _visible) return;
-    context.pushReplacement(RoutePath.joinConfirm, extra: _group);
+    context.pushReplacement(RoutePath.joinGroup, extra: _group);
   }
 
   @override
