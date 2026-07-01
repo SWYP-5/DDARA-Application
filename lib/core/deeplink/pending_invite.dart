@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,13 +39,9 @@ Future<void> routeAfterAuth(WidgetRef ref, GoRouter router) async {
   final pending = ref.read(pendingInviteCodeProvider);
   if (pending != null && pending.isNotEmpty) {
     ref.read(pendingInviteCodeProvider.notifier).state = null;
-    // 참여 화면에서 뒤로가기 하면 홈으로 가도록, 홈을 먼저 깔고 그 위에 쌓는다.
-    // go(home) 의 redirect 처리가 끝난 다음 프레임에 push 해야 [home, join] 이 된다.
-    // (같은 프레임에 연속 호출하면 push 가 먼저 적용돼 [권한화면, join] 이 됨)
-    router.go(RoutePath.home);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      router.push('${RoutePath.groupJoin}?code=$pending');
-    });
+    // 홈을 거치지 않고 곧바로 랜딩으로 진입한다. (홈이 잠깐 비쳤다 사라지는 깜빡임 제거)
+    // 뒤로가기는 참여 화면(JoinConfirmPage) 에서 홈으로 보내도록 처리한다.
+    router.go('${RoutePath.inviteLanding}?code=$pending');
     return;
   }
 

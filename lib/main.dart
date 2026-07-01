@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:app_links/app_links.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +56,19 @@ Future<void> main() async {
     await container.read(authStateProvider.future);
   } catch (_) {
     // 인증 확인 실패 시 비로그인으로 처리
+  }
+
+  // 콜드 스타트 초대 딥링크를 라우터 생성 전에 읽어 보관한다.
+  // (라우터가 이 코드를 보고 초기 위치를 landing 으로 잡아, 홈이 먼저 그려졌다
+  //  landing 으로 튕기는 깜빡임을 없앤다)
+  try {
+    final initialUri = await AppLinks().getInitialLink();
+    final code = DeepLinkService.parseInviteCode(initialUri);
+    if (code != null) {
+      container.read(pendingInviteCodeProvider.notifier).state = code;
+    }
+  } catch (_) {
+    // 초기 링크 조회 실패는 무시한다. (스트림으로도 들어올 수 있음)
   }
 
   FlutterNativeSplash.remove();

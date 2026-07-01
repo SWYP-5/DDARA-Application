@@ -20,29 +20,35 @@ class DeepLinkService {
   final AppLinks _appLinks = AppLinks();
   StreamSubscription<Uri>? _subscription;
 
-  /// 콜드 스타트(링크로 앱 실행) + 실행 중 수신 스트림을 모두 구독한다.
+  /// 실행 중(앱이 떠 있을 때) 들어오는 링크 스트림을 구독한다.
+  ///
+  /// 콜드 스타트(링크로 앱이 켜진) 최초 URI 는 라우터 초기 위치를 잡기 위해
+  /// `main()` 에서 [parseInviteCode] 로 먼저 읽어 처리하므로 여기선 다루지 않는다.
+  /// (그래야 홈이 먼저 그려졌다 landing 으로 튕기는 깜빡임이 없다)
   Future<void> init() async {
-    // 앱이 죽어있다 링크로 켜진 경우의 최초 URI.
-    // (uriLinkStream 은 이 초기 링크를 emit 하지 않으므로 별도로 처리)
-    final initialUri = await _appLinks.getInitialLink();
-    if (initialUri != null) _handle(initialUri);
-
-    // 앱이 떠 있는 중 들어오는 링크.
     _subscription = _appLinks.uriLinkStream.listen(_handle);
   }
 
   void _handle(Uri uri) {
+    final code = parseInviteCode(uri);
+    if (code != null) onInvite(code);
+  }
+
+  /// URI 에서 초대코드를 뽑아낸다. 초대 링크가 아니면 null.
+  ///
+  /// 콜드 스타트(main) 와 실행 중 스트림(_handle) 이 같은 규칙을 쓰도록 공유한다.
+  static String? parseInviteCode(Uri? uri) {
+    if (uri == null) return null;
+
     // 카카오 로그인 콜백(kakao{KEY}://oauth?code=...)은 KakaoSDK 가 처리한다.
     // oauth 콜백도 code 파라미터를 갖고 있어, host 로 거르지 않으면 인가 코드를
     // 초대코드로 오인해 참여 화면으로 튕긴다. (로그인과 같은 스킴·host 만 다름)
-    if (uri.scheme.startsWith('kakao') && uri.host == 'oauth') return;
+    if (uri.scheme.startsWith('kakao') && uri.host == 'oauth') return null;
 
     // (A) invite_code / (B) code 둘 다 지원.
     final code =
         uri.queryParameters['invite_code'] ?? uri.queryParameters['code'];
-    if (code != null && code.isNotEmpty) {
-      onInvite(code);
-    }
+    return (code != null && code.isNotEmpty) ? code : null;
   }
 
   void dispose() {
