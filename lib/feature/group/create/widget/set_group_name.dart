@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,10 +33,6 @@ class _SetGroupNameState extends ConsumerState<SetGroupName> {
   /// 모임 이름 최대 길이.
   static const _nameMaxLength = 20;
 
-  /// 이름이 [_nameMaxLength] 를 초과하면 에러 문구, 아니면 null.
-  String? get _nameError =>
-      _nameController.text.length > _nameMaxLength ? '20자 이하로 입력해주세요' : null;
-
   @override
   void dispose() {
     _nameController.removeListener(_onNameChanged);
@@ -47,30 +44,36 @@ class _SetGroupNameState extends ConsumerState<SetGroupName> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(createGroupNotifierProvider.notifier);
+    final l10n = AppLocalizations.of(context);
+
+    // 이름이 최대 길이를 초과하면 에러 문구, 아니면 null.
+    final nameError = _nameController.text.length > _nameMaxLength
+        ? l10n.groupCreateNameLengthError
+        : null;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.s1,
       children: [
-        const TitleDescription(
-          title: '모임 이름을 정해주세요',
-          description: '내가 먼저 찍으면, 친구들이 따라 찍어요',
+        TitleDescription(
+          title: l10n.groupCreateTitle,
+          description: l10n.groupCreateSubtitle,
         ),
         // body 다음 간격 s6. (spacing s1 이 SizedBox 양옆에 붙으므로 s1+s4+s1=s6)
         const SizedBox(height: AppSpacing.s4),
         AppTextField(
-          label: '모임 이름',
-          placeholder: '예) 마라탕 걸즈',
+          label: l10n.groupCreateNameLabel,
+          placeholder: l10n.groupCreateNamePlaceholder,
           controller: _nameController,
           highlightWhenFilled: true,
-          errorText: _nameError,
+          errorText: nameError,
           onChanged: notifier.groupNameOnChanged,
         ),
         const SizedBox(height: AppSpacing.s4),
         AppTextField(
-          label: '한 줄 소개 (선택)',
-          placeholder: '어떤 모임인지 알려주세요',
+          label: l10n.groupCreateIntroLabel,
+          placeholder: l10n.groupCreateIntroPlaceholder,
           controller: _introController,
           highlightWhenFilled: true,
           onChanged: notifier.descriptionOnChanged,

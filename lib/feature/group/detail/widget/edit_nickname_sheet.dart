@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/feature/group/widget/set_nickname.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 모임 닉네임을 수정하는 바텀시트.
@@ -41,7 +42,9 @@ class _EditNicknameSheetState extends State<EditNicknameSheet> {
 
   void _submit() {
     if (_nickname.isEmpty) {
-      setState(() => _errorText = '닉네임을 입력해주세요.');
+      setState(
+        () => _errorText = AppLocalizations.of(context).editNicknameEmptyError,
+      );
       return;
     }
     final error = validateNickname(_nickname);
@@ -78,7 +81,10 @@ class _EditNicknameSheetState extends State<EditNicknameSheet> {
               errorText: _errorText,
             ),
             const SizedBox(height: AppSpacing.s6),
-            AppButton(label: '수정', onPressed: _submit),
+            AppButton(
+              label: AppLocalizations.of(context).editNicknameSubmit,
+              onPressed: _submit,
+            ),
           ],
         ),
       ),

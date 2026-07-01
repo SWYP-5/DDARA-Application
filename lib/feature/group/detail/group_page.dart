@@ -96,6 +96,7 @@ class GroupPage extends ConsumerWidget {
 
   /// 우측 메뉴 버튼을 눌렀을 때 뜨는 모임 메뉴(액션 시트).
   void _showMenu(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     showCupertinoModalPopup<void>(
       context: context,
       builder: (sheetContext) => CupertinoActionSheet(
@@ -105,7 +106,7 @@ class GroupPage extends ConsumerWidget {
               Navigator.of(sheetContext).pop();
               _editNickname(context, ref);
             },
-            child: const AppText.title('닉네임 수정'),
+            child: AppText.title(l10n.groupMenuEditNickname),
           ),
           CupertinoActionSheetAction(
             isDestructiveAction: true,
@@ -113,15 +114,15 @@ class GroupPage extends ConsumerWidget {
               Navigator.of(sheetContext).pop();
               _exitGroup(context, ref);
             },
-            child: const AppText.title(
-              '모임 나가기',
+            child: AppText.title(
+              l10n.groupMenuExit,
               color: AppColors.statusDanger,
             ),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
           onPressed: () => Navigator.of(sheetContext).pop(),
-          child: const AppText.title('취소'),
+          child: AppText.title(l10n.commonCancel),
         ),
       ),
     );
@@ -145,10 +146,11 @@ class GroupPage extends ConsumerWidget {
   /// 성공하면 홈의 목록을 새로 조회(invalidate)해 나간 모임이 사라지도록 반영한
   /// 뒤 홈으로 이동한다. (실패 시 notifier 가 에러 토스트 처리)
   Future<void> _exitGroup(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final confirmed = await AppDialog.show(
       context,
-      title: '모임에서 나갈까요?',
-      confirmLabel: '나가기',
+      title: l10n.groupExitConfirmTitle,
+      confirmLabel: l10n.groupExitConfirmAction,
       confirmColor: AppColors.statusDanger,
       confirmLabelColor: AppColors.textPrimary,
     );

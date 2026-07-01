@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/widget/profile_avatar.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
 /// 모임 참여 확인 화면의 본문. (모임 정보 + 멤버 미리보기)
@@ -17,22 +18,29 @@ class JoinConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final group = this.group;
     final groupName = group == null
-        ? '잘못된 초대입니다'
+        ? l10n.joinConfirmInvalid
         : group.alreadyJoined
-        ? '이미 참여 중인 방입니다'
+        ? l10n.joinConfirmAlreadyJoined
         : group.isFull
-        ? '정원이 초과되었어요'
+        ? l10n.joinConfirmFull
         : group.name;
     final subtitle = group == null
         ? ''
-        : '${_formatDate(group.createdAt.toLocal())} 개설 · ${group.memberCount}명';
+        : l10n.joinConfirmSubtitle(
+            _formatDate(group.createdAt.toLocal()),
+            group.memberCount,
+          );
     final memberSummary = group == null
         ? ''
         : group.memberCount <= 1
-        ? '${group.ownerNickname}님이 함께하고 있어요'
-        : '${group.ownerNickname}님 외 ${group.memberCount - 1}명이 함께하고 있어요';
+        ? l10n.joinConfirmMemberOwner(group.ownerNickname)
+        : l10n.joinConfirmMemberOthers(
+            group.ownerNickname,
+            group.memberCount - 1,
+          );
     // 멤버 수만큼(1명이면 1개, 2명 이상이면 2개) 아바타를 보여준다.
     // 목록에 없거나 null(이미지 미설정)인 슬롯은 null 로 둬 기본 아바타로 표시한다.
     final memberAvatars = group?.memberAvatars ?? const <String?>[];

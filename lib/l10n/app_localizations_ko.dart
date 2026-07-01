@@ -132,10 +132,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get photoTakeAction => '촬영하러 가기';
 
   @override
-  String get groupCreateTitle => '모임 이름을 설정해주세요.';
+  String get groupCreateTitle => '모임 이름을 정해주세요';
 
   @override
-  String get groupCreateSubtitle => '내가 먼저 찍으면, 친구들이 이 주제를 따라 찍어요';
+  String get groupCreateSubtitle => '내가 먼저 찍으면, 친구들이 따라 찍어요';
 
   @override
   String get groupCreateNameLabel => '모임 이름';
@@ -262,5 +262,82 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String remainingMinutes(int minutes) {
     return '$minutes분';
+  }
+
+  @override
+  String get commonNext => '다음';
+
+  @override
+  String get commonStart => '시작하기';
+
+  @override
+  String get commonCancel => '취소';
+
+  @override
+  String get groupCreateNameLengthError => '20자 이하로 입력해주세요';
+
+  @override
+  String setNicknameTitle(String groupName) {
+    return '$groupName 안에서\n어떻게 불러드릴까요?';
+  }
+
+  @override
+  String get setNicknameDescription => '친구들에게 보이는 이름이에요';
+
+  @override
+  String get setNicknamePlaceholder => '닉네임 (2~10자)';
+
+  @override
+  String get setNicknameCaption =>
+      '*한글과 영어만 사용 가능해요\n**욕설·혐오·사칭 등 부적절한 닉네임은 변경될 수 있어요(자세한 기준 → 운영정책)';
+
+  @override
+  String get groupMenuEditNickname => '닉네임 수정';
+
+  @override
+  String get groupMenuExit => '모임 나가기';
+
+  @override
+  String get groupExitConfirmTitle => '모임에서 나갈까요?';
+
+  @override
+  String get groupExitConfirmAction => '나가기';
+
+  @override
+  String get editNicknameEmptyError => '닉네임을 입력해주세요.';
+
+  @override
+  String get editNicknameSubmit => '수정';
+
+  @override
+  String get inviteLandingTitle => '초대장이 도착했어요';
+
+  @override
+  String get joinConfirmInvalid => '잘못된 초대입니다';
+
+  @override
+  String get joinConfirmAlreadyJoined => '이미 참여 중인 방입니다';
+
+  @override
+  String get joinConfirmFull => '정원이 초과되었어요';
+
+  @override
+  String joinConfirmSubtitle(String date, int count) {
+    return '$date 개설 · $count명';
+  }
+
+  @override
+  String joinConfirmMemberOwner(String name) {
+    return '$name님이 함께하고 있어요';
+  }
+
+  @override
+  String joinConfirmMemberOthers(String name, int others) {
+    return '$name님 외 $others명이 함께하고 있어요';
+  }
+
+  @override
+  String historyDate(int month, int day) {
+    return '$month월 $day일';
   }
 }

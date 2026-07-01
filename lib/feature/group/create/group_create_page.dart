@@ -98,7 +98,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                 const Spacer(),
                 // 스텝 간 공유하는 하단 버튼.
                 AppButton(
-                  label: _step == 0 ? '다음' : '시작하기',
+                  label: _step == 0 ? l10n.commonNext : l10n.commonStart,
                   onPressed: canSubmit
                       ? () {
                           if (_step == 0) {

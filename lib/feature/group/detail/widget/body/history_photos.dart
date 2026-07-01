@@ -25,6 +25,7 @@ class HistoryPhotos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const ClampingScrollPhysics(),
@@ -47,7 +48,7 @@ class HistoryPhotos extends StatelessWidget {
                 // 카드마다 좌우로 번갈아 기울이고 모서리 둥글기도 교차시킨다.
                 angle: i.isEven ? -0.14 : 0.14,
                 title: cycles[i].topic,
-                date: _formatDate(cycles[i].date),
+                date: _dateLabel(l10n, cycles[i].date),
                 participantCount: cycles[i].participantCount,
                 thumbnailUrl: cycles[i].thumbnailUrl,
                 radius: i.isEven ? AppRadius.lg : AppRadius.sm,
@@ -59,9 +60,9 @@ class HistoryPhotos extends StatelessWidget {
   }
 
   /// 날짜 라벨. (예: '6월 12일')
-  String _formatDate(DateTime date) {
+  String _dateLabel(AppLocalizations l10n, DateTime date) {
     final d = date.toLocal();
-    return '${d.month}월 ${d.day}일';
+    return l10n.historyDate(d.month, d.day);
   }
 }
 
