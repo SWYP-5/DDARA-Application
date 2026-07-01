@@ -7,9 +7,7 @@ class GetInviteGroupUseCase {
   GetInviteGroupUseCase(this._groupRepository);
 
   Future<InviteGroup> getInviteGroup(String inviteCode) async {
-    final test = await _groupRepository.getInviteGroup(inviteCode);
-    print(test);
 
-    return test;
+    return await _groupRepository.getInviteGroup(inviteCode);
   }
 }
