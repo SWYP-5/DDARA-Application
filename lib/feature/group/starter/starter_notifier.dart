@@ -19,28 +19,11 @@ class StarterNotifier extends AutoDisposeNotifier<StarterState> {
     state = state.copyWith(step: StarterStep.camera);
   }
 
-  /// 촬영 완료 → 촬영본을 들고 사진 확인 화면으로 전환.
+  /// 촬영 완료 → 촬영본을 본문(info)에 바로 반영하고 본문으로 전환.
   void capture(String path) {
     state = state.copyWith(
-      step: StarterStep.photoCheck,
-      captured: FileImage(File(path)),
+      step: StarterStep.info,
+      photo: FileImage(File(path)),
     );
-  }
-
-  /// 다시 찍기 → 촬영 화면으로.
-  void retake() {
-    state = state.copyWith(step: StarterStep.camera);
-  }
-
-  /// 올리기 → 방금 촬영한 사진을 본문(info)에 반영한다.
-  void upload() {
-    final captured = state.captured;
-    if (captured == null) return;
-    state = state.copyWith(step: StarterStep.info, photo: captured);
-  }
-
-  /// 본문(info)으로 돌아가기. (카메라에서 뒤로)
-  void backToInfo() {
-    state = state.copyWith(step: StarterStep.info);
   }
 }

@@ -9,6 +9,7 @@ import 'package:ddara/feature/group/join/confirm/join_confirm.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/widget/set_nickname.dart';
 import 'package:ddara/feature/home/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -76,6 +77,7 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
     final group = widget.group;
     final state = ref.watch(joinGroupNotifierProvider);
     final notifier = ref.read(joinGroupNotifierProvider.notifier);
+    final l10n = AppLocalizations.of(context);
 
     // 닉네임 필드 에러: 클라이언트 검증 우선, 없으면 서버의 닉네임 중복 에러.
     final nicknameError =
@@ -119,7 +121,7 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
         }
       },
       child: CupertinoPageScaffold(
-        navigationBar: AppBar(title: '모임 참여', onBack: _handleBack),
+        navigationBar: AppBar(title: l10n.groupJoinTitle, onBack: _handleBack),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -147,7 +149,7 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
                 ),
                 // 스텝 간 공유하는 하단 버튼.
                 AppButton(
-                  label: _step == 0 ? '모임 참여하기' : '시작하기',
+                  label: _step == 0 ? l10n.groupJoin : l10n.commonStart,
                   onPressed: canSubmit
                       ? () {
                           if (_step == 0) {

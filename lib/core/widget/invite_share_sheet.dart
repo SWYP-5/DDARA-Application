@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/share/kakao_share_service.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ class InviteShareSheet extends StatelessWidget {
     super.key,
     required this.inviteCode,
     required this.imageUrl,
+    this.memberShortage = false,
   });
 
   /// 공유/복사에 사용할 초대코드 (백엔드 발급 문자열).
@@ -27,16 +29,24 @@ class InviteShareSheet extends StatelessWidget {
   /// 공유 카드에 넣을 모임 대표 이미지 (공개 https URL).
   final String imageUrl;
 
+  /// 인원 부족으로 자동으로 띄운 경우. true 면 머리말을 "아직 멤버가 부족해요"
+  /// 안내로 바꾼다. (기본: 일반 초대 머리말)
+  final bool memberShortage;
+
   /// 초대 공유 시트를 표시한다. (Cupertino 모달 팝업)
   static Future<void> show(
     BuildContext context, {
     required String inviteCode,
     required String imageUrl,
+    bool memberShortage = false,
   }) {
     return showCupertinoModalPopup<void>(
       context: context,
-      builder: (_) =>
-          InviteShareSheet(inviteCode: inviteCode, imageUrl: imageUrl),
+      builder: (_) => InviteShareSheet(
+        inviteCode: inviteCode,
+        imageUrl: imageUrl,
+        memberShortage: memberShortage,
+      ),
     );
   }
 
@@ -107,10 +117,17 @@ class InviteShareSheet extends StatelessWidget {
                   shape: StadiumBorder(),
                 ),
               ),
-              const AppText.headlineMedium(
-                '함께할 친구를 초대해요',
-                textAlign: TextAlign.center,
-              ),
+              if (memberShortage)
+                const TitleDescription(
+                  title: '아직 멤버가 부족해요',
+                  description: '3명부터 시작 가능해요',
+                  centered: true,
+                )
+              else
+                const AppText.headlineMedium(
+                  '함께할 친구를 초대해요',
+                  textAlign: TextAlign.center,
+                ),
               const SizedBox(height: AppSpacing.s2),
               Padding(
                 padding: const EdgeInsets.all(AppSpacing.s3),
@@ -149,7 +166,7 @@ class InviteShareSheet extends StatelessWidget {
                 ),
               ),
               AppTextButton.body(
-                label: '나중에 할게요',
+                label: '다음에 할게요',
                 onPressed: () => _onLater(context),
               ),
             ],

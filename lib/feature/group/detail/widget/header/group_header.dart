@@ -3,6 +3,7 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/feature/group/detail/widget/header/empty_header.dart';
 import 'package:ddara/feature/group/detail/widget/header/started_header.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 모임 상세 화면 상단 헤더.
@@ -31,6 +32,7 @@ class GroupHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final cycle = progress;
     // 진행 중인 사이클이 없으면 빈 상태 헤더 + 시작 버튼.
     if (cycle == null) {
@@ -38,8 +40,8 @@ class GroupHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const EmptyHeader(),
-          const SizedBox(height: AppSpacing.s5),
-          AppButton(label: '내가 먼저 시작하기', onPressed: navigateToStart),
+          const SizedBox(height: AppSpacing.s6),
+          AppButton(label: l10n.groupHeaderStart, onPressed: navigateToStart),
         ],
       );
     }
@@ -48,9 +50,9 @@ class GroupHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        StartedHeader(imageUri: imageUri ?? "", progress: cycle),
+        StartedHeader(imageUri: cycle.starterImageUrl ?? "", progress: cycle),
         const SizedBox(height: AppSpacing.s5),
-        AppButton(label: '따라찍으러 가기', onPressed: onTakePhoto),
+        AppButton(label: l10n.groupHeaderTakePhoto, onPressed: onTakePhoto),
       ],
     );
   }

@@ -15,6 +15,8 @@ abstract class GroupDetailResponse with _$GroupDetailResponse {
     required List<GroupMemberResponse> members,
     // 진행 중인 사이클이 없으면 null.
     required GroupCycleResponse? currentCycle,
+    // 현재 사용자가 새 사이클을 시작할 수 있는지 여부.
+    required bool canStartCycle,
     required DateTime createdAt,
   }) = _GroupDetailResponse;
 
@@ -42,6 +44,8 @@ abstract class GroupCycleResponse with _$GroupCycleResponse {
     required int cycleNumber,
     required String topic,
     required int starterUserId,
+    required String starterNickname,
+    required String? starterImageUrl,
     required String status,
     required DateTime startedAt,
     required DateTime deadlineAt,

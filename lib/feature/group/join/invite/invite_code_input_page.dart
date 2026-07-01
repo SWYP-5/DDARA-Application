@@ -8,6 +8,7 @@ import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/join/join_group_page.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -64,6 +65,7 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
   Widget build(BuildContext context) {
     final notifier = ref.read(inviteCodeInputNotifierProvider.notifier);
     final state = ref.watch(inviteCodeInputNotifierProvider);
+    final l10n = AppLocalizations.of(context);
 
     // 아래 에러 코드는 입력 필드 아래 인라인 에러로 표시한다.
     final errorCode = state.errorCode;
@@ -78,10 +80,7 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
       if (prev?.inviteGroup == null && inviteGroup != null) {
         context.push(
           RoutePath.joinGroup,
-          extra: JoinGroupArgs(
-            group: inviteGroup,
-            inviteCode: next.inviteCode,
-          ),
+          extra: JoinGroupArgs(group: inviteGroup, inviteCode: next.inviteCode),
         );
         return;
       }
@@ -95,7 +94,10 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
     });
 
     return CupertinoPageScaffold(
-      navigationBar: AppBar(title: '모임 참여', onBack: () => context.pop()),
+      navigationBar: AppBar(
+        title: l10n.groupJoinTitle,
+        onBack: () => context.pop(),
+      ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -108,21 +110,24 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: AppSpacing.s3,
             children: [
-              const TitleDescription(
-                title: '받은 초대 코드를 입력해주세요',
-                description: '링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요',
+              TitleDescription(
+                title: l10n.groupJoinHeadline,
+                description: l10n.groupJoinSubtitle,
               ),
               const SizedBox(height: AppSpacing.s2),
               AppTextField(
-                label: '초대 코드',
-                placeholder: '예) ASKD23NSK12',
+                label: l10n.groupJoinCodeLabel,
+                placeholder: l10n.groupJoinCodePlaceholder,
                 controller: _codeController,
                 highlightWhenFilled: true,
                 errorText: codeErrorText,
                 onChanged: notifier.inviteCodeOnChanged,
               ),
               const Spacer(),
-              AppButton(label: '참여하기', onPressed: () => notifier.joinGroup()),
+              AppButton(
+                label: l10n.groupJoin,
+                onPressed: () => notifier.joinGroup(),
+              ),
             ],
           ),
         ),

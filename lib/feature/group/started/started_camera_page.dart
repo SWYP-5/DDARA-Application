@@ -1,26 +1,59 @@
 import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
-import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/core/widget/camera/camera.dart';
+import 'package:ddara/core/widget/app_dialog.dart';
+import 'package:ddara/feature/group/started/started_camera.dart';
+import 'package:ddara/feature/group/started/started_photo_check.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
-class StartedCameraPage extends StatelessWidget {
-  const StartedCameraPage({super.key});
+/// 따라찍기 촬영 화면. 공유 AppBar 하나 아래에서 촬영/사진 확인 본문만 교체한다.
+class StartedCameraPage extends StatefulWidget {
+  const StartedCameraPage({super.key, required this.guideImageUrl});
+
+  /// 따라찍기 가이드(스타터가 미리 찍은) 사진 URL.
+  final String guideImageUrl;
+
+  @override
+  State<StartedCameraPage> createState() => _StartedCameraPageState();
+}
+
+class _StartedCameraPageState extends State<StartedCameraPage> {
+  /// 촬영된 사진 경로. null 이면 촬영 단계, 값이 있으면 사진 확인 단계.
+  String? _capturedPath;
 
   @override
   Widget build(BuildContext context) {
+    final capturedPath = _capturedPath;
+    final l10n = AppLocalizations.of(context);
+
     return CupertinoPageScaffold(
-      navigationBar: const AppBar(),
-      child: Camera(
-        // TODO: 모임 상태에 따라 투명도/모드 영역 표시 여부 결정.
-        showOpacity: true,
-        showViewMode: true,
-        // TODO: 친구가 미리 찍은 사진으로 교체. (현재 테스트용 임시 이미지)
-        guideImage: const AssetImage('assets/images/temp_image.jpg'),
-        // 촬영하면 사진 확인 화면으로 이동한다.
-        onCapture: (path) =>
-            context.push(RoutePath.startedPhotoCheck, extra: path),
-      ),
+      navigationBar: AppBar(title: l10n.startedCameraTitle),
+      child: capturedPath == null
+          ? StartedCamera(
+              guideImageUrl: widget.guideImageUrl,
+              // 촬영하면 사진 확인 단계로 전환한다.
+              onCapture: (path) => setState(() => _capturedPath = path),
+            )
+          : StartedPhotoCheck(
+              imagePath: capturedPath,
+              // 다시 찍기 → 촬영 단계로 돌아간다.
+              onRetake: () => setState(() => _capturedPath = null),
+              onUpload: () async {
+                // 게시는 되돌릴 수 없으므로 확인을 한 번 받는다.
+                final ok = await AppDialog.show(
+                  context,
+                  title: l10n.photoPostWarningTitle,
+                  confirmLabel: l10n.commonConfirm,
+                );
+                if (!ok) return;
+                // TODO: 따라찍기 사진 업로드. (백엔드 스펙 대기)
+                if (!context.mounted) return;
+                // 스택을 유지한 채(go 로 초기화하지 않고) 바로 아래의
+                // StartedPage(/group/started) 로 돌아간다.
+                // TODO: provider 연동 시 업로드한 사진이 반영되도록 갱신 추가.
+                context.pop();
+              },
+            ),
     );
   }
 }

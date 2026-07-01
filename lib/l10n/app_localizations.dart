@@ -297,6 +297,402 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{name}님 외 {others}명'**
   String meetingMemberOthers(String name, int others);
+
+  /// 공용 다이얼로그 확인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'확인'**
+  String get commonConfirm;
+
+  /// 촬영 후 다시 찍기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 찍기'**
+  String get photoRetake;
+
+  /// 촬영한 사진 올리기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'올리기'**
+  String get photoUpload;
+
+  /// 게시 전 되돌릴 수 없음을 알리는 확인 다이얼로그 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'게시되면 수정이 불가능합니다.'**
+  String get photoPostWarningTitle;
+
+  /// 촬영 화면으로 이동하는 알약 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'촬영하러 가기'**
+  String get photoTakeAction;
+
+  /// No description provided for @groupCreateTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 이름을 정해주세요'**
+  String get groupCreateTitle;
+
+  /// No description provided for @groupCreateSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 먼저 찍으면, 친구들이 따라 찍어요'**
+  String get groupCreateSubtitle;
+
+  /// No description provided for @groupCreateNameLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 이름'**
+  String get groupCreateNameLabel;
+
+  /// No description provided for @groupCreateNamePlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'예) 마라탕 걸즈'**
+  String get groupCreateNamePlaceholder;
+
+  /// No description provided for @groupCreateIntroLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'한 줄 소개 (선택)'**
+  String get groupCreateIntroLabel;
+
+  /// No description provided for @groupCreateIntroPlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'어떤 모임인지 알려주세요'**
+  String get groupCreateIntroPlaceholder;
+
+  /// No description provided for @groupCreateSubmit.
+  ///
+  /// In ko, this message translates to:
+  /// **'만들기'**
+  String get groupCreateSubmit;
+
+  /// No description provided for @groupJoinTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 참여'**
+  String get groupJoinTitle;
+
+  /// No description provided for @groupJoinHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'받은 초대 코드를 입력해주세요'**
+  String get groupJoinHeadline;
+
+  /// No description provided for @groupJoinSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'링크로 받았다면, 링크만 눌러도 바로 들어올 수 있어요'**
+  String get groupJoinSubtitle;
+
+  /// No description provided for @groupJoinCodeLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'초대 코드'**
+  String get groupJoinCodeLabel;
+
+  /// No description provided for @groupJoinCodePlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'예) ASKD23NSK12'**
+  String get groupJoinCodePlaceholder;
+
+  /// No description provided for @starterTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'스타터 시작하기'**
+  String get starterTitle;
+
+  /// No description provided for @starterConceptLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'컨셉 설명'**
+  String get starterConceptLabel;
+
+  /// No description provided for @starterConceptPlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'예) 마라탕 또 먹기'**
+  String get starterConceptPlaceholder;
+
+  /// No description provided for @starterConceptLengthError.
+  ///
+  /// In ko, this message translates to:
+  /// **'20자 이내로 입력해 주세요'**
+  String get starterConceptLengthError;
+
+  /// No description provided for @startedCameraTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍기'**
+  String get startedCameraTitle;
+
+  /// No description provided for @groupHeaderStart.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 먼저 시작하기'**
+  String get groupHeaderStart;
+
+  /// No description provided for @groupHeaderTakePhoto.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍으러 가기'**
+  String get groupHeaderTakePhoto;
+
+  /// No description provided for @groupDetailEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 따라찍기가 없어요'**
+  String get groupDetailEmptyTitle;
+
+  /// No description provided for @groupDetailLoadError.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 정보를 불러오지 못했어요.'**
+  String get groupDetailLoadError;
+
+  /// No description provided for @groupMembersTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'사람들'**
+  String get groupMembersTitle;
+
+  /// No description provided for @groupMembersAdd.
+  ///
+  /// In ko, this message translates to:
+  /// **'추가하기'**
+  String get groupMembersAdd;
+
+  /// No description provided for @memberReportNickname.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임 신고'**
+  String get memberReportNickname;
+
+  /// No description provided for @memberReportMailSubject.
+  ///
+  /// In ko, this message translates to:
+  /// **'[따라] 닉네임 신고'**
+  String get memberReportMailSubject;
+
+  /// 닉네임 신고 메일의 본문. (신고 대상 닉네임 포함)
+  ///
+  /// In ko, this message translates to:
+  /// **'신고할 닉네임: {nickname}\n\n신고 사유를 작성해 주세요.\n'**
+  String memberReportMailBody(String nickname);
+
+  /// 닉네임 신고 메일 앱 실행에 실패했을 때 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'메일 앱을 열 수 없어요. ({email})'**
+  String memberReportMailFailed(String email);
+
+  /// No description provided for @groupHistoryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'지난 따라찍기'**
+  String get groupHistoryTitle;
+
+  /// No description provided for @groupHistoryMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'더보기'**
+  String get groupHistoryMore;
+
+  /// No description provided for @groupHistoryEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'지난 따라찍기가 아직 없어요'**
+  String get groupHistoryEmpty;
+
+  /// No description provided for @recordCycleLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍기'**
+  String get recordCycleLabel;
+
+  /// No description provided for @recordPhotoLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'함께한 사진'**
+  String get recordPhotoLabel;
+
+  /// 지난 따라찍기 카드의 참여 인원 수
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}명 참여'**
+  String historyParticipantCount(int count);
+
+  /// 진행 중인 따라찍기의 남은 시간 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중 · {time} 남음'**
+  String startedHeaderRemaining(String time);
+
+  /// 현재 따라찍기 회차
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}번째 따라찍기'**
+  String startedHeaderCycle(int count);
+
+  /// 따라찍기를 시작한 사람 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님이 시작했어요'**
+  String startedHeaderStarter(String name);
+
+  /// 마감 시간이 지난 경우 표시
+  ///
+  /// In ko, this message translates to:
+  /// **'마감'**
+  String get remainingDeadline;
+
+  /// 남은 시간(시간 단위)
+  ///
+  /// In ko, this message translates to:
+  /// **'{hours}시간'**
+  String remainingHours(int hours);
+
+  /// 남은 시간(분 단위)
+  ///
+  /// In ko, this message translates to:
+  /// **'{minutes}분'**
+  String remainingMinutes(int minutes);
+
+  /// No description provided for @commonNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음'**
+  String get commonNext;
+
+  /// No description provided for @commonStart.
+  ///
+  /// In ko, this message translates to:
+  /// **'시작하기'**
+  String get commonStart;
+
+  /// No description provided for @commonCancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get commonCancel;
+
+  /// No description provided for @groupCreateNameLengthError.
+  ///
+  /// In ko, this message translates to:
+  /// **'20자 이하로 입력해주세요'**
+  String get groupCreateNameLengthError;
+
+  /// 모임 닉네임 입력 폼 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'{groupName} 안에서\n어떻게 불러드릴까요?'**
+  String setNicknameTitle(String groupName);
+
+  /// No description provided for @setNicknameDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'친구들에게 보이는 이름이에요'**
+  String get setNicknameDescription;
+
+  /// No description provided for @setNicknamePlaceholder.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임 (2~10자)'**
+  String get setNicknamePlaceholder;
+
+  /// No description provided for @setNicknameCaption.
+  ///
+  /// In ko, this message translates to:
+  /// **'*한글과 영어만 사용 가능해요\n**욕설·혐오·사칭 등 부적절한 닉네임은 변경될 수 있어요(자세한 기준 → 운영정책)'**
+  String get setNicknameCaption;
+
+  /// No description provided for @groupMenuEditNickname.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임 수정'**
+  String get groupMenuEditNickname;
+
+  /// No description provided for @groupMenuExit.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임 나가기'**
+  String get groupMenuExit;
+
+  /// No description provided for @groupExitConfirmTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모임에서 나갈까요?'**
+  String get groupExitConfirmTitle;
+
+  /// No description provided for @groupExitConfirmAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'나가기'**
+  String get groupExitConfirmAction;
+
+  /// No description provided for @editNicknameEmptyError.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임을 입력해주세요.'**
+  String get editNicknameEmptyError;
+
+  /// No description provided for @editNicknameSubmit.
+  ///
+  /// In ko, this message translates to:
+  /// **'수정'**
+  String get editNicknameSubmit;
+
+  /// No description provided for @inviteLandingTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'초대장이 도착했어요'**
+  String get inviteLandingTitle;
+
+  /// No description provided for @joinConfirmInvalid.
+  ///
+  /// In ko, this message translates to:
+  /// **'잘못된 초대입니다'**
+  String get joinConfirmInvalid;
+
+  /// No description provided for @joinConfirmAlreadyJoined.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 참여 중인 방입니다'**
+  String get joinConfirmAlreadyJoined;
+
+  /// No description provided for @joinConfirmFull.
+  ///
+  /// In ko, this message translates to:
+  /// **'정원이 초과되었어요'**
+  String get joinConfirmFull;
+
+  /// 모임 참여 확인 화면의 개설일·인원 요약
+  ///
+  /// In ko, this message translates to:
+  /// **'{date} 개설 · {count}명'**
+  String joinConfirmSubtitle(String date, int count);
+
+  /// 참여 확인 화면 - 모임장 1명만 있을 때
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님이 함께하고 있어요'**
+  String joinConfirmMemberOwner(String name);
+
+  /// 참여 확인 화면 - 모임장 외 여러 명
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님 외 {others}명이 함께하고 있어요'**
+  String joinConfirmMemberOthers(String name, int others);
+
+  /// 지난 따라찍기 카드의 날짜 라벨
+  ///
+  /// In ko, this message translates to:
+  /// **'{month}월 {day}일'**
+  String historyDate(int month, int day);
 }
 
 class _AppLocalizationsDelegate

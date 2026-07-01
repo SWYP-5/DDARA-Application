@@ -22,6 +22,8 @@ class AppDialog extends StatelessWidget {
     required this.title,
     required this.confirmLabel,
     this.cancelLabel = '취소',
+    this.confirmColor,
+    this.confirmLabelColor,
   });
 
   /// 가운데 정렬되는 제목.
@@ -33,12 +35,21 @@ class AppDialog extends StatelessWidget {
   /// 취소 버튼 라벨.
   final String cancelLabel;
 
+  /// 확인 버튼 채움색 override. null 이면 기본 강조색.
+  /// (예: 삭제·나가기 등 파괴적 동작은 [AppColors.statusDanger] 를 넘긴다)
+  final Color? confirmColor;
+
+  /// 확인 버튼 글자색 override. null 이면 기본값(textOnAccent).
+  final Color? confirmLabelColor;
+
   /// 다이얼로그를 띄우고 결과를 받는다. 확인=true / 취소·바깥 탭=false.
   static Future<bool> show(
     BuildContext context, {
     required String title,
     required String confirmLabel,
     String cancelLabel = '취소',
+    Color? confirmColor,
+    Color? confirmLabelColor,
   }) async {
     final result = await showCupertinoDialog<bool>(
       context: context,
@@ -47,6 +58,8 @@ class AppDialog extends StatelessWidget {
         title: title,
         confirmLabel: confirmLabel,
         cancelLabel: cancelLabel,
+        confirmColor: confirmColor,
+        confirmLabelColor: confirmLabelColor,
       ),
     );
     return result ?? false;
@@ -99,6 +112,8 @@ class AppDialog extends StatelessWidget {
                       Expanded(
                         child: AppButton(
                           label: confirmLabel,
+                          color: confirmColor,
+                          foregroundColor: confirmLabelColor,
                           onPressed: () => Navigator.of(context).pop(true),
                         ),
                       ),

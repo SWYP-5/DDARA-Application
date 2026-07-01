@@ -1,12 +1,18 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/model/group/history_cycles.dart';
+import 'package:ddara/core/widget/empty_thumbnail.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
 /// 지난 따라찍기 사진들. (살짝 회전된 카드들을 가로로 나열)
 ///
 /// 카드 합 너비가 화면보다 넓을 수 있어 가로 스크롤로 감싼다.
 class HistoryPhotos extends StatelessWidget {
-  const HistoryPhotos({super.key});
+  const HistoryPhotos({super.key, required this.cycles});
+
+  /// 표시할 지난 사이클 목록.
+  final List<HistoryCycle> cycles;
 
   /// 카드 한 장의 실제 너비.
   static const double _cardWidth = 180;
@@ -19,6 +25,7 @@ class HistoryPhotos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const ClampingScrollPhysics(),
@@ -29,47 +36,33 @@ class HistoryPhotos extends StatelessWidget {
         AppSpacing.s5 + _overhang,
         AppSpacing.s4,
       ),
-      // TODO: 사진/이름 데이터는 모임 조회 API 응답으로 대체.
       child: Row(
         mainAxisSize: MainAxisSize.min,
         // 각 카드의 가로 점유폭을 줄여(widthFactor) 다음 카드가 위로 겹치게 한다.
-        children: const [
-          _OverlapCard(
-            cardWidth: _cardWidth,
-            visibleWidth: _visibleWidth,
-            child: _PhotoCard(
-              angle: -0.14,
-              title: '강아지',
-              date: '6월 12일',
-              participantCount: 5,
-              radius: AppRadius.lg,
+        children: [
+          for (var i = 0; i < cycles.length; i++)
+            _OverlapCard(
+              cardWidth: _cardWidth,
+              visibleWidth: _visibleWidth,
+              child: _PhotoCard(
+                // 카드마다 좌우로 번갈아 기울이고 모서리 둥글기도 교차시킨다.
+                angle: i.isEven ? -0.14 : 0.14,
+                title: cycles[i].topic,
+                date: _dateLabel(l10n, cycles[i].date),
+                participantCount: cycles[i].participantCount,
+                thumbnailUrl: cycles[i].thumbnailUrl,
+                radius: i.isEven ? AppRadius.lg : AppRadius.sm,
+              ),
             ),
-          ),
-          _OverlapCard(
-            cardWidth: _cardWidth,
-            visibleWidth: _visibleWidth,
-            child: _PhotoCard(
-              angle: 0.14,
-              title: '고양이',
-              date: '6월 13일',
-              participantCount: 4,
-              radius: AppRadius.sm,
-            ),
-          ),
-          _OverlapCard(
-            cardWidth: _cardWidth,
-            visibleWidth: _visibleWidth,
-            child: _PhotoCard(
-              angle: -0.10,
-              title: '산책',
-              date: '6월 14일',
-              participantCount: 3,
-              radius: AppRadius.lg,
-            ),
-          ),
         ],
       ),
     );
+  }
+
+  /// 날짜 라벨. (예: '6월 12일')
+  String _dateLabel(AppLocalizations l10n, DateTime date) {
+    final d = date.toLocal();
+    return l10n.historyDate(d.month, d.day);
   }
 }
 
@@ -107,6 +100,7 @@ class _PhotoCard extends StatelessWidget {
     required this.title,
     required this.date,
     required this.participantCount,
+    required this.thumbnailUrl,
     required this.radius,
   });
 
@@ -121,6 +115,9 @@ class _PhotoCard extends StatelessWidget {
 
   /// 촬영 날짜 라벨. (예: '6월 12일') — 외부 주입
   final String date;
+
+  /// 대표 썸네일 URL. null·빈 값이면 임시 에셋으로 대체한다.
+  final String? thumbnailUrl;
 
   /// 카드 모서리 둥글기.
   final double radius;
@@ -149,15 +146,16 @@ class _PhotoCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // TODO: 사진 데이터는 모임 조회 API 응답으로 대체. (임시 에셋)
-            Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover),
+            _thumbnail(),
             // 우측 상단: 참여 인원
             Padding(
               padding: const EdgeInsets.all(AppSpacing.s3),
               child: Align(
                 alignment: Alignment.topRight,
                 child: AppText.caption(
-                  '$participantCount명 참여',
+                  AppLocalizations.of(context).historyParticipantCount(
+                    participantCount,
+                  ),
                   color: AppColors.textPrimary,
                 ),
               ),
@@ -168,15 +166,25 @@ class _PhotoCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText.title(title),
-                  AppText.caption(date),
-                ],
+                children: [AppText.title(title), AppText.caption(date)],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  /// 카드 배경 썸네일. URL 이 없거나 로드 실패 시 자리표시로 대체한다.
+  Widget _thumbnail() {
+    final url = thumbnailUrl;
+    if (url == null || url.isEmpty) {
+      return const EmptyThumbnail();
+    }
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      errorBuilder: (_, _, _) => const EmptyThumbnail(),
     );
   }
 }

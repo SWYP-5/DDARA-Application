@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/widget/title_description.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
 /// 모임에서 사용할 닉네임을 입력받는 폼.
@@ -41,6 +42,8 @@ class _SetNicknameState extends State<SetNickname> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,22 +51,19 @@ class _SetNicknameState extends State<SetNickname> {
       spacing: AppSpacing.s2,
       children: [
         TitleDescription(
-          title: '${widget.groupName} 안에서\n어떻게 불러드릴까요?',
-          description: '친구들에게 보이는 이름이에요',
+          title: l10n.setNicknameTitle(widget.groupName),
+          description: l10n.setNicknameDescription,
         ),
         // body 다음 간격 s6. (바깥 spacing s2 가 SizedBox 양옆에 붙으므로 s2+s2+s2=s6)
         const SizedBox(height: AppSpacing.s2),
         AppTextField(
-          placeholder: '닉네임 (2~10자)',
+          placeholder: l10n.setNicknamePlaceholder,
           controller: _controller,
           highlightWhenFilled: true,
           errorText: widget.errorText,
           onChanged: widget.onChanged,
         ),
-        const AppText.caption(
-          '*한글과 영어만 사용 가능해요\n'
-          '**욕설·혐오·사칭 등 부적절한 닉네임은 변경될 수 있어요(자세한 기준 → 운영정책)',
-        ),
+        AppText.caption(l10n.setNicknameCaption),
       ],
     );
   }

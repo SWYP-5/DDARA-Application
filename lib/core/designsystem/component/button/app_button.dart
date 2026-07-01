@@ -23,17 +23,27 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.label,
     required this.onPressed,
+    this.color,
+    this.foregroundColor,
   }) : variant = AppButtonVariant.primary;
 
   const AppButton.outline({
     super.key,
     required this.label,
     required this.onPressed,
-  }) : variant = AppButtonVariant.outline;
+  }) : variant = AppButtonVariant.outline,
+       color = null,
+       foregroundColor = null;
 
   final String label;
   final VoidCallback? onPressed;
   final AppButtonVariant variant;
+
+  /// primary 변형의 채움색 override. null 이면 기본 강조색(accentDefault).
+  final Color? color;
+
+  /// primary 변형의 글자색 override. null 이면 기본값(textOnAccent).
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +53,7 @@ class AppButton extends StatelessWidget {
       width: double.infinity,
       child: switch (variant) {
         AppButtonVariant.primary => CupertinoButton(
-          color: AppColors.accentDefault,
+          color: color ?? AppColors.accentDefault,
           // 비활성 시 배경색.
           disabledColor: AppColors.bgSurfaceAlt,
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -52,7 +62,7 @@ class AppButton extends StatelessWidget {
             label,
             style: AppTypography.title.copyWith(
               color: isEnabled
-                  ? AppColors.textOnAccent
+                  ? (foregroundColor ?? AppColors.textOnAccent)
                   : AppColors.textDisabled,
             ),
           ),

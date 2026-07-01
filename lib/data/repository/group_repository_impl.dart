@@ -1,9 +1,14 @@
+import 'package:ddara/core/exception/group_change_nickname_error_code.dart';
 import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/core/exception/group_exit_error_code.dart';
+import 'package:ddara/core/exception/group_history_error_code.dart';
 import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/exception/login_exception.dart';
+import 'package:ddara/core/model/group/change_nickname.dart';
 import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/group_list.dart';
+import 'package:ddara/core/model/group/history_cycles.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/model/group/join_group.dart';
 import 'package:ddara/data/datasource/group/group_datasource.dart';
@@ -131,6 +136,89 @@ class GroupRepositoryImpl implements GroupRepository {
           throw GroupLimitExceededException();
 
         case GroupJoinErrorCode.duplicateGroupNickname:
+          // 409 — 모임 내 닉네임 중복
+          throw DuplicateGroupNicknameException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<void> exitGroup(int groupId) async {
+    try {
+      await _groupDataSource.exitGroup(groupId);
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupExitErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case GroupExitErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case GroupExitErrorCode.groupNotFound:
+          // 404 — 모임을 찾을 수 없음
+          throw GroupNotFoundException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<HistoryCycles> getHistoryCycles(int groupId) async {
+    try {
+      final response = await _groupDataSource.getHistoryCycles(groupId);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupHistoryErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case GroupHistoryErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case GroupHistoryErrorCode.groupNotFound:
+          // 404 — 모임을 찾을 수 없음
+          throw GroupNotFoundException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<ChangeNickName> changeNickName(int groupId, String nickName) async {
+    try {
+      final response = await _groupDataSource.changeNickName(groupId, nickName);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupChangeNickNameErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      // 401(UNAUTHORIZED)은 인터셉터에서 따로 처리하므로 여기서 다루지 않는다.
+      switch (code) {
+        case GroupChangeNickNameErrorCode.invalidInput:
+          // 400 — nickname 누락 또는 2~10자 위반
+          throw InvalidNicknameException();
+
+        case GroupChangeNickNameErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case GroupChangeNickNameErrorCode.groupNotFound:
+          // 404 — 모임을 찾을 수 없음
+          throw GroupNotFoundException();
+
+        case GroupChangeNickNameErrorCode.duplicateGroupNickname:
           // 409 — 모임 내 닉네임 중복
           throw DuplicateGroupNicknameException();
 

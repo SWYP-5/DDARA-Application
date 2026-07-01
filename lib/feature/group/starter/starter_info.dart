@@ -1,8 +1,10 @@
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/feature/group/starter/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/widget/take_photo_button.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,9 +36,16 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final notifier = ref.read(starterNotifierProvider.notifier);
     final photo = ref.watch(starterNotifierProvider.select((s) => s.photo));
     final hasPhoto = photo != null;
+
+    final concept = ref.watch(
+      starterNotifierProvider.select((s) => s.concept),
+    );
+    // 컨셉 설명은 20자 이내. 초과하면 에러 문구를 보여준다.
+    final conceptError = concept.length > 20 ? l10n.starterConceptLengthError : null;
 
     return SafeArea(
       child: Padding(
@@ -83,21 +92,46 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                               ),
                       ),
                       AppTextField(
-                        label: '컨셉 설명',
-                        placeholder: '예) 마라탕 또 먹기',
+                        label: l10n.starterConceptLabel,
+                        placeholder: l10n.starterConceptPlaceholder,
                         controller: _conceptController,
                         highlightWhenFilled: true,
+                        errorText: conceptError,
                         onChanged: notifier.conceptChanged,
                       ),
                       const Spacer(),
-                      AppButton(
-                        label: '멤버들에게 보내기',
-                        // 사진이 없으면 비활성화.
-                        onPressed: hasPhoto
-                            ? () {
-                                // TODO: 스타터 컨셉을 멤버들에게 전송. (백엔드 스펙 대기)
-                              }
-                            : null,
+                      Row(
+                        spacing: AppSpacing.s3,
+                        children: [
+                          Expanded(
+                            child: AppButton.outline(
+                              label: l10n.photoRetake,
+                              onPressed: notifier.goToCamera,
+                            ),
+                          ),
+                          Expanded(
+                            child: AppButton(
+                              label: l10n.photoUpload,
+                              // 사진이 없거나 컨셉이 비어 있거나(공백 포함) 20자를
+                              // 넘으면 비활성화.
+                              onPressed:
+                                  hasPhoto &&
+                                      concept.trim().isNotEmpty &&
+                                      conceptError == null
+                                  ? () async {
+                                      // 게시는 되돌릴 수 없으므로 확인을 한 번 받는다.
+                                      final ok = await AppDialog.show(
+                                        context,
+                                        title: l10n.photoPostWarningTitle,
+                                        confirmLabel: l10n.commonConfirm,
+                                      );
+                                      if (!ok) return;
+                                      // TODO: 스타터 컨셉을 멤버들에게 전송. (백엔드 스펙 대기)
+                                    }
+                                  : null,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

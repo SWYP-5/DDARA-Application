@@ -5,6 +5,7 @@ import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/group/join/join_group_page.dart';
 import 'package:ddara/feature/group/join/landing/widget/ddara_invitation_animation.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ddara/core/router/route_path.dart';
@@ -122,8 +123,8 @@ class _InviteLandingPageState extends ConsumerState<InviteLandingPage> {
                   opacity: _textVisible ? 1 : 0,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeOut,
-                  child: const AppText.display(
-                    '초대장이 도착했어요',
+                  child: AppText.display(
+                    AppLocalizations.of(context).inviteLandingTitle,
                     textAlign: TextAlign.center,
                   ),
                 ),

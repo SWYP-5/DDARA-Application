@@ -1,10 +1,14 @@
 import 'package:ddara/core/model/group/create_group.dart';
+import 'package:ddara/core/model/group/change_nickname.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
+import 'package:ddara/core/model/group/history_cycles.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/model/group/join_group.dart';
 import 'package:ddara/core/network/dto/group/create_group_response.dart';
+import 'package:ddara/core/network/dto/group/change_nickname_response.dart';
 import 'package:ddara/core/network/dto/group/group_detail_response.dart';
 import 'package:ddara/core/network/dto/group/group_list_response.dart';
+import 'package:ddara/core/network/dto/group/history_cycles_response.dart';
 import 'package:ddara/core/network/dto/group/invite_group_response.dart';
 import 'package:ddara/core/network/dto/group/join_group_response.dart';
 
@@ -62,11 +66,37 @@ extension GroupDetailMapper on GroupDetailResponse {
               cycleNumber: cycle.cycleNumber,
               topic: cycle.topic,
               starterUserId: cycle.starterUserId,
+              starterNickname: cycle.starterNickname,
+              starterImageUrl: cycle.starterImageUrl,
               status: cycle.status,
               startedAt: cycle.startedAt,
               deadlineAt: cycle.deadlineAt,
             ),
       createdAt: createdAt,
+    );
+  }
+}
+
+extension ChangeNickNameMapper on ChangeNickNameResponse {
+  ChangeNickName toDomain() {
+    return ChangeNickName(nickname: nickname);
+  }
+}
+
+extension HistoryCyclesMapper on HistoryCyclesResponse {
+  HistoryCycles toDomain() {
+    return HistoryCycles(
+      cycles: cycles
+          .map(
+            (cycle) => HistoryCycle(
+              cycleId: cycle.cycleId,
+              topic: cycle.topic,
+              thumbnailUrl: cycle.thumbnailUrl,
+              participantCount: cycle.participantCount,
+              date: cycle.date,
+            ),
+          )
+          .toList(),
     );
   }
 }

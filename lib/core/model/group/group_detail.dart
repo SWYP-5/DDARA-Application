@@ -32,6 +32,8 @@ abstract class GroupCycle with _$GroupCycle {
     required int cycleNumber,
     required String topic,
     required int starterUserId,
+    required String starterNickname,
+    required String? starterImageUrl,
     required String status,
     required DateTime startedAt,
     required DateTime deadlineAt,

@@ -7,6 +7,7 @@ import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/create/widget/set_group_name.dart';
 import 'package:ddara/feature/group/widget/set_nickname.dart';
 import 'package:ddara/feature/home/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -34,6 +35,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(createGroupNotifierProvider);
+    final l10n = AppLocalizations.of(context);
     final notifier = ref.read(createGroupNotifierProvider.notifier);
 
     final nicknameError = validateNickname(state.nickname);
@@ -68,7 +70,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
         setState(() => _step = 0);
       },
       child: CupertinoPageScaffold(
-        navigationBar: AppBar(title: '모임 만들기', onBack: _handleBack),
+        navigationBar: AppBar(title: l10n.groupCreate, onBack: _handleBack),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -96,7 +98,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
                 const Spacer(),
                 // 스텝 간 공유하는 하단 버튼.
                 AppButton(
-                  label: _step == 0 ? '다음' : '시작하기',
+                  label: _step == 0 ? l10n.commonNext : l10n.commonStart,
                   onPressed: canSubmit
                       ? () {
                           if (_step == 0) {
