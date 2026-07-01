@@ -2,6 +2,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/widget/effect/bottom_scrim.dart';
+import 'package:ddara/core/widget/empty_thumbnail.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -40,9 +41,9 @@ class MeetingCard extends StatelessWidget {
                     ? Image.network(
                         cycle!.thumbnailUrl!,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => const _EmptyThumbnail(),
+                        errorBuilder: (_, _, _) => const EmptyThumbnail(),
                       )
-                    : const _EmptyThumbnail(),
+                    : const EmptyThumbnail(),
               ),
               // 하단 스크림. (텍스트 가독성 + 하단 경계를 배경과 자연스럽게 잇기)
               const BottomScrim(),
@@ -85,25 +86,6 @@ class MeetingCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// 썸네일이 없거나 로드 실패했을 때의 자리표시. (빈 배경 + 중앙 갤러리 아이콘)
-class _EmptyThumbnail extends StatelessWidget {
-  const _EmptyThumbnail();
-
-  @override
-  Widget build(BuildContext context) {
-    return const ColoredBox(
-      color: AppColors.bgSurfaceAlt,
-      child: Center(
-        child: Icon(
-          CupertinoIcons.photo,
-          size: 40,
-          color: AppColors.textTertiary,
         ),
       ),
     );

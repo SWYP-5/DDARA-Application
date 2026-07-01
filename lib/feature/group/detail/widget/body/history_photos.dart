@@ -1,6 +1,7 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/history_cycles.dart';
+import 'package:ddara/core/widget/empty_thumbnail.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
@@ -173,17 +174,16 @@ class _PhotoCard extends StatelessWidget {
     );
   }
 
-  /// 카드 배경 썸네일. URL 이 없거나 로드 실패 시 임시 에셋으로 대체한다.
+  /// 카드 배경 썸네일. URL 이 없거나 로드 실패 시 자리표시로 대체한다.
   Widget _thumbnail() {
     final url = thumbnailUrl;
     if (url == null || url.isEmpty) {
-      return Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover);
+      return const EmptyThumbnail();
     }
     return Image.network(
       url,
       fit: BoxFit.cover,
-      errorBuilder: (_, _, _) =>
-          Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover),
+      errorBuilder: (_, _, _) => const EmptyThumbnail(),
     );
   }
 }

@@ -205,7 +205,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: RoutePath.starter, builder: (_, _) => const StarterPage()),
       GoRoute(
         path: RoutePath.startedCamera,
-        builder: (_, _) => const StartedCameraPage(),
+        builder: (_, state) =>
+            StartedCameraPage(guideImageUrl: state.extra! as String),
       ),
     ],
   );

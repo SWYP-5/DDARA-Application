@@ -8,7 +8,10 @@ import 'package:go_router/go_router.dart';
 
 /// 따라찍기 촬영 화면. 공유 AppBar 하나 아래에서 촬영/사진 확인 본문만 교체한다.
 class StartedCameraPage extends StatefulWidget {
-  const StartedCameraPage({super.key});
+  const StartedCameraPage({super.key, required this.guideImageUrl});
+
+  /// 따라찍기 가이드(스타터가 미리 찍은) 사진 URL.
+  final String guideImageUrl;
 
   @override
   State<StartedCameraPage> createState() => _StartedCameraPageState();
@@ -27,6 +30,7 @@ class _StartedCameraPageState extends State<StartedCameraPage> {
       navigationBar: AppBar(title: l10n.startedCameraTitle),
       child: capturedPath == null
           ? StartedCamera(
+              guideImageUrl: widget.guideImageUrl,
               // 촬영하면 사진 확인 단계로 전환한다.
               onCapture: (path) => setState(() => _capturedPath = path),
             )

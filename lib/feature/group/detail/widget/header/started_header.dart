@@ -4,6 +4,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/widget/effect/bottom_scrim.dart';
+import 'package:ddara/core/widget/empty_thumbnail.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -171,17 +172,16 @@ class _StartedHeaderState extends State<StartedHeader> {
     );
   }
 
-  /// 헤더 배경으로 쓸 이미지. URI 가 없거나 로드 실패 시 임시 에셋으로 대체한다.
+  /// 헤더 배경으로 쓸 이미지. URI 가 없거나 로드 실패 시 자리표시로 대체한다.
   Widget _backgroundImage() {
     final url = widget.imageUri;
     if (url.isEmpty) {
-      return Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover);
+      return const EmptyThumbnail();
     }
     return Image.network(
       url,
       fit: BoxFit.cover,
-      errorBuilder: (_, _, _) =>
-          Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover),
+      errorBuilder: (_, _, _) => const EmptyThumbnail(),
     );
   }
 

@@ -5,10 +5,17 @@ import 'package:flutter/cupertino.dart';
 ///
 /// 촬영하면 [onCapture] 로 사진 경로를 넘기고, 단계 전환은 상위에서 처리한다.
 class StartedCamera extends StatelessWidget {
-  const StartedCamera({super.key, required this.onCapture});
+  const StartedCamera({
+    super.key,
+    required this.onCapture,
+    required this.guideImageUrl,
+  });
 
   /// 촬영 완료 시 저장된 이미지 파일 경로를 전달한다.
   final ValueChanged<String> onCapture;
+
+  /// 따라찍기 가이드(친구가 미리 찍은) 사진 URL. 빈 값이면 가이드 뷰를 숨긴다.
+  final String guideImageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +23,8 @@ class StartedCamera extends StatelessWidget {
       // TODO: 모임 상태에 따라 투명도/모드 영역 표시 여부 결정.
       showOpacity: true,
       showViewMode: true,
-      // TODO: 친구가 미리 찍은 사진으로 교체. (현재 테스트용 임시 이미지)
-      guideImage: const AssetImage('assets/images/temp_image.jpg'),
+      // TODO: 네트워크 이미지 라이브러리 적용 시 해당 provider 로 교체.
+      guideImage: guideImageUrl.isEmpty ? null : NetworkImage(guideImageUrl),
       onCapture: onCapture,
     );
   }
