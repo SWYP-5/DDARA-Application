@@ -8,6 +8,14 @@ abstract class InviteGroupResponse with _$InviteGroupResponse {
   const factory InviteGroupResponse({
     required int groupId,
     required String name,
+    required String description,
+    required String ownerNickname,
+    required int memberCount,
+    required int capacity,
+    required bool isFull,
+    required List<String?> memberAvatars,
+    required bool alreadyJoined,
+    required DateTime createdAt,
   }) = _InviteGroupResponse;
 
   factory InviteGroupResponse.fromJson(Map<String, dynamic> json) =>

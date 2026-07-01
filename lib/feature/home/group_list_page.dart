@@ -113,7 +113,8 @@ class _GroupListPageState extends State<GroupListPage> {
                       ),
                       AppPillButton.outline(
                         label: l10n.groupEnter,
-                        onPressed: () => context.push(RoutePath.groupJoin),
+                        onPressed: () =>
+                            context.push(RoutePath.inviteCodeInput),
                       ),
                     ],
                   ),

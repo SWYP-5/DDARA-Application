@@ -5,6 +5,7 @@ import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
+import 'package:ddara/core/model/group/join_group.dart';
 import 'package:ddara/data/datasource/group/group_datasource.dart';
 import 'package:ddara/domain/repository/group_repository.dart';
 import 'package:dio/dio.dart';
@@ -88,22 +89,52 @@ class GroupRepositoryImpl implements GroupRepository {
 
       switch (code) {
         case GroupJoinErrorCode.invalidInviteCode:
-          // 초대 코드 누락
+          // 404 — 유효하지 않은 초대 코드
           throw InvalidInviteCodeException();
 
-        case GroupJoinErrorCode.groupNotFound:
-          // 잘못된 초대 코드
-          throw GroupNotFoundException();
+        default:
+          throw NetworkException();
+      }
+    }
+  }
 
-        case GroupJoinErrorCode.groupLimitExceeded:
-          // 정원 초과
-          throw GroupFullException();
+  @override
+  Future<JoinGroup> joinGroup(String inviteCode, String nickName) async {
+    try {
+      final response = await _groupDataSource.joinGroup(inviteCode, nickName);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupJoinErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      // 401(UNAUTHORIZED)은 인터셉터에서 따로 처리하므로 여기서 다루지 않는다.
+      switch (code) {
+        case GroupJoinErrorCode.invalidInput:
+          // 400 — inviteCode/nickname 누락 또는 nickname 2~10자 위반
+          throw InvalidJoinInputException();
+
+        case GroupJoinErrorCode.invalidInviteCode:
+          // 404 — 유효하지 않은 초대 코드
+          throw InvalidInviteCodeException();
 
         case GroupJoinErrorCode.alreadyJoinedGroup:
-          // 이미 참여한 모임
+          // 409 — 이미 참여 중인 모임
           throw AlreadyJoinedGroupException();
 
-        case GroupJoinErrorCode.unknown || null:
+        case GroupJoinErrorCode.groupFull:
+          // 409 — 모임 정원(8명) 가득 참
+          throw GroupFullException();
+
+        case GroupJoinErrorCode.groupLimitExceeded:
+          // 409 — 모임 최대 개수(20개) 초과
+          throw GroupLimitExceededException();
+
+        case GroupJoinErrorCode.duplicateGroupNickname:
+          // 409 — 모임 내 닉네임 중복
+          throw DuplicateGroupNicknameException();
+
+        default:
           throw NetworkException();
       }
     }

@@ -51,7 +51,7 @@ class EmptyGroupPage extends StatelessWidget {
               ),
               AppButton.outline(
                 label: l10n.groupJoin,
-                onPressed: () => context.push(RoutePath.groupJoin),
+                onPressed: () => context.push(RoutePath.inviteCodeInput),
               ),
             ],
           ),

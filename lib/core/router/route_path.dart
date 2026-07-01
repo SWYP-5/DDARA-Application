@@ -7,7 +7,9 @@ class RoutePath {
   static const requiredPermission = '/required-permission';
   static const group = '/group';
   static const groupCreate = '/group/create';
-  static const groupJoin = '/group/join';
+  static const inviteCodeInput = '/group/join/code';
+  static const inviteLanding = '/group/join/landing';
+  static const joinGroup = '/group/join/confirm';
   static const started = '/group/started';
   static const starter = '/group/starter';
   static const startedCamera = '/group/camera';
