@@ -73,8 +73,50 @@ class GroupPage extends ConsumerWidget {
         navigationBar: AppBar(
           title: state.groupDetail?.name ?? '',
           onBack: () => context.go(RoutePath.home),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            minimumSize: Size.zero,
+            onPressed: () => _showMenu(context),
+            child: const Icon(
+              CupertinoIcons.ellipsis_vertical,
+              color: AppColors.textPrimary,
+            ),
+          ),
         ),
         child: SafeArea(child: _body(context, state)),
+      ),
+    );
+  }
+
+  /// 우측 메뉴 버튼을 눌렀을 때 뜨는 모임 메뉴(액션 시트).
+  void _showMenu(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (sheetContext) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.of(sheetContext).pop();
+              // TODO: 닉네임 수정 화면으로 이동.
+            },
+            child: const AppText.title('닉네임 수정'),
+          ),
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.of(sheetContext).pop();
+              // TODO: 모임 나가기 확인 후 처리.
+            },
+            child: const AppText.title(
+              '모임 나가기',
+              color: AppColors.statusDanger,
+            ),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(sheetContext).pop(),
+          child: const AppText.title('취소'),
+        ),
       ),
     );
   }
