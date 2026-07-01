@@ -2,6 +2,7 @@ import 'package:ddara/core/network/dto/group/create_group_response.dart';
 import 'package:ddara/core/network/dto/group/group_detail_response.dart';
 import 'package:ddara/core/network/dto/group/group_list_response.dart';
 import 'package:ddara/core/network/dto/group/invite_group_response.dart';
+import 'package:ddara/core/network/dto/group/join_group_response.dart';
 import 'package:dio/dio.dart';
 
 class GroupDataSource {
@@ -13,10 +14,15 @@ class GroupDataSource {
   Future<CreateGroupResponse> createGroup(
     String groupName,
     String description,
+    String nickName,
   ) async {
     final response = await _dio.post(
       _baseUrl,
-      data: {'name': groupName, 'description': description},
+      data: {
+        'name': groupName,
+        'description': description,
+        'nickname': nickName,
+      },
     );
 
     return CreateGroupResponse.fromJson(response.data);
@@ -35,11 +41,20 @@ class GroupDataSource {
   }
 
   Future<InviteGroupResponse> getInviteGroup(String inviteCode) async {
-    final response = await _dio.post(
-      '$_baseUrl/join',
-      data: {'inviteCode': inviteCode},
-    );
+    final response = await _dio.get('$_baseUrl/preview?inviteCode=$inviteCode');
 
     return InviteGroupResponse.fromJson(response.data);
+  }
+
+  Future<JoinGroupResponse> joinGroup(
+    String inviteCode,
+    String nickName,
+  ) async {
+    final response = await _dio.post(
+      '$_baseUrl/join',
+      data: {'inviteCode': inviteCode, 'nickname': nickName},
+    );
+
+    return JoinGroupResponse.fromJson(response.data);
   }
 }

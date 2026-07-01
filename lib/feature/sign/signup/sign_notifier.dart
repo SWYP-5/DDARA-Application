@@ -10,24 +10,8 @@ class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {
     return SignUpPageState(social: social);
   }
 
-  void nextButtonClicked() {
-    state = state.copyWith(step: state.step + 1);
-  }
-
   void termsAgreedChanged(bool agreed) {
     state = state.copyWith(termsAgreed: agreed);
-  }
-
-  void backButtonClicked() {
-    state = state.copyWith(step: state.step - 1);
-  }
-
-  void birthDayOnChanged(String birth) {
-    state = state.copyWith(birthDay: birth);
-  }
-
-  void nickNameOnChanged(String nickName) {
-    state = state.copyWith(nickName: nickName);
   }
 
   Future<void> signUp() async {
@@ -37,12 +21,7 @@ class SignNotifier extends FamilyNotifier<SignUpPageState, SocialLoginType> {
     state = state.copyWith(isLoading: true);
 
     try {
-      await ref.read(signUpUseCaseProvider)(
-        state.social,
-        state.termsAgreed,
-        state.birthDay,
-        state.nickName,
-      );
+      await ref.read(signUpUseCaseProvider)(state.social, state.termsAgreed);
 
       state = state.copyWith(isSuccess: true);
     } on TypeMisMatchException {

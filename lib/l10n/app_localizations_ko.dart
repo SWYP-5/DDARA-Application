@@ -33,6 +33,48 @@ class AppLocalizationsKo extends AppLocalizations {
   String get onboardingStart => '시작하기';
 
   @override
+  String get loginSlogan => '우리끼리 따라찍기';
+
+  @override
+  String get loginKakao => '카카오 로그인';
+
+  @override
+  String get loginGoogle => 'Google 로그인';
+
+  @override
+  String get loginViewPolicies => '이용약관과 개인정보 처리방침 확인';
+
+  @override
+  String get termsTitle => '약관에 동의해 주세요';
+
+  @override
+  String get termsSubtitle => '서비스 이용을 위해선 이용약관 동의가 필요해요';
+
+  @override
+  String get termsAgreeAll => '전체 동의';
+
+  @override
+  String get termsServiceLabel => '[필수] 이용약관';
+
+  @override
+  String get termsPrivacyLabel => '[필수] 개인정보 처리방침';
+
+  @override
+  String get termsAgeLabel => '[필수] 만 14세 이상 사용자 이용동의';
+
+  @override
+  String get termsContinueButton => '동의하고 계속';
+
+  @override
+  String get policyServiceTitle => '서비스 이용 약관';
+
+  @override
+  String get policyPrivacyTitle => '개인정보 처리방침';
+
+  @override
+  String get policyYouthTitle => '청소년 보호정책';
+
+  @override
   String get emptyGroupTitle => '아직 참여한 모임이 없어요';
 
   @override

@@ -62,12 +62,20 @@ class GroupPage extends ConsumerWidget {
       }
     });
 
-    return CupertinoPageScaffold(
-      navigationBar: AppBar(
-        title: state.groupDetail?.name ?? '',
-        onBack: () => context.pop(),
+    // 진입 경로·스택과 무관하게 뒤로가기(AppBar·OS 모두)는 항상 홈으로 보낸다.
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        context.go(RoutePath.home);
+      },
+      child: CupertinoPageScaffold(
+        navigationBar: AppBar(
+          title: state.groupDetail?.name ?? '',
+          onBack: () => context.go(RoutePath.home),
+        ),
+        child: SafeArea(child: _body(context, state)),
       ),
-      child: SafeArea(child: _body(context, state)),
     );
   }
 

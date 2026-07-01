@@ -1,9 +1,12 @@
 /// 모임 참여(`POST /groups/join`) 실패 시 서버가 내려주는 에러 코드.
 enum GroupJoinErrorCode {
-  invalidInviteCode('INVALID_INVITE_CODE', '초대 코드를 입력해주세요.'),
+  invalidInput('INVALID_INPUT', '입력값이 올바르지 않아요'),
+  invalidInviteCode('INVALID_INVITE_CODE', '유효하지 않은 초대 코드입니다.'),
   groupNotFound('GROUP_NOT_FOUND', '존재하지 않는 초대 코드입니다.'),
-  groupLimitExceeded('GROUP_LIMIT_EXCEEDED', '모임 정원이 가득 찼습니다.'),
-  alreadyJoinedGroup('ALREADY_JOINED_GROUP', '이미 참여 중인 모임입니다.'),
+  alreadyJoinedGroup('ALREADY_JOINED_GROUP', '이미 참여 중인 모임이에요'),
+  groupFull('GROUP_FULL', '이미 꽉 찬 모임이에요. 만든 친구에게 물어봐 주세요'),
+  groupLimitExceeded('GROUP_LIMIT_EXCEEDED', '참여할 수 있는 모임 개수를 초과했어요'),
+  duplicateGroupNickname('DUPLICATE_GROUP_NICKNAME', '이미 누가 쓰고 있어요. 다른 이름은 어때요?'),
 
   /// 네트워크 오류 등 매칭되는 서버 코드가 없을 때의 기본값.
   unknown('UNKNOWN', '네트워크 연결이 불안정합니다.');

@@ -35,6 +35,10 @@ class GoogleAuthService {
     }
   }
 
+  /// 구글 프로필 표시 이름을 반환한다. 세션이 없으면 null.
+  /// (회원가입 시 닉네임 대신 소셜 프로필 이름으로 사용)
+  String? getGoogleName() => _googleSignIn.currentUser?.displayName;
+
   Future<bool> isLogin() async {
     final user = _googleSignIn.currentUser;
     return user != null;

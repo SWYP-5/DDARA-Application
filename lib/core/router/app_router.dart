@@ -1,6 +1,7 @@
+import 'package:ddara/core/deeplink/pending_invite.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +11,9 @@ import '../../feature/group/started/started_camera_page.dart';
 import '../../feature/group/started/started_page.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
-import '../../feature/group/join/group_join_page.dart';
+import '../../feature/group/join/join_group_page.dart';
+import '../../feature/group/join/invite/invite_code_input_page.dart';
+import '../../feature/group/join/landing/invite_landing_page.dart';
 import '../../feature/home/home_page.dart';
 import '../../feature/notification/notification_page.dart';
 import '../../feature/onboarding/onboarding_page.dart';
@@ -62,10 +65,19 @@ final routerProvider = Provider<GoRouter>((ref) {
   final isLoggedIn = ref.read(authStateProvider).valueOrNull ?? false;
   final hasSeenOnboarding = ref.read(onboardingSeenProvider);
 
-  // 앱 최초 실행이면 온보딩, 그 외에는 인증 상태에 따라 분기한다.
+  // 콜드 스타트 초대 딥링크(main 에서 보관). 로그인 상태면 홈을 거치지 않고
+  // 곧바로 landing 으로 진입한다. (미로그인이면 로그인 후 routeAfterAuth 가 소비)
+  final pendingInvite = ref.read(pendingInviteCodeProvider);
+  final hasPendingInvite = pendingInvite != null && pendingInvite.isNotEmpty;
+
+  // 앱 최초 실행이면 온보딩, 그 외에는 인증·초대코드 상태에 따라 분기한다.
   final initialLocation = !hasSeenOnboarding
       ? RoutePath.onboarding
-      : (isLoggedIn ? RoutePath.home : loginRoute);
+      : !isLoggedIn
+      ? loginRoute
+      : (hasPendingInvite
+            ? '${RoutePath.inviteLanding}?code=$pendingInvite'
+            : RoutePath.home);
 
   return GoRouter(
     initialLocation: initialLocation,
@@ -137,20 +149,60 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const GroupCreatePage(),
       ),
       GoRoute(
-        path: RoutePath.groupJoin,
+        path: RoutePath.inviteCodeInput,
         // 딥링크로 전달된 초대코드를 쿼리 파라미터에서 읽는다.
         // 코드가 없으면 빈 문자열로 두어 페이지가 안내를 처리한다.
-        builder: (_, state) =>
-            GroupJoinPage(inviteCode: state.uri.queryParameters['code'] ?? ''),
+        builder: (_, state) => InviteCodeInputPage(
+          inviteCode: state.uri.queryParameters['code'] ?? '',
+        ),
+      ),
+      // 초대 링크 진입 → Lottie 재생 + 코드 조회 후 참여 확인으로 전환.
+      // 진입도 슬라이드 대신 페이드로 부드럽게 들어온다.
+      GoRoute(
+        path: RoutePath.inviteLanding,
+        pageBuilder: (_, state) => CustomTransitionPage(
+          key: state.pageKey,
+          transitionDuration: const Duration(milliseconds: 400),
+          transitionsBuilder: (_, animation, _, child) => FadeTransition(
+            opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+            child: child,
+          ),
+          child: InviteLandingPage(
+            inviteCode: state.uri.queryParameters['code'] ?? '',
+          ),
+        ),
       ),
       GoRoute(
-        path: RoutePath.started,
-        builder: (_, _) => const StartedPage(),
+        path: RoutePath.joinGroup,
+        // 랜딩 애니메이션이 끝난 뒤라 슬라이드 대신 페이드로 자연스럽게 전환한다.
+        pageBuilder: (_, state) {
+          final args = state.extra as JoinGroupArgs?;
+          return CustomTransitionPage(
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 400),
+            transitionsBuilder: (_, animation, _, child) {
+              // 페이드 + 살짝 확대(0.96→1)로 콘텐츠가 떠오르듯 자연스럽게 전환.
+              final curved = CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeOutCubic,
+              );
+              return FadeTransition(
+                opacity: curved,
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.96, end: 1).animate(curved),
+                  child: child,
+                ),
+              );
+            },
+            child: JoinGroupPage(
+              group: args?.group,
+              inviteCode: args?.inviteCode ?? '',
+            ),
+          );
+        },
       ),
-      GoRoute(
-        path: RoutePath.starter,
-        builder: (_, _) => const StarterPage(),
-      ),
+      GoRoute(path: RoutePath.started, builder: (_, _) => const StartedPage()),
+      GoRoute(path: RoutePath.starter, builder: (_, _) => const StarterPage()),
       GoRoute(
         path: RoutePath.startedCamera,
         builder: (_, _) => const StartedCameraPage(),
