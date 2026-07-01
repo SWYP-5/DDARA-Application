@@ -13,10 +13,11 @@ class GroupDataSource {
   Future<CreateGroupResponse> createGroup(
     String groupName,
     String description,
+    String nickName,
   ) async {
     final response = await _dio.post(
       _baseUrl,
-      data: {'name': groupName, 'description': description},
+      data: {'name': groupName, 'description': description, 'nickname': nickName},
     );
 
     return CreateGroupResponse.fromJson(response.data);

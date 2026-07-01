@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignUpRequest {
 
- String get provider; String get accessToken; String get birthDate; bool get termsAgreed; String get nickname;
+ String get provider; String get accessToken; bool get termsAgreed;
 /// Create a copy of SignUpRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SignUpRequestCopyWith<SignUpRequest> get copyWith => _$SignUpRequestCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignUpRequest&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.birthDate, birthDate) || other.birthDate == birthDate)&&(identical(other.termsAgreed, termsAgreed) || other.termsAgreed == termsAgreed)&&(identical(other.nickname, nickname) || other.nickname == nickname));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignUpRequest&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.termsAgreed, termsAgreed) || other.termsAgreed == termsAgreed));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,provider,accessToken,birthDate,termsAgreed,nickname);
+int get hashCode => Object.hash(runtimeType,provider,accessToken,termsAgreed);
 
 @override
 String toString() {
-  return 'SignUpRequest(provider: $provider, accessToken: $accessToken, birthDate: $birthDate, termsAgreed: $termsAgreed, nickname: $nickname)';
+  return 'SignUpRequest(provider: $provider, accessToken: $accessToken, termsAgreed: $termsAgreed)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SignUpRequestCopyWith<$Res>  {
   factory $SignUpRequestCopyWith(SignUpRequest value, $Res Function(SignUpRequest) _then) = _$SignUpRequestCopyWithImpl;
 @useResult
 $Res call({
- String provider, String accessToken, String birthDate, bool termsAgreed, String nickname
+ String provider, String accessToken, bool termsAgreed
 });
 
 
@@ -65,14 +65,12 @@ class _$SignUpRequestCopyWithImpl<$Res>
 
 /// Create a copy of SignUpRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? provider = null,Object? accessToken = null,Object? birthDate = null,Object? termsAgreed = null,Object? nickname = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? provider = null,Object? accessToken = null,Object? termsAgreed = null,}) {
   return _then(_self.copyWith(
 provider: null == provider ? _self.provider : provider // ignore: cast_nullable_to_non_nullable
 as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
-as String,birthDate: null == birthDate ? _self.birthDate : birthDate // ignore: cast_nullable_to_non_nullable
 as String,termsAgreed: null == termsAgreed ? _self.termsAgreed : termsAgreed // ignore: cast_nullable_to_non_nullable
-as bool,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,
+as bool,
   ));
 }
 
@@ -157,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String provider,  String accessToken,  String birthDate,  bool termsAgreed,  String nickname)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String provider,  String accessToken,  bool termsAgreed)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignUpRequest() when $default != null:
-return $default(_that.provider,_that.accessToken,_that.birthDate,_that.termsAgreed,_that.nickname);case _:
+return $default(_that.provider,_that.accessToken,_that.termsAgreed);case _:
   return orElse();
 
 }
@@ -178,10 +176,10 @@ return $default(_that.provider,_that.accessToken,_that.birthDate,_that.termsAgre
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String provider,  String accessToken,  String birthDate,  bool termsAgreed,  String nickname)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String provider,  String accessToken,  bool termsAgreed)  $default,) {final _that = this;
 switch (_that) {
 case _SignUpRequest():
-return $default(_that.provider,_that.accessToken,_that.birthDate,_that.termsAgreed,_that.nickname);case _:
+return $default(_that.provider,_that.accessToken,_that.termsAgreed);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +196,10 @@ return $default(_that.provider,_that.accessToken,_that.birthDate,_that.termsAgre
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String provider,  String accessToken,  String birthDate,  bool termsAgreed,  String nickname)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String provider,  String accessToken,  bool termsAgreed)?  $default,) {final _that = this;
 switch (_that) {
 case _SignUpRequest() when $default != null:
-return $default(_that.provider,_that.accessToken,_that.birthDate,_that.termsAgreed,_that.nickname);case _:
+return $default(_that.provider,_that.accessToken,_that.termsAgreed);case _:
   return null;
 
 }
@@ -213,14 +211,12 @@ return $default(_that.provider,_that.accessToken,_that.birthDate,_that.termsAgre
 @JsonSerializable()
 
 class _SignUpRequest implements SignUpRequest {
-  const _SignUpRequest({required this.provider, required this.accessToken, required this.birthDate, required this.termsAgreed, required this.nickname});
+  const _SignUpRequest({required this.provider, required this.accessToken, required this.termsAgreed});
   factory _SignUpRequest.fromJson(Map<String, dynamic> json) => _$SignUpRequestFromJson(json);
 
 @override final  String provider;
 @override final  String accessToken;
-@override final  String birthDate;
 @override final  bool termsAgreed;
-@override final  String nickname;
 
 /// Create a copy of SignUpRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignUpRequest&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.birthDate, birthDate) || other.birthDate == birthDate)&&(identical(other.termsAgreed, termsAgreed) || other.termsAgreed == termsAgreed)&&(identical(other.nickname, nickname) || other.nickname == nickname));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignUpRequest&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.termsAgreed, termsAgreed) || other.termsAgreed == termsAgreed));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,provider,accessToken,birthDate,termsAgreed,nickname);
+int get hashCode => Object.hash(runtimeType,provider,accessToken,termsAgreed);
 
 @override
 String toString() {
-  return 'SignUpRequest(provider: $provider, accessToken: $accessToken, birthDate: $birthDate, termsAgreed: $termsAgreed, nickname: $nickname)';
+  return 'SignUpRequest(provider: $provider, accessToken: $accessToken, termsAgreed: $termsAgreed)';
 }
 
 
@@ -255,7 +251,7 @@ abstract mixin class _$SignUpRequestCopyWith<$Res> implements $SignUpRequestCopy
   factory _$SignUpRequestCopyWith(_SignUpRequest value, $Res Function(_SignUpRequest) _then) = __$SignUpRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String provider, String accessToken, String birthDate, bool termsAgreed, String nickname
+ String provider, String accessToken, bool termsAgreed
 });
 
 
@@ -272,14 +268,12 @@ class __$SignUpRequestCopyWithImpl<$Res>
 
 /// Create a copy of SignUpRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? provider = null,Object? accessToken = null,Object? birthDate = null,Object? termsAgreed = null,Object? nickname = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? provider = null,Object? accessToken = null,Object? termsAgreed = null,}) {
   return _then(_SignUpRequest(
 provider: null == provider ? _self.provider : provider // ignore: cast_nullable_to_non_nullable
 as String,accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
-as String,birthDate: null == birthDate ? _self.birthDate : birthDate // ignore: cast_nullable_to_non_nullable
 as String,termsAgreed: null == termsAgreed ? _self.termsAgreed : termsAgreed // ignore: cast_nullable_to_non_nullable
-as bool,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,
+as bool,
   ));
 }
 

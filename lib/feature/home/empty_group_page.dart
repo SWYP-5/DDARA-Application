@@ -1,7 +1,7 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -22,13 +22,10 @@ class EmptyGroupPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AppText.headlineLarge(
-                l10n.emptyGroupTitle,
-                textAlign: TextAlign.center,
-              ),
-              AppText.body(
-                l10n.emptyGroupDescription,
-                textAlign: TextAlign.center,
+              TitleDescription(
+                title: l10n.emptyGroupTitle,
+                description: l10n.emptyGroupDescription,
+                centered: true,
               ),
               SizedBox(height: AppSpacing.s3),
               Image.asset(

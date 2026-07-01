@@ -17,11 +17,16 @@ class GroupRepositoryImpl implements GroupRepository {
   GroupRepositoryImpl(this._groupDataSource);
 
   @override
-  Future<CreateGroup> createGroup(String groupName, String description) async {
+  Future<CreateGroup> createGroup(
+    String groupName,
+    String description,
+    String nickName,
+  ) async {
     try {
       final response = await _groupDataSource.createGroup(
         groupName,
         description,
+        nickName,
       );
       return response.toDomain();
     } on DioException catch (e) {
