@@ -20,8 +20,7 @@ class CreateGroupNotifier extends AutoDisposeNotifier<CreateGroupState> {
   }
 
   void nicknameOnChanged(String nickname) {
-    // 입력이 바뀌면 이전 중복 체크 결과는 무효화한다. (재확인은 추후 연동)
-    state = state.copyWith(nickname: nickname, isNicknameDuplicate: false);
+    state = state.copyWith(nickname: nickname);
   }
 
   Future<void> createGroup() async {
