@@ -1,4 +1,5 @@
 import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/core/exception/group_exit_error_code.dart';
 import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/model/group/create_group.dart';
@@ -133,6 +134,30 @@ class GroupRepositoryImpl implements GroupRepository {
         case GroupJoinErrorCode.duplicateGroupNickname:
           // 409 — 모임 내 닉네임 중복
           throw DuplicateGroupNicknameException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<void> exitGroup(int groupId) async {
+    try {
+      await _groupDataSource.exitGroup(groupId);
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupExitErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case GroupExitErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case GroupExitErrorCode.groupNotFound:
+          // 404 — 모임을 찾을 수 없음
+          throw GroupNotFoundException();
 
         default:
           throw NetworkException();

@@ -3,12 +3,14 @@ import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:ddara/feature/group/detail/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
 import 'package:ddara/feature/group/detail/widget/group_section.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
+import 'package:ddara/feature/home/provider/notifier_provider.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +43,8 @@ class GroupPage extends ConsumerWidget {
 
       if (errorMessage.isNotEmpty) {
         Toast.showToast(context, errorMessage, type: ToastType.error);
+        // 토스트로 소비했으니 비워, 이후 상태 변경 때 같은 에러가 재노출되지 않게 한다.
+        ref.read(groupPageNotifierProvider(groupId).notifier).clearError();
       }
 
       // 진입해 상세가 처음 로드됐을 때, 인원이 기준 미만이면 초대 시트를 띄운다.
@@ -76,7 +80,7 @@ class GroupPage extends ConsumerWidget {
           trailing: CupertinoButton(
             padding: EdgeInsets.zero,
             minimumSize: Size.zero,
-            onPressed: () => _showMenu(context),
+            onPressed: () => _showMenu(context, ref),
             child: const Icon(
               CupertinoIcons.ellipsis_vertical,
               color: AppColors.textPrimary,
@@ -89,7 +93,7 @@ class GroupPage extends ConsumerWidget {
   }
 
   /// 우측 메뉴 버튼을 눌렀을 때 뜨는 모임 메뉴(액션 시트).
-  void _showMenu(BuildContext context) {
+  void _showMenu(BuildContext context, WidgetRef ref) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (sheetContext) => CupertinoActionSheet(
@@ -105,7 +109,7 @@ class GroupPage extends ConsumerWidget {
             isDestructiveAction: true,
             onPressed: () {
               Navigator.of(sheetContext).pop();
-              // TODO: 모임 나가기 확인 후 처리.
+              _exitGroup(context, ref);
             },
             child: const AppText.title(
               '모임 나가기',
@@ -119,6 +123,28 @@ class GroupPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// 모임 나가기를 실행한다. 먼저 확인 다이얼로그를 띄우고, 확인 시에만 진행한다.
+  /// 성공하면 홈의 목록을 새로 조회(invalidate)해 나간 모임이 사라지도록 반영한
+  /// 뒤 홈으로 이동한다. (실패 시 notifier 가 에러 토스트 처리)
+  Future<void> _exitGroup(BuildContext context, WidgetRef ref) async {
+    final confirmed = await AppDialog.show(
+      context,
+      title: '모임에서 나갈까요?',
+      confirmLabel: '나가기',
+      confirmColor: AppColors.statusDanger,
+      confirmLabelColor: AppColors.textPrimary,
+    );
+    if (!confirmed || !context.mounted) return;
+
+    final success = await ref
+        .read(groupPageNotifierProvider(groupId).notifier)
+        .exitGroup();
+    if (!success || !context.mounted) return;
+
+    ref.invalidate(homeNotifierProvider);
+    context.go(RoutePath.home);
   }
 
   Widget _body(BuildContext context, GroupPageState state) {

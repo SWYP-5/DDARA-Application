@@ -57,4 +57,8 @@ class GroupDataSource {
 
     return JoinGroupResponse.fromJson(response.data);
   }
+
+  Future<void> exitGroup(int groupId) async {
+    await _dio.delete('$_baseUrl/$groupId/members/me');
+  }
 }

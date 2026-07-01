@@ -19,4 +19,6 @@ abstract interface class GroupRepository {
   Future<InviteGroup> getInviteGroup(String inviteCode);
 
   Future<JoinGroup> joinGroup(String inviteCode, String nickName);
+
+  Future<void> exitGroup(int groupId);
 }
