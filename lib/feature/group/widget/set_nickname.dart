@@ -68,3 +68,17 @@ class _SetNicknameState extends State<SetNickname> {
     );
   }
 }
+
+/// 모임 닉네임 검증. 규칙에 어긋나면 사용자용 에러 문구를, 유효하면 null 을 반환한다.
+/// (빈 값은 입력 전으로 보고 에러를 내지 않는다)
+String? validateNickname(String nickname) {
+  if (nickname.isEmpty) return null;
+  // 한글(자모 포함)·영어만 허용. 기호·숫자·공백 등이 섞이면 에러.
+  if (!RegExp(r'^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z]+$').hasMatch(nickname)) {
+    return '한글과 영어로만 지을 수 있어요';
+  }
+  if (nickname.length < 2 || nickname.length > 10) {
+    return '2~10자로 입력해주세요';
+  }
+  return null;
+}

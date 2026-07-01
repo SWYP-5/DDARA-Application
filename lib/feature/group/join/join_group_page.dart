@@ -59,14 +59,6 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
     return group != null && !group.alreadyJoined && !group.isFull;
   }
 
-  /// 닉네임 입력 에러 문구. (길이 미달·초과 시) 비어있을 땐 에러를 띄우지 않는다.
-  String? _nicknameError(String nickname) {
-    if (nickname.isNotEmpty && (nickname.length < 2 || nickname.length > 10)) {
-      return '2~10자로 입력해주세요';
-    }
-    return null;
-  }
-
   /// 뒤로가기: 닉네임 스텝이면 확인 스텝으로, 첫 스텝이면 pop(없으면 홈).
   void _handleBack() {
     if (_step > 0) {
@@ -84,12 +76,12 @@ class _JoinGroupPageState extends ConsumerState<JoinGroupPage> {
     final state = ref.watch(joinGroupNotifierProvider);
     final notifier = ref.read(joinGroupNotifierProvider.notifier);
 
-    final nicknameError = _nicknameError(state.nickname);
+    final nicknameError = validateNickname(state.nickname);
 
     // 스텝별 다음 진행 가능 조건.
     final canSubmit = switch (_step) {
       0 => _canJoin,
-      _ => state.nickname.length >= 2 && state.nickname.length <= 10,
+      _ => state.nickname.isNotEmpty && nicknameError == null,
     };
 
     ref.listen(joinGroupNotifierProvider, (prev, next) {
