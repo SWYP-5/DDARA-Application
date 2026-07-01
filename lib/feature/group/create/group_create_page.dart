@@ -2,7 +2,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/core/widget/error_message_dialog.dart';
+import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/create/widget/set_group_name.dart';
 import 'package:ddara/feature/group/widget/set_nickname.dart';
@@ -70,7 +70,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
       final errorMessage = next.errorMessage;
 
       if (errorMessage.isNotEmpty) {
-        showErrorMessageDialog(context, message: errorMessage);
+        Toast.showToast(context, errorMessage, type: ToastType.error);
       }
     });
 

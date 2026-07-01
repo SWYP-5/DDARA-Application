@@ -2,7 +2,7 @@ import 'package:ddara/core/designsystem/component/button/app_text_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/share/kakao_share_service.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
-import 'package:ddara/core/widget/error_message_dialog.dart';
+import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,17 +53,18 @@ class InviteShareSheet extends StatelessWidget {
   }
 
   void _showShareError(BuildContext context) {
-    showErrorMessageDialog(
+    Toast.showToast(
       context,
-      title: '공유하지 못했어요',
-      message: '잠시 후 다시 시도하거나 초대코드를 복사해 전달해주세요.',
+      '공유하지 못했어요. 잠시 후 다시 시도하거나 초대코드를 복사해 전달해주세요.',
+      type: ToastType.error,
     );
   }
 
   void _onCopyCode(BuildContext context) {
     Clipboard.setData(ClipboardData(text: inviteCode));
+    // 시트가 닫혀도 토스트는 루트 오버레이에 남으므로 pop 전에 띄운다.
+    Toast.showToast(context, '초대 코드를 복사했어요');
     Navigator.of(context).pop();
-    // TODO: 복사 완료 피드백(토스트 등).
   }
 
   void _onMore(BuildContext context) {

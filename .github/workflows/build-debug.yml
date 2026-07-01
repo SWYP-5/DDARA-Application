@@ -77,13 +77,40 @@ jobs:
           echo "$FIREBASE_SERVICE_ACCOUNT" | base64 --decode > "$RUNNER_TEMP/firebase-sa.json"
           echo "FIREBASE_SA=$RUNNER_TEMP/firebase-sa.json" >> "$GITHUB_ENV"
 
-      - name: Firebase App Distribution 업로드
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+      # iOS 와 동일하게 Firebase CLI 로 업로드 + 테스터 링크 추출.
+      # (wzieba 액션은 배포 링크를 output 으로 넘겨주지 않아 CLI 로 통일)
+      - name: Firebase App Distribution 업로드 (CLI)
+        id: distribute
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ env.FIREBASE_SA }}
+        run: |
+          npm install -g firebase-tools
+          # 업로드가 유일한 필수 단계. tee 를 거쳐도 firebase 종료코드를 PIPESTATUS 로 직접 확인.
+          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-debug.apk \
+            --app "${{ secrets.FIREBASE_APP_ID_ANDROID }}" \
+            --groups qa 2>&1 | tee distribute.log
+          status=${PIPESTATUS[0]}
+          [ "$status" -eq 0 ] || { echo "::error::Firebase 배포 실패 (exit $status)"; exit "$status"; }
+
+          # 이하 링크 추출은 best-effort — 실패해도 배포 잡을 죽이지 않는다. (notify 에서 fallback)
+          echo "----- distribute URLs -----"
+          grep -E 'https?://' distribute.log || true
+          echo "---------------------------"
+
+          # 테스터 경험(다운로드) 링크만 도메인(appdistribution.firebase…)으로 추출.
+          TESTING_URI=$(grep -oE 'https://appdistribution\.firebase[^[:space:]"]*' distribute.log | head -n1 || true)
+          echo "추출된 testing_uri: ${TESTING_URI:-(없음)}"
+          # 링크를 파일로 저장해 아티팩트로 넘긴다.
+          # (잡 간 outputs 는 URL 내 시크릿 때문에 redact 되지만, 아티팩트 내용은 redact 안 됨)
+          printf '%s\n' "$TESTING_URI" > testing_uri.txt
+
+      - name: 테스터 링크 아티팩트 업로드
+        uses: actions/upload-artifact@v4
         with:
-          appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
-          serviceCredentialsFile: ${{ env.FIREBASE_SA }}
-          groups: qa
-          file: build/app/outputs/flutter-apk/app-debug.apk
+          name: testing-uri-android
+          path: testing_uri.txt
+          if-no-files-found: ignore
+          retention-days: 1
 
   # ───────────────────────────────── iOS ─────────────────────────────────
   ios:
@@ -174,13 +201,37 @@ jobs:
 
       # wzieba 액션은 Docker(컨테이너) 라 Linux 전용 → macOS 러너에선 Firebase CLI 직접 사용.
       - name: Firebase App Distribution 업로드 (CLI)
+        id: distribute
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ env.FIREBASE_SA }}
         run: |
           npm install -g firebase-tools
+          # 업로드가 유일한 필수 단계. tee 를 거쳐도 firebase 종료코드를 PIPESTATUS 로 직접 확인.
           firebase appdistribution:distribute "$IPA_PATH" \
             --app "${{ secrets.FIREBASE_APP_ID_IOS }}" \
-            --groups qa
+            --groups qa 2>&1 | tee distribute.log
+          status=${PIPESTATUS[0]}
+          [ "$status" -eq 0 ] || { echo "::error::Firebase 배포 실패 (exit $status)"; exit "$status"; }
+
+          # 이하 링크 추출은 best-effort — 실패해도 배포 잡을 죽이지 않는다. (notify 에서 fallback)
+          echo "----- distribute URLs -----"
+          grep -E 'https?://' distribute.log || true
+          echo "---------------------------"
+
+          # 테스터 경험(다운로드) 링크만 도메인(appdistribution.firebase…)으로 추출.
+          TESTING_URI=$(grep -oE 'https://appdistribution\.firebase[^[:space:]"]*' distribute.log | head -n1 || true)
+          echo "추출된 testing_uri: ${TESTING_URI:-(없음)}"
+          # 링크를 파일로 저장해 아티팩트로 넘긴다.
+          # (잡 간 outputs 는 URL 내 시크릿 때문에 redact 되지만, 아티팩트 내용은 redact 안 됨)
+          printf '%s\n' "$TESTING_URI" > testing_uri.txt
+
+      - name: 테스터 링크 아티팩트 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: testing-uri-ios
+          path: testing_uri.txt
+          if-no-files-found: ignore
+          retention-days: 1
 
       # Crashlytics 심볼화를 위해 dSYM 업로드. Firebase 는 SPM 으로 설치되므로
       # upload-symbols 는 DerivedData 의 SourcePackages 안에 있다.
@@ -216,21 +267,49 @@ jobs:
     needs: [ android, ios ]
     runs-on: ubuntu-latest
     steps:
+      - name: 테스터 링크 아티팩트 다운로드
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
       - name: 디스코드 알림 전송
         env:
           WEBHOOK_URL: ${{ secrets.DISCORD_DEBUG_CD_WEBHOOK_URL }}
         run: |
-          curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "username": "QA봇",
-              "content": "@everyone 새 배포가 완료되었습니다. 확인해주세요!!",
-              "allowed_mentions": { "parse": ["everyone"] },
-              "embeds": [
+          # 각 잡이 아티팩트로 올린 링크 파일을 읽는다. (없거나 비면 빈 값)
+          ANDROID_URI=$(cat artifacts/testing-uri-android/testing_uri.txt 2>/dev/null || true)
+          IOS_URI=$(cat artifacts/testing-uri-ios/testing_uri.txt 2>/dev/null || true)
+
+          # 링크 추출이 실패해 비어 있을 때의 대체 문구. (임베드 field value 는 비면 안 됨)
+          FALLBACK="링크 확인 실패 — Firebase 콘솔에서 확인해주세요."
+          ANDROID_LINK="${ANDROID_URI:-$FALLBACK}"
+          IOS_LINK="${IOS_URI:-$FALLBACK}"
+
+          # URL 등이 안전하게 이스케이프되도록 jq 로 payload 를 구성한다.
+          payload=$(jq -n \
+            --arg android "$ANDROID_LINK" \
+            --arg ios "$IOS_LINK" \
+            '{
+              username: "QA봇",
+              content: "@everyone 새 배포가 완료되었습니다. 확인해주세요!!",
+              allowed_mentions: { parse: ["everyone"] },
+              embeds: [
                 {
-                  "title": "앱 설치 방법",
-                  "description": "https://app.notion.com/p/iOS-388a5ea4235480efba4cdab6f4f3310f",
-                  "color": 5814783
+                  title: "앱 다운로드 (App Distribution)",
+                  color: 5814783,
+                  fields: [
+                    { name: "Android", value: $android },
+                    { name: "iOS", value: $ios }
+                  ]
+                },
+                {
+                  title: "앱 설치 방법",
+                  description: "https://app.notion.com/p/iOS-388a5ea4235480efba4cdab6f4f3310f",
+                  color: 5814783
                 }
               ]
-            }'
+            }')
+
+          curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "$payload"

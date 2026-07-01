@@ -3,8 +3,8 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
-import 'package:ddara/core/widget/error_message_dialog.dart';
 import 'package:ddara/core/widget/title_description.dart';
+import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,7 +64,7 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
       final errorCode = next.errorCode;
 
       if (errorCode != null) {
-        showErrorMessageDialog(context, message: errorCode.message);
+        Toast.showToast(context, errorCode.message, type: ToastType.error);
       }
     });
 
