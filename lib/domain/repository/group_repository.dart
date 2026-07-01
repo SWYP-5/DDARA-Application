@@ -5,7 +5,11 @@ import '../../core/model/group/group_detail.dart';
 import '../../core/model/group/group_list.dart';
 
 abstract interface class GroupRepository {
-  Future<CreateGroup> createGroup(String groupName, String description);
+  Future<CreateGroup> createGroup(
+    String groupName,
+    String description,
+    String nickName,
+  );
 
   Future<GroupList> getGroupList();
 

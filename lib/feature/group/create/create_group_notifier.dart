@@ -33,6 +33,7 @@ class CreateGroupNotifier extends AutoDisposeNotifier<CreateGroupState> {
       final createGroup = await createGroupUseCase(
         state.groupName,
         state.description,
+        state.nickname
       );
 
       state = state.copyWith(isLoading: false);
