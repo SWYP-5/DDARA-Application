@@ -37,6 +37,41 @@
     "description": "온보딩 마지막 페이지 하단 버튼 - 시작"
   },
 
+  "loginSlogan": "우리끼리 따라찍기",
+  "@loginSlogan": {
+    "description": "로그인 화면 슬로건"
+  },
+  "loginKakao": "카카오 로그인",
+  "@loginKakao": {
+    "description": "카카오 로그인 버튼"
+  },
+  "loginGoogle": "Google 로그인",
+  "@loginGoogle": {
+    "description": "구글 로그인 버튼"
+  },
+  "loginViewPolicies": "이용약관과 개인정보 처리방침 확인",
+  "@loginViewPolicies": {
+    "description": "로그인 화면 약관·정책 확인 링크"
+  },
+
+  "termsTitle": "약관에 동의해 주세요",
+  "@termsTitle": {
+    "description": "약관 동의 화면 제목"
+  },
+  "termsSubtitle": "서비스 이용을 위해선 이용약관 동의가 필요해요",
+  "@termsSubtitle": {
+    "description": "약관 동의 화면 설명"
+  },
+  "termsAgreeAll": "전체 동의",
+  "termsServiceLabel": "[필수] 이용약관",
+  "termsPrivacyLabel": "[필수] 개인정보 처리방침",
+  "termsAgeLabel": "[필수] 만 14세 이상 사용자 이용동의",
+  "termsContinueButton": "동의하고 계속",
+
+  "policyServiceTitle": "서비스 이용 약관",
+  "policyPrivacyTitle": "개인정보 처리방침",
+  "policyYouthTitle": "청소년 보호정책",
+
   "emptyGroupTitle": "아직 참여한 모임이 없어요",
   "emptyGroupDescription": "첫 판을 시작해 친구들에게 보내보세요",
 

@@ -4,9 +4,9 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 class KakaoAuthService {
   // 카카오 로그인
   Future<void> signInWithKakao(
-      Function(String) login,
-      Function(String) errorFunc,
-      ) async {
+    Function(String) login,
+    Function(String) errorFunc,
+  ) async {
     if (await isKakaoTalkInstalled()) {
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
@@ -45,6 +45,17 @@ class KakaoAuthService {
     try {
       final token = await TokenManagerProvider.instance.manager.getToken();
       return token?.accessToken;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// 카카오 프로필 닉네임을 가져온다. 실패하거나 동의항목이 없으면 null.
+  /// (회원가입 시 소셜 프로필 이름으로 사용)
+  Future<String?> getKakaoName() async {
+    try {
+      final user = await UserApi.instance.me();
+      return user.kakaoAccount?.profile?.nickname;
     } catch (e) {
       return null;
     }

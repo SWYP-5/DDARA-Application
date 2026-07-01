@@ -9,6 +9,7 @@ import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/sign/login/provider/notifier_provider.dart';
 import 'package:ddara/feature/sign/login/util/login_state.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,6 +25,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final notifier = ref.read(loginNotifierProvider.notifier);
     final isLoading = ref.watch(loginNotifierProvider) is LoginLoading;
 
@@ -65,8 +67,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       spacing: 10,
                       children: [
                         const LogoLarge(),
-                        const AppText.title(
-                          '우리끼리 따라찍기',
+                        AppText.title(
+                          l10n.loginSlogan,
                           textAlign: TextAlign.center,
                           color: AppColors.textSecondary,
                         ),
@@ -84,7 +86,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     spacing: AppSpacing.s3,
                     children: [
                       _SocialLoginButton(
-                        label: '카카오 로그인',
+                        label: l10n.loginKakao,
                         iconPath: 'assets/images/ic_kakao.svg',
                         backgroundColor: const Color(0xFFFEE500),
                         foregroundColor: const Color(0xFF000000),
@@ -96,7 +98,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                       ),
                       _SocialLoginButton(
-                        label: 'Google 로그인',
+                        label: l10n.loginGoogle,
                         iconPath: 'assets/images/ic_google.svg',
                         backgroundColor: AppColors.textPrimary,
                         foregroundColor: const Color(0xFF000000),
@@ -108,10 +110,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                       ),
                       AppTextButton(
-                        label: '이용약관과 개인정보 처리방침 확인',
-                        onPressed: () {
-                          // TODO: 이용약관·개인정보 처리방침 화면 이동
-                        },
+                        label: l10n.loginViewPolicies,
+                        onPressed: () => context.push(RoutePath.termsPolicy),
                       ),
                       const SizedBox(height: AppSpacing.s4),
                     ],
