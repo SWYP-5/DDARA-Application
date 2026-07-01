@@ -37,8 +37,16 @@ class JoinConfirmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final group = this.group;
-    // 조회 실패(null) 시 잘못된 초대 안내로 대체한다.
-    final groupName = group?.name ?? '잘못된 초대입니다';
+    // 조회 실패(null)·이미 참여 중·정원 초과면 이름 대신 안내 문구로 대체한다.
+    final groupName = group == null
+        ? '잘못된 초대입니다'
+        : group.alreadyJoined
+        ? '이미 참여 중인 방입니다'
+        : group.isFull
+        ? '정원이 초과되었어요'
+        : group.name;
+    // 유효하고 참여 가능한 모임일 때만 참여 버튼을 활성화한다.
+    final canJoin = group != null && !group.alreadyJoined && !group.isFull;
     final subtitle = group == null
         ? ''
         : '${_formatDate(group.createdAt.toLocal())} 개설 · ${group.memberCount}명';
@@ -78,7 +86,10 @@ class JoinConfirmPage extends StatelessWidget {
                     memberAvatarUrls: memberAvatarUrls,
                   ),
                 ),
-                AppButton(label: '모임 참여하기', onPressed: onJoin),
+                AppButton(
+                  label: '모임 참여하기',
+                  onPressed: canJoin ? onJoin : null,
+                ),
                 const SizedBox(height: AppSpacing.s4),
               ],
             ),
