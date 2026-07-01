@@ -62,6 +62,8 @@ extension GroupDetailMapper on GroupDetailResponse {
               cycleNumber: cycle.cycleNumber,
               topic: cycle.topic,
               starterUserId: cycle.starterUserId,
+              starterNickname: cycle.starterNickname,
+              starterImageUrl: cycle.starterImageUrl,
               status: cycle.status,
               startedAt: cycle.startedAt,
               deadlineAt: cycle.deadlineAt,

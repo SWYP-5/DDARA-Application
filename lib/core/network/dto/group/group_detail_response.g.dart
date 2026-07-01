@@ -22,6 +22,7 @@ _GroupDetailResponse _$GroupDetailResponseFromJson(Map<String, dynamic> json) =>
           : GroupCycleResponse.fromJson(
               json['currentCycle'] as Map<String, dynamic>,
             ),
+      canStartCycle: json['canStartCycle'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -36,6 +37,7 @@ Map<String, dynamic> _$GroupDetailResponseToJson(
   'memberCount': instance.memberCount,
   'members': instance.members,
   'currentCycle': instance.currentCycle,
+  'canStartCycle': instance.canStartCycle,
   'createdAt': instance.createdAt.toIso8601String(),
 };
 
@@ -62,6 +64,8 @@ _GroupCycleResponse _$GroupCycleResponseFromJson(Map<String, dynamic> json) =>
       cycleNumber: (json['cycleNumber'] as num).toInt(),
       topic: json['topic'] as String,
       starterUserId: (json['starterUserId'] as num).toInt(),
+      starterNickname: json['starterNickname'] as String,
+      starterImageUrl: json['starterImageUrl'] as String?,
       status: json['status'] as String,
       startedAt: DateTime.parse(json['startedAt'] as String),
       deadlineAt: DateTime.parse(json['deadlineAt'] as String),
@@ -73,6 +77,8 @@ Map<String, dynamic> _$GroupCycleResponseToJson(_GroupCycleResponse instance) =>
       'cycleNumber': instance.cycleNumber,
       'topic': instance.topic,
       'starterUserId': instance.starterUserId,
+      'starterNickname': instance.starterNickname,
+      'starterImageUrl': instance.starterImageUrl,
       'status': instance.status,
       'startedAt': instance.startedAt.toIso8601String(),
       'deadlineAt': instance.deadlineAt.toIso8601String(),

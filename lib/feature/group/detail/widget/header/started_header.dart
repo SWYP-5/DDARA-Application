@@ -58,14 +58,8 @@ class _StartedHeaderState extends State<StartedHeader> {
         height: 478,
         child: Stack(
           children: [
-            // 배경: 대표 이미지.
-            // TODO: API 연동 시 NetworkImage(imageUri) 로 교체. (현재는 임시 에셋)
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/temp_image.jpg',
-                fit: BoxFit.cover,
-              ),
-            ),
+            // 배경: 스타터 대표 이미지.
+            Positioned.fill(child: _backgroundImage()),
             // 하단 진행 정보의 가독성을 위한 스크림.
             const BottomScrim(heightFactor: 0.45, color: Colors.black),
             // 콘텐츠: 상단 남은 시간 + 하단 진행 정보.
@@ -113,15 +107,11 @@ class _StartedHeaderState extends State<StartedHeader> {
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: Stack(
         children: [
-          // 블러 처리된 대표 이미지 배경.
+          // 블러 처리된 스타터 대표 이미지 배경.
           Positioned.fill(
             child: ImageFiltered(
               imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              // TODO: API 연동 시 NetworkImage(imageUri) 로 교체. (현재는 임시 에셋)
-              child: Image.asset(
-                'assets/images/temp_image.jpg',
-                fit: BoxFit.cover,
-              ),
+              child: _backgroundImage(),
             ),
           ),
           // 텍스트 대비를 위한 어두운 오버레이 + 진행 정보.
@@ -168,12 +158,8 @@ class _StartedHeaderState extends State<StartedHeader> {
                   widget.progress.topic,
                   textAlign: TextAlign.center,
                 ),
-                // TODO: 멤버 조회 API 생기면 starterUserId 로 닉네임 조회해 표시.
-                // 임시: 이름이 없어 시작자 id 를 그대로 노출.
                 AppText.body(
-                  l10n.startedHeaderStarter(
-                    widget.progress.starterUserId.toString(),
-                  ),
+                  l10n.startedHeaderStarter(widget.progress.starterNickname),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -182,6 +168,20 @@ class _StartedHeaderState extends State<StartedHeader> {
           _buildToggleButton(),
         ],
       ),
+    );
+  }
+
+  /// 헤더 배경으로 쓸 이미지. URI 가 없거나 로드 실패 시 임시 에셋으로 대체한다.
+  Widget _backgroundImage() {
+    final url = widget.imageUri;
+    if (url.isEmpty) {
+      return Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover);
+    }
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      errorBuilder: (_, _, _) =>
+          Image.asset('assets/images/temp_image.jpg', fit: BoxFit.cover),
     );
   }
 

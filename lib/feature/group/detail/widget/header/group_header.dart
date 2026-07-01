@@ -50,7 +50,7 @@ class GroupHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        StartedHeader(imageUri: imageUri ?? "", progress: cycle),
+        StartedHeader(imageUri: cycle.starterImageUrl ?? "", progress: cycle),
         const SizedBox(height: AppSpacing.s5),
         AppButton(label: l10n.groupHeaderTakePhoto, onPressed: onTakePhoto),
       ],
