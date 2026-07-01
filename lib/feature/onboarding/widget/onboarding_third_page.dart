@@ -1,5 +1,4 @@
-import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -13,18 +12,12 @@ class OnboardingThirdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      spacing: AppSpacing.s3,
-      children: [
-        AppText.headlineLarge(
-          l10n.onboardingThirdTitle,
-          textAlign: TextAlign.center,
-        ),
-        AppText.body(l10n.onboardingThirdBody, textAlign: TextAlign.center),
-      ],
+    return Center(
+      child: TitleDescription(
+        title: l10n.onboardingThirdTitle,
+        description: l10n.onboardingThirdBody,
+        centered: true,
+      ),
     );
   }
 }

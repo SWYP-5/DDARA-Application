@@ -19,6 +19,10 @@ class CreateGroupNotifier extends AutoDisposeNotifier<CreateGroupState> {
     state = state.copyWith(description: description);
   }
 
+  void nicknameOnChanged(String nickname) {
+    state = state.copyWith(nickname: nickname);
+  }
+
   Future<void> createGroup() async {
     if (state.isLoading) return;
 
@@ -29,6 +33,7 @@ class CreateGroupNotifier extends AutoDisposeNotifier<CreateGroupState> {
       final createGroup = await createGroupUseCase(
         state.groupName,
         state.description,
+        state.nickname
       );
 
       state = state.copyWith(isLoading: false);

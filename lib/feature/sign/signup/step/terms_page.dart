@@ -1,10 +1,11 @@
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/divider/app_divider.dart';
 import 'package:ddara/core/designsystem/component/surface/app_surface.dart';
-import 'package:ddara/core/designsystem/design_system.dart';
-import 'package:ddara/core/widget/app_checkbox.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
+import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/app_checkbox.dart';
+import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/feature/profile/policy/policy_viewer_page.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,15 +84,9 @@ class _TermsPageState extends State<TermsPage> {
             spacing: 24,
             children: [
               // 헤더
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  AppText.headlineLarge(l10n.termsTitle),
-                  AppText.body(l10n.termsSubtitle),
-                ],
+              TitleDescription(
+                title: l10n.termsTitle,
+                description: l10n.termsSubtitle,
               ),
 
               // 동의 목록 카드
