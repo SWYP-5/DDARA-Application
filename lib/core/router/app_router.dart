@@ -12,7 +12,6 @@ import '../../feature/group/started/started_photo_check_page.dart';
 import '../../feature/group/started/started_page.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
-import '../../core/model/group/invite_group.dart';
 import '../../feature/group/join/join_group_page.dart';
 import '../../feature/group/join/invite/invite_code_input_page.dart';
 import '../../feature/group/join/landing/invite_landing_page.dart';
@@ -178,7 +177,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RoutePath.joinGroup,
         // 랜딩 애니메이션이 끝난 뒤라 슬라이드 대신 페이드로 자연스럽게 전환한다.
         pageBuilder: (_, state) {
-          final group = state.extra as InviteGroup?;
+          final args = state.extra as JoinGroupArgs?;
           return CustomTransitionPage(
             key: state.pageKey,
             transitionDuration: const Duration(milliseconds: 400),
@@ -196,7 +195,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ),
               );
             },
-            child: JoinGroupPage(group: group),
+            child: JoinGroupPage(
+              group: args?.group,
+              inviteCode: args?.inviteCode ?? '',
+            ),
           );
         },
       ),

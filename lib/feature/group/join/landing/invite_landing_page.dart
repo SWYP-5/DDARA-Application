@@ -3,6 +3,7 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';
+import 'package:ddara/feature/group/join/join_group_page.dart';
 import 'package:ddara/feature/group/join/landing/widget/ddara_invitation_animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,7 +91,10 @@ class _InviteLandingPageState extends ConsumerState<InviteLandingPage> {
   /// 콘텐츠 페이드아웃이 끝나면 참여 확인 화면으로 전환한다.
   void _onFadeOutEnd() {
     if (!mounted || _visible) return;
-    context.pushReplacement(RoutePath.joinGroup, extra: _group);
+    context.pushReplacement(
+      RoutePath.joinGroup,
+      extra: JoinGroupArgs(group: _group, inviteCode: widget.inviteCode),
+    );
   }
 
   @override

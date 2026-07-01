@@ -6,6 +6,7 @@ import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
+import 'package:ddara/feature/group/join/join_group_page.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,7 +76,13 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
       // 모든 검증 통과 시 참여 확인 화면으로 inviteGroup 을 담아 이동.
       final inviteGroup = next.inviteGroup;
       if (prev?.inviteGroup == null && inviteGroup != null) {
-        context.push(RoutePath.joinGroup, extra: inviteGroup);
+        context.push(
+          RoutePath.joinGroup,
+          extra: JoinGroupArgs(
+            group: inviteGroup,
+            inviteCode: next.inviteCode,
+          ),
+        );
         return;
       }
 
