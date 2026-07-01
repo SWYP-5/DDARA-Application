@@ -3,6 +3,7 @@ import 'package:ddara/core/designsystem/component/appbar/app_bar.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
@@ -15,6 +16,13 @@ import 'package:go_router/go_router.dart';
 ///
 /// 딥링크에서 파싱한 [inviteCode] 가 있으면 입력 필드에 미리 채워준다.
 /// 실제 참여 API 연동(research.md 작업 7번)은 백엔드 스펙 확정 후 연결한다.
+/// 토스트 대신 입력 필드 아래 인라인 에러(errorText)로 보여줄 에러 코드.
+const _inlineErrorCodes = {
+  GroupJoinErrorCode.invalidInviteCode,
+  GroupJoinErrorCode.groupLimitExceeded,
+  GroupJoinErrorCode.alreadyJoinedGroup,
+};
+
 class InviteCodeInputPage extends ConsumerStatefulWidget {
   const InviteCodeInputPage({super.key, required this.inviteCode});
 
@@ -54,17 +62,26 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(inviteCodeInputNotifierProvider.notifier);
+    final state = ref.watch(inviteCodeInputNotifierProvider);
+
+    // 아래 에러 코드는 입력 필드 아래 인라인 에러로 표시한다.
+    final errorCode = state.errorCode;
+    final codeErrorText = errorCode != null && _inlineErrorCodes.contains(errorCode)
+        ? errorCode.message
+        : null;
 
     ref.listen(inviteCodeInputNotifierProvider, (prev, next) {
-      // 참여 성공 시 모임 홈으로 이동.
-      if (prev?.groupId == -1 && next.groupId > -1) {
-        context.pushReplacement(RoutePath.group, extra: next.groupId);
+      // 모든 검증 통과 시 참여 확인 화면으로 inviteGroup 을 담아 이동.
+      final inviteGroup = next.inviteGroup;
+      if (prev?.inviteGroup == null && inviteGroup != null) {
+        context.push(RoutePath.joinConfirm, extra: inviteGroup);
         return;
       }
 
       final errorCode = next.errorCode;
 
-      if (errorCode != null) {
+      // 인라인(errorText)으로 보여주는 코드는 토스트에서 제외.
+      if (errorCode != null && !_inlineErrorCodes.contains(errorCode)) {
         Toast.showToast(context, errorCode.message, type: ToastType.error);
       }
     });
@@ -91,11 +108,12 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
                 placeholder: '예) ASKD23NSK12',
                 controller: _codeController,
                 highlightWhenFilled: true,
+                errorText: codeErrorText,
                 onChanged: notifier.inviteCodeOnChanged,
               ),
               const Spacer(),
               AppButton(
-                label: '모임 참여하기',
+                label: '참여하기',
                 onPressed: () => notifier.joinGroup(),
               ),
             ],

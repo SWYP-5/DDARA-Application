@@ -2,8 +2,8 @@
 enum GroupJoinErrorCode {
   invalidInviteCode('INVALID_INVITE_CODE', '유효하지 않은 초대 코드입니다.'),
   groupNotFound('GROUP_NOT_FOUND', '존재하지 않는 초대 코드입니다.'),
-  groupLimitExceeded('GROUP_LIMIT_EXCEEDED', '모임 정원이 가득 찼습니다.'),
-  alreadyJoinedGroup('ALREADY_JOINED_GROUP', '이미 참여 중인 모임입니다.'),
+  groupLimitExceeded('GROUP_LIMIT_EXCEEDED', '이미 꽉 찬 모임이에요. 만든 친구에게 물어봐 주세요'),
+  alreadyJoinedGroup('ALREADY_JOINED_GROUP', '이미 참여 중인 모임이에요'),
 
   /// 네트워크 오류 등 매칭되는 서버 코드가 없을 때의 기본값.
   unknown('UNKNOWN', '네트워크 연결이 불안정합니다.');

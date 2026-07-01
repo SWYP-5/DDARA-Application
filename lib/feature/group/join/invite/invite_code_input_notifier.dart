@@ -14,7 +14,8 @@ class InviteCodeInputNotifier
   }
 
   void inviteCodeOnChanged(String inviteCode) {
-    state = state.copyWith(inviteCode: inviteCode);
+    // 입력이 바뀌면 이전 에러를 해제한다.
+    state = state.copyWith(inviteCode: inviteCode, clearErrorCode: true);
   }
 
   Future<void> joinGroup() async {
@@ -28,30 +29,27 @@ class InviteCodeInputNotifier
         state.inviteCode,
       );
 
-      state = state.copyWith(
-        isLoading: false,
-        groupId: inviteGroup.groupId,
-        name: inviteGroup.name,
-      );
+      // 조회는 됐지만 참여할 수 없는 경우(이미 참여 중·정원 초과)를 걸러낸다.
+      if (inviteGroup.alreadyJoined) {
+        state = state.copyWith(
+          isLoading: false,
+          errorCode: GroupJoinErrorCode.alreadyJoinedGroup,
+        );
+        return;
+      }
+      if (inviteGroup.isFull) {
+        state = state.copyWith(
+          isLoading: false,
+          errorCode: GroupJoinErrorCode.groupLimitExceeded,
+        );
+        return;
+      }
+
+      state = state.copyWith(isLoading: false, inviteGroup: inviteGroup);
     } on InvalidInviteCodeException {
       state = state.copyWith(
         isLoading: false,
         errorCode: GroupJoinErrorCode.invalidInviteCode,
-      );
-    } on GroupNotFoundException {
-      state = state.copyWith(
-        isLoading: false,
-        errorCode: GroupJoinErrorCode.groupNotFound,
-      );
-    } on GroupFullException {
-      state = state.copyWith(
-        isLoading: false,
-        errorCode: GroupJoinErrorCode.groupLimitExceeded,
-      );
-    } on AlreadyJoinedGroupException {
-      state = state.copyWith(
-        isLoading: false,
-        errorCode: GroupJoinErrorCode.alreadyJoinedGroup,
       );
     } on NetworkException {
       state = state.copyWith(
