@@ -7,6 +7,7 @@ import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/core/widget/invite_share_sheet.dart';
 import 'package:ddara/feature/group/detail/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
+import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
 import 'package:ddara/feature/group/detail/widget/group_section.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
@@ -164,6 +165,8 @@ class GroupPage extends ConsumerWidget {
       );
     }
 
+    final cycles = state.historyCycles?.cycles ?? const [];
+
     return SingleChildScrollView(
       // 끝에서 더 당겨지는 바운스(overscroll)를 막고 가장자리에서 멈춘다.
       physics: const ClampingScrollPhysics(),
@@ -217,11 +220,13 @@ class GroupPage extends ConsumerWidget {
                 ),
               ],
             ),
-            // HistoryPhotos 는 2차 MVP 예정 — 같은 높이(카드 225 + 상하 여백)로 빈 상태 안내.
-            body: SizedBox(
-              height: 225 + AppSpacing.s4 * 2,
-              child: Center(child: AppText.body(l10n.groupHistoryEmpty)),
-            ),
+            // 히스토리가 있으면 사진 카드들을, 없으면 같은 높이의 빈 상태 안내를 보여준다.
+            body: cycles.isEmpty
+                ? SizedBox(
+                    height: 225 + AppSpacing.s4 * 2,
+                    child: Center(child: AppText.body(l10n.groupHistoryEmpty)),
+                  )
+                : HistoryPhotos(cycles: cycles),
           ),
         ],
       ),

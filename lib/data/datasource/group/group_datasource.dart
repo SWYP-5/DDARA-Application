@@ -1,6 +1,7 @@
 import 'package:ddara/core/network/dto/group/create_group_response.dart';
 import 'package:ddara/core/network/dto/group/group_detail_response.dart';
 import 'package:ddara/core/network/dto/group/group_list_response.dart';
+import 'package:ddara/core/network/dto/group/history_cycles_response.dart';
 import 'package:ddara/core/network/dto/group/invite_group_response.dart';
 import 'package:ddara/core/network/dto/group/join_group_response.dart';
 import 'package:dio/dio.dart';
@@ -60,5 +61,11 @@ class GroupDataSource {
 
   Future<void> exitGroup(int groupId) async {
     await _dio.delete('$_baseUrl/$groupId/members/me');
+  }
+
+  Future<HistoryCyclesResponse> getHistoryCycles(int groupId) async {
+    final response = await _dio.get('$_baseUrl/$groupId/cycles?status=done');
+
+    return HistoryCyclesResponse.fromJson(response.data);
   }
 }

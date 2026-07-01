@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/provider/repository_provider.dart';
 import '../usecase/group/exit_group_use_case.dart';
 import '../usecase/group/get_group_detail_use_case.dart';
+import '../usecase/group/get_history_cycles_use_case.dart';
 import '../usecase/group/get_invite_group_use_case.dart';
 import '../usecase/group/join_group_use_case.dart';
 
@@ -54,4 +55,8 @@ final joinGroupUseCaseProvider = Provider<JoinGroupUseCase>((ref) {
 
 final exitGroupUseCaseProvider = Provider<ExitGroupUseCase>((ref) {
   return ExitGroupUseCase(ref.read(groupRepositoryProvider));
+});
+
+final getHistoryCyclesUseCaseProvider = Provider<GetHistoryCyclesUseCase>((ref) {
+  return GetHistoryCyclesUseCase(ref.read(groupRepositoryProvider));
 });

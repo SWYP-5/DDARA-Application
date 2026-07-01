@@ -1,4 +1,6 @@
 import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/core/model/group/group_detail.dart';
+import 'package:ddara/core/model/group/history_cycles.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,10 +16,19 @@ class GroupPageNotifier extends AutoDisposeFamilyNotifier<GroupPageState, int> {
 
   Future<void> _load(int groupId) async {
     final getGroupDetailUseCase = ref.read(getGroupDetailUseCaseProvider);
+    final getHistoryCyclesUseCase = ref.read(getHistoryCyclesUseCaseProvider);
 
     try {
-      final groupDetail = await getGroupDetailUseCase.getGroupDetail(groupId);
-      state = state.copyWith(isLoading: false, groupDetail: groupDetail);
+      // 모임 상세와 히스토리를 함께(병렬) 조회한다.
+      final results = await Future.wait([
+        getGroupDetailUseCase.getGroupDetail(groupId),
+        getHistoryCyclesUseCase.getHistoryCycles(groupId),
+      ]);
+      state = state.copyWith(
+        isLoading: false,
+        groupDetail: results[0] as GroupDetail,
+        historyCycles: results[1] as HistoryCycles,
+      );
     } on NotGroupMemberException {
       state = state.copyWith(
         isLoading: false,

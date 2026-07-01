@@ -1,10 +1,12 @@
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/group_exit_error_code.dart';
+import 'package:ddara/core/exception/group_history_error_code.dart';
 import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/group_list.dart';
+import 'package:ddara/core/model/group/history_cycles.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
 import 'package:ddara/core/model/group/join_group.dart';
 import 'package:ddara/data/datasource/group/group_datasource.dart';
@@ -156,6 +158,31 @@ class GroupRepositoryImpl implements GroupRepository {
           throw NotGroupMemberException();
 
         case GroupExitErrorCode.groupNotFound:
+          // 404 — 모임을 찾을 수 없음
+          throw GroupNotFoundException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<HistoryCycles> getHistoryCycles(int groupId) async {
+    try {
+      final response = await _groupDataSource.getHistoryCycles(groupId);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupHistoryErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case GroupHistoryErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case GroupHistoryErrorCode.groupNotFound:
           // 404 — 모임을 찾을 수 없음
           throw GroupNotFoundException();
 
