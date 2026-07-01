@@ -35,6 +35,8 @@ class StartedPage extends StatelessWidget {
             status: 'in_progress',
             startedAt: DateTime.now(),
             deadlineAt: DateTime.now().add(const Duration(hours: 14)),
+            starterNickname: '지원',
+            starterImageUrl: '',
           ),
           // TODO: 실제 멤버/업로드 상태로 대체. (현재 더미)
           // 첫 카드를 본인으로 보고, 본인이 아직 업로드하지 않았다고 가정한다.
