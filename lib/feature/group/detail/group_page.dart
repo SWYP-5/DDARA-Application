@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/widget/error_message_dialog.dart';
+import '../../../core/widget/toast/toast.dart';
 
 /// 모임 화면. 전달받은 [groupId] 로 상세를 조회해 그린다.
 class GroupPage extends ConsumerWidget {
@@ -31,7 +31,7 @@ class GroupPage extends ConsumerWidget {
       final errorMessage = next.errorMessage;
 
       if (errorMessage.isNotEmpty) {
-        showErrorMessageDialog(context, message: errorMessage);
+        Toast.showToast(context, errorMessage, type: ToastType.error);
       }
     });
 
@@ -53,9 +53,7 @@ class GroupPage extends ConsumerWidget {
     if (groupDetail == null) {
       return Center(
         child: AppText.body(
-          state.errorMessage.isEmpty
-              ? '모임 정보를 불러오지 못했어요.'
-              : state.errorMessage,
+          state.errorMessage.isEmpty ? '모임 정보를 불러오지 못했어요.' : state.errorMessage,
         ),
       );
     }
@@ -117,9 +115,7 @@ class GroupPage extends ConsumerWidget {
           // HistoryPhotos 는 2차 MVP 예정 — 같은 높이(카드 225 + 상하 여백)로 빈 상태 안내.
           SizedBox(
             height: 225 + AppSpacing.s4 * 2,
-            child: const Center(
-              child: AppText.body('지난 따라찍기가 아직 없어요'),
-            ),
+            child: const Center(child: AppText.body('지난 따라찍기가 아직 없어요')),
           ),
         ],
       ),

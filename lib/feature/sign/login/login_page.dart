@@ -6,11 +6,11 @@ import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/sign/login/provider/notifier_provider.dart';
 import 'package:ddara/feature/sign/login/util/login_state.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -39,9 +39,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           context.push(RoutePath.signup, extra: next.social);
 
         case LoginFail(message: final message):
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(message)));
+          Toast.showToast(context, message, type: ToastType.error);
 
         default:
           break;

@@ -71,4 +71,41 @@
   "policyServiceTitle": "서비스 이용 약관",
   "policyPrivacyTitle": "개인정보 처리방침",
   "policyYouthTitle": "청소년 보호정책"
+  },
+
+  "emptyGroupTitle": "아직 참여한 모임이 없어요",
+  "emptyGroupDescription": "첫 판을 시작해 친구들에게 보내보세요",
+
+  "groupCreate": "모임 만들기",
+  "groupJoin": "모임 참여하기",
+  "groupEnter": "모임 들어가기",
+
+  "groupCountLabel": "현재 모임 개수",
+  "groupCountValue": "{count}/{maxCount}개",
+  "@groupCountValue": {
+    "description": "현재/최대 모임 개수 표시",
+    "placeholders": {
+      "count": { "type": "int" },
+      "maxCount": { "type": "int" }
+    }
+  },
+  "groupCountCaption": "모임에 속해 있어요",
+
+  "meetingStatusInProgress": "진행 중",
+  "meetingStatusCompleted": "종료",
+  "meetingMemberOwner": "{name}님",
+  "@meetingMemberOwner": {
+    "description": "멤버가 모임장 1명뿐일 때의 요약",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "meetingMemberOthers": "{name}님 외 {others}명",
+  "@meetingMemberOthers": {
+    "description": "모임장 외 여러 명일 때의 멤버 요약",
+    "placeholders": {
+      "name": { "type": "String" },
+      "others": { "type": "int" }
+    }
+  }
 }

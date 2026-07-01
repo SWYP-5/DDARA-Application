@@ -4,6 +4,7 @@ import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/home/widget/group_list_widget.dart';
 import 'package:ddara/feature/home/widget/meeting_card.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,6 +36,7 @@ class _GroupListPageState extends State<GroupListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final groups = widget.groups;
     return Stack(
       // 콘텐츠가 짧아도(빈 목록 등) 화면 전체 높이를 채워 FAB 가 항상 바닥에 붙도록.
@@ -51,40 +53,40 @@ class _GroupListPageState extends State<GroupListPage> {
             AppSpacing.s6 + _fabSize + AppSpacing.s4,
           ),
           child: Row(
-        // 핵심: 두 열을 위 기준으로 정렬해야 고정 위젯이 만든 오프셋이 유지된다.
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 좌측 열: 짝수 인덱스 카드 (0, 2, 4 …)
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: AppSpacing.s4,
-              children: [
-                for (var i = 0; i < groups.length; i += 2)
-                  MeetingCard(
-                    group: groups[i],
-                    onTap: () => _openGroup(context, groups[i].groupId),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(width: AppSpacing.s4),
-          // 우측 열: 맨 위 고정 위젯 + 홀수 인덱스 카드 (1, 3, 5 …)
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: AppSpacing.s4,
-              children: [
-                // 참여 중인 모임 개수를 주입. (지그재그 오프셋용 고정 위젯)
-                HomeWidget(count: groups.length),
-                for (var i = 1; i < groups.length; i += 2)
-                  MeetingCard(
-                    group: groups[i],
-                    onTap: () => _openGroup(context, groups[i].groupId),
-                  ),
-              ],
-            ),
-          ),
+            // 핵심: 두 열을 위 기준으로 정렬해야 고정 위젯이 만든 오프셋이 유지된다.
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 좌측 열: 짝수 인덱스 카드 (0, 2, 4 …)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: AppSpacing.s4,
+                  children: [
+                    for (var i = 0; i < groups.length; i += 2)
+                      MeetingCard(
+                        group: groups[i],
+                        onTap: () => _openGroup(context, groups[i].groupId),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppSpacing.s4),
+              // 우측 열: 맨 위 고정 위젯 + 홀수 인덱스 카드 (1, 3, 5 …)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: AppSpacing.s4,
+                  children: [
+                    // 참여 중인 모임 개수를 주입. (지그재그 오프셋용 고정 위젯)
+                    HomeWidget(count: groups.length),
+                    for (var i = 1; i < groups.length; i += 2)
+                      MeetingCard(
+                        group: groups[i],
+                        onTap: () => _openGroup(context, groups[i].groupId),
+                      ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -106,20 +108,17 @@ class _GroupListPageState extends State<GroupListPage> {
                     spacing: AppSpacing.s3,
                     children: [
                       AppPillButton(
-                        label: '모임 만들기',
+                        label: l10n.groupCreate,
                         onPressed: () => context.push(RoutePath.groupCreate),
                       ),
                       AppPillButton.outline(
-                        label: '모임 들어가기',
+                        label: l10n.groupEnter,
                         onPressed: () => context.push(RoutePath.groupJoin),
                       ),
                     ],
                   ),
                 ),
-              _FloatingAddButton(
-                isOpen: _isMenuOpen,
-                onPressed: _toggleMenu,
-              ),
+              _FloatingAddButton(isOpen: _isMenuOpen, onPressed: _toggleMenu),
             ],
           ),
         ),
