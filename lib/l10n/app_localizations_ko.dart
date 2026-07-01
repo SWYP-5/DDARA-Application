@@ -159,6 +159,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get groupMembersAdd => '추가하기';
 
   @override
+  String get memberReportNickname => '닉네임 신고';
+
+  @override
+  String get memberReportMailSubject => '[따라] 닉네임 신고';
+
+  @override
+  String memberReportMailBody(String nickname) {
+    return '신고할 닉네임: $nickname\n\n신고 사유를 작성해 주세요.\n';
+  }
+
+  @override
+  String memberReportMailFailed(String email) {
+    return '메일 앱을 열 수 없어요. ($email)';
+  }
+
+  @override
   String get groupHistoryTitle => '지난 따라찍기';
 
   @override

@@ -382,6 +382,30 @@ abstract class AppLocalizations {
   /// **'추가하기'**
   String get groupMembersAdd;
 
+  /// No description provided for @memberReportNickname.
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임 신고'**
+  String get memberReportNickname;
+
+  /// No description provided for @memberReportMailSubject.
+  ///
+  /// In ko, this message translates to:
+  /// **'[따라] 닉네임 신고'**
+  String get memberReportMailSubject;
+
+  /// 닉네임 신고 메일의 본문. (신고 대상 닉네임 포함)
+  ///
+  /// In ko, this message translates to:
+  /// **'신고할 닉네임: {nickname}\n\n신고 사유를 작성해 주세요.\n'**
+  String memberReportMailBody(String nickname);
+
+  /// 닉네임 신고 메일 앱 실행에 실패했을 때 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'메일 앱을 열 수 없어요. ({email})'**
+  String memberReportMailFailed(String email);
+
   /// No description provided for @groupHistoryTitle.
   ///
   /// In ko, this message translates to:

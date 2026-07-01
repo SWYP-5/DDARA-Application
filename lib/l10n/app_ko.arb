@@ -124,6 +124,22 @@
   "groupDetailLoadError": "모임 정보를 불러오지 못했어요.",
   "groupMembersTitle": "사람들",
   "groupMembersAdd": "추가하기",
+  "memberReportNickname": "닉네임 신고",
+  "memberReportMailSubject": "[따라] 닉네임 신고",
+  "memberReportMailBody": "신고할 닉네임: {nickname}\n\n신고 사유를 작성해 주세요.\n",
+  "@memberReportMailBody": {
+    "description": "닉네임 신고 메일의 본문. (신고 대상 닉네임 포함)",
+    "placeholders": {
+      "nickname": { "type": "String" }
+    }
+  },
+  "memberReportMailFailed": "메일 앱을 열 수 없어요. ({email})",
+  "@memberReportMailFailed": {
+    "description": "닉네임 신고 메일 앱 실행에 실패했을 때 안내",
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
   "groupHistoryTitle": "지난 따라찍기",
   "groupHistoryMore": "더보기",
   "groupHistoryEmpty": "지난 따라찍기가 아직 없어요",
