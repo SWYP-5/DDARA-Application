@@ -7,7 +7,6 @@ import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
-import 'package:ddara/feature/home/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -67,7 +66,8 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
 
     // 아래 에러 코드는 입력 필드 아래 인라인 에러로 표시한다.
     final errorCode = state.errorCode;
-    final codeErrorText = errorCode != null && _inlineErrorCodes.contains(errorCode)
+    final codeErrorText =
+        errorCode != null && _inlineErrorCodes.contains(errorCode)
         ? errorCode.message
         : null;
 
@@ -115,10 +115,7 @@ class _InviteCodeInputPageState extends ConsumerState<InviteCodeInputPage> {
                 onChanged: notifier.inviteCodeOnChanged,
               ),
               const Spacer(),
-              AppButton(
-                label: '참여하기',
-                onPressed: () => notifier.joinGroup(),
-              ),
+              AppButton(label: '참여하기', onPressed: () => notifier.joinGroup()),
             ],
           ),
         ),
