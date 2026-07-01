@@ -77,4 +77,41 @@ class GroupPageNotifier extends AutoDisposeFamilyNotifier<GroupPageState, int> {
       return false;
     }
   }
+
+  /// 모임 내 닉네임을 변경한다. 성공하면 true, 실패하면 errorMessage 를 채우고 false 를 반환한다.
+  /// 요청 시작~완료까지 isLoading 을 true 로 두고, 성공 시 변경된 닉네임이
+  /// 멤버 목록에 반영되도록 상세를 다시 조회한다.
+  Future<bool> changeNickName(String nickName) async {
+    state = state.copyWith(isLoading: true);
+    final changeNicknameUseCase = ref.read(changeNicknameUseCaseProvider);
+
+    try {
+      await changeNicknameUseCase.changeNickName(arg, nickName);
+      // 변경된 닉네임을 반영하기 위해 상세를 다시 조회한다. (isLoading 은 _load 가 내린다)
+      await _load(arg);
+      return true;
+    } on InvalidNicknameException {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '닉네임은 2~10자로 입력해주세요.',
+      );
+      return false;
+    } on DuplicateGroupNicknameException {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '이미 누가 쓰고 있어요. 다른 이름은 어때요?',
+      );
+      return false;
+    } on NotGroupMemberException {
+      state = state.copyWith(isLoading: false, errorMessage: '해당 모임의 멤버가 아니에요.');
+      return false;
+    } on GroupNotFoundException {
+      state = state.copyWith(isLoading: false, errorMessage: '존재하지 않는 모임이에요.');
+      return false;
+    } catch (_) {
+      // NetworkException 및 기타 예기치 못한 오류.
+      state = state.copyWith(isLoading: false, errorMessage: '닉네임을 변경하지 못했어요.');
+      return false;
+    }
+  }
 }

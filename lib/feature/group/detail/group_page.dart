@@ -9,6 +9,7 @@ import 'package:ddara/feature/group/detail/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/detail/util/group_page_state.dart';
 import 'package:ddara/feature/group/detail/widget/body/history_photos.dart';
 import 'package:ddara/feature/group/detail/widget/body/members.dart';
+import 'package:ddara/feature/group/detail/widget/edit_nickname_sheet.dart';
 import 'package:ddara/feature/group/detail/widget/group_section.dart';
 import 'package:ddara/feature/group/detail/widget/header/group_header.dart';
 import 'package:ddara/feature/home/provider/notifier_provider.dart';
@@ -102,7 +103,7 @@ class GroupPage extends ConsumerWidget {
           CupertinoActionSheetAction(
             onPressed: () {
               Navigator.of(sheetContext).pop();
-              // TODO: 닉네임 수정 화면으로 이동.
+              _editNickname(context, ref);
             },
             child: const AppText.title('닉네임 수정'),
           ),
@@ -124,6 +125,20 @@ class GroupPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// 닉네임 수정 바텀시트를 띄우고, 입력을 받으면 변경을 요청한다.
+  /// (실패 시 notifier 가 errorMessage → 토스트로 처리, 성공 시 상세 재조회로 반영)
+  Future<void> _editNickname(BuildContext context, WidgetRef ref) async {
+    final groupName =
+        ref.read(groupPageNotifierProvider(groupId)).groupDetail?.name ?? '';
+
+    final nickName = await EditNicknameSheet.show(context, groupName: groupName);
+    if (nickName == null || !context.mounted) return;
+
+    await ref
+        .read(groupPageNotifierProvider(groupId).notifier)
+        .changeNickName(nickName);
   }
 
   /// 모임 나가기를 실행한다. 먼저 확인 다이얼로그를 띄우고, 확인 시에만 진행한다.

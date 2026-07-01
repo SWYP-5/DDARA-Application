@@ -1,8 +1,10 @@
+import 'package:ddara/core/exception/group_change_nickname_error_code.dart';
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/group_exit_error_code.dart';
 import 'package:ddara/core/exception/group_history_error_code.dart';
 import 'package:ddara/core/exception/group_join_error_code.dart';
 import 'package:ddara/core/exception/login_exception.dart';
+import 'package:ddara/core/model/group/change_nickname.dart';
 import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/model/group/group_list.dart';
@@ -185,6 +187,40 @@ class GroupRepositoryImpl implements GroupRepository {
         case GroupHistoryErrorCode.groupNotFound:
           // 404 — 모임을 찾을 수 없음
           throw GroupNotFoundException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<ChangeNickName> changeNickName(int groupId, String nickName) async {
+    try {
+      final response = await _groupDataSource.changeNickName(groupId, nickName);
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? GroupChangeNickNameErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      // 401(UNAUTHORIZED)은 인터셉터에서 따로 처리하므로 여기서 다루지 않는다.
+      switch (code) {
+        case GroupChangeNickNameErrorCode.invalidInput:
+          // 400 — nickname 누락 또는 2~10자 위반
+          throw InvalidNicknameException();
+
+        case GroupChangeNickNameErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case GroupChangeNickNameErrorCode.groupNotFound:
+          // 404 — 모임을 찾을 수 없음
+          throw GroupNotFoundException();
+
+        case GroupChangeNickNameErrorCode.duplicateGroupNickname:
+          // 409 — 모임 내 닉네임 중복
+          throw DuplicateGroupNicknameException();
 
         default:
           throw NetworkException();

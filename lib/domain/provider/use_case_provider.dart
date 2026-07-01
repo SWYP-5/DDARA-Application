@@ -7,6 +7,7 @@ import 'package:ddara/domain/usecase/auth/signup_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/provider/repository_provider.dart';
+import '../usecase/group/change_nickname_use_case.dart';
 import '../usecase/group/exit_group_use_case.dart';
 import '../usecase/group/get_group_detail_use_case.dart';
 import '../usecase/group/get_history_cycles_use_case.dart';
@@ -59,4 +60,8 @@ final exitGroupUseCaseProvider = Provider<ExitGroupUseCase>((ref) {
 
 final getHistoryCyclesUseCaseProvider = Provider<GetHistoryCyclesUseCase>((ref) {
   return GetHistoryCyclesUseCase(ref.read(groupRepositoryProvider));
+});
+
+final changeNicknameUseCaseProvider = Provider<ChangeNicknameUseCase>((ref) {
+  return ChangeNicknameUseCase(ref.read(groupRepositoryProvider));
 });

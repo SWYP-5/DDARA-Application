@@ -26,3 +26,6 @@ class InvalidJoinInputException extends GroupException {}
 
 /// 409 — 모임 내 닉네임 중복.
 class DuplicateGroupNicknameException extends GroupException {}
+
+/// 400 — 닉네임 누락 또는 길이(2~10자) 위반.
+class InvalidNicknameException extends GroupException {}

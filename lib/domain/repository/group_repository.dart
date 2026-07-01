@@ -1,3 +1,4 @@
+import 'package:ddara/core/model/group/change_nickname.dart';
 import 'package:ddara/core/model/group/create_group.dart';
 import 'package:ddara/core/model/group/history_cycles.dart';
 import 'package:ddara/core/model/group/invite_group.dart';
@@ -24,4 +25,6 @@ abstract interface class GroupRepository {
   Future<void> exitGroup(int groupId);
 
   Future<HistoryCycles> getHistoryCycles(int groupId);
+
+  Future<ChangeNickName> changeNickName(int groupId, String nickName);
 }
