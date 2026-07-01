@@ -51,6 +51,11 @@ class _InviteLandingPageState extends ConsumerState<InviteLandingPage> {
     Future.microtask(
       () => ref.read(pendingInviteCodeProvider.notifier).state = null,
     );
+    // DdaraInvitation 은 onReveal 을 제공하지 않아, 편지지가 열릴 즈음에 맞춰
+    // 지연 후 문구를 페이드인한다.
+    Future.delayed(const Duration(milliseconds: 900), () {
+      if (mounted) setState(() => _textVisible = true);
+    });
     _fetchGroup();
   }
 
@@ -123,10 +128,7 @@ class _InviteLandingPageState extends ConsumerState<InviteLandingPage> {
                   ),
                 ),
                 DdaraInvitationAnimation(
-                  size: 240,
-                  revealAt: 0.3,
-                  onComplete: _onAnimationComplete,
-                  onReveal: () => setState(() => _textVisible = true),
+                  onCompleted: _onAnimationComplete,
                 ),
               ],
             ),

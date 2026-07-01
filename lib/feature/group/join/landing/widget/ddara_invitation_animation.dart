@@ -1,56 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+/// DDARA 초대장 열림 애니메이션 위젯.
+///
+/// 원본 스펙: 512x512, 90fps, 174프레임 (약 1.93초).
+/// 마커: closed(0) · prep(12) · flap-open(64) · letter-settled(110) · sparkles-done(138)
+///
+/// 사용 예:
+/// ```dart
+/// DdaraInvitationAnimation(
+///   size: 240,
+///   autoPlay: true,
+///   onCompleted: () => print('열림 완료'),
+/// )
+/// ```
 class DdaraInvitationAnimation extends StatefulWidget {
   const DdaraInvitationAnimation({
     super.key,
-    this.size,
-    this.onComplete,
-    this.onReveal,
-    this.revealAt = 0.5,
+    this.size = 256,
+    this.autoPlay = true,
+    this.repeat = false,
+    this.onCompleted,
   });
 
-  /// 정사각형 한 변 크기(px). null이면 부모 제약을 따른다.
-  final double? size;
+  /// 위젯의 가로/세로 크기 (원본은 정사각형).
+  final double size;
 
-  /// 재생이 끝났을 때 호출되는 콜백.
-  final VoidCallback? onComplete;
+  /// 위젯이 나타나면 바로 재생할지 여부.
+  final bool autoPlay;
 
-  /// 재생 진행도가 [revealAt] 을 처음 넘는 순간(편지지가 열릴 때쯤) 호출된다.
-  final VoidCallback? onReveal;
+  /// 재생 후 반복할지 여부.
+  final bool repeat;
 
-  /// [onReveal] 을 발화시킬 진행도(0~1). 기본 0.5(중간).
-  final double revealAt;
+  /// 1회 재생이 끝났을 때 호출 (repeat=false 일 때만).
+  final VoidCallback? onCompleted;
 
   @override
-  State<DdaraInvitationAnimation> createState() =>
-      _DdaraInvitationAnimationState();
+  State<DdaraInvitationAnimation> createState() => DdaraInvitationAnimationState();
 }
 
-class _DdaraInvitationAnimationState extends State<DdaraInvitationAnimation>
+class DdaraInvitationAnimationState extends State<DdaraInvitationAnimation>
     with SingleTickerProviderStateMixin {
-  static const String _asset =
-      'assets/lottie/ddara-invitation-open-transparent.json';
-
-  late final AnimationController _controller = AnimationController(vsync: this);
-
-  /// onReveal 중복 발화 방지.
-  bool _revealed = false;
+  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(vsync: this);
     _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        widget.onComplete?.call();
-      }
-    });
-    // 진행도가 revealAt 을 처음 넘으면 onReveal 을 한 번 발화한다.
-    _controller.addListener(() {
-      if (!_revealed && _controller.value >= widget.revealAt) {
-        _revealed = true;
-        widget.onReveal?.call();
-      }
+      if (status == AnimationStatus.completed) widget.onCompleted?.call();
     });
   }
 
@@ -60,20 +58,32 @@ class _DdaraInvitationAnimationState extends State<DdaraInvitationAnimation>
     super.dispose();
   }
 
+  /// 처음부터 재생.
+  void play() => _controller.forward(from: 0);
+
+  /// 정지 후 첫 프레임(closed)으로.
+  void reset() => _controller.reset();
+
   @override
   Widget build(BuildContext context) {
-    return Lottie.asset(
-      _asset,
-      controller: _controller,
+    return SizedBox(
       width: widget.size,
       height: widget.size,
-      fit: BoxFit.contain,
-      // 로드되면 에셋 길이에 맞춰 한 번 재생한다.
-      onLoaded: (composition) {
-        _controller
-          ..duration = composition.duration
-          ..forward();
-      },
+      child: Lottie.asset(
+        'assets/lottie/ddara-invitation-open.json',
+        controller: _controller,
+        repeat: widget.repeat,
+        fit: BoxFit.contain,
+        onLoaded: (composition) {
+          // JSON 안의 fps/프레임 수를 그대로 반영해 정확한 속도로 재생.
+          _controller.duration = composition.duration;
+          if (widget.autoPlay) {
+            widget.repeat
+                ? _controller.repeat()
+                : _controller.forward(from: 0);
+          }
+        },
+      ),
     );
   }
 }
