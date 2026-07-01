@@ -6,6 +6,7 @@ import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/create/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/create/widget/set_group_name.dart';
 import 'package:ddara/feature/group/widget/set_nickname.dart';
+import 'package:ddara/feature/home/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -54,6 +55,9 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage> {
 
     ref.listen(createGroupNotifierProvider, (prev, next) {
       if (prev?.createGroupId == -1 && next.createGroupId > -1) {
+        // 홈 목록을 무효화해, 상세에서 뒤로 돌아왔을 때 새 모임이 반영되게 한다.
+        // (HomePage 는 스택에 남아 있어 재조회가 자동으로 일어나지 않는다)
+        ref.invalidate(homeNotifierProvider);
         context.pushReplacement(RoutePath.group, extra: next.createGroupId);
         return;
       }

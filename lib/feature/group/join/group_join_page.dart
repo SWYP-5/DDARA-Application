@@ -6,6 +6,7 @@ import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/title_description.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/join/provider/notifier_provider.dart';
+import 'package:ddara/feature/home/provider/notifier_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -57,6 +58,9 @@ class _GroupJoinPageState extends ConsumerState<GroupJoinPage> {
     ref.listen(groupJoinNotifierProvider, (prev, next) {
       // 참여 성공 시 모임 홈으로 이동.
       if (prev?.groupId == -1 && next.groupId > -1) {
+        // 홈 목록을 무효화해, 상세에서 뒤로 돌아왔을 때 참여한 모임이 반영되게 한다.
+        // (HomePage 는 스택에 남아 있어 재조회가 자동으로 일어나지 않는다)
+        ref.invalidate(homeNotifierProvider);
         context.pushReplacement(RoutePath.group, extra: next.groupId);
         return;
       }
