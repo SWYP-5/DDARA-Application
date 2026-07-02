@@ -16,6 +16,7 @@ class GroupHeader extends StatelessWidget {
     required this.progress,
     required this.navigateToStart,
     required this.onTakePhoto,
+    this.canStart = true,
   });
 
   /// 대표로 보여줄 이미지 URI. null/빈 값이면 빈 상태로 본다.
@@ -30,6 +31,9 @@ class GroupHeader extends StatelessWidget {
   /// 시작된 상태에서 '촬영하러 가기' 버튼을 눌렀을 때 실행할 콜백.
   final VoidCallback onTakePhoto;
 
+  /// 따라찍기를 시작할 수 있는지 여부. (멤버가 부족하면 시작 버튼을 비활성화)
+  final bool canStart;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -41,7 +45,11 @@ class GroupHeader extends StatelessWidget {
         children: [
           const EmptyHeader(),
           const SizedBox(height: AppSpacing.s6),
-          AppButton(label: l10n.groupHeaderStart, onPressed: navigateToStart),
+          // 멤버가 부족하면 시작 버튼을 비활성화한다.
+          AppButton(
+            label: l10n.groupHeaderStart,
+            onPressed: canStart ? navigateToStart : null,
+          ),
         ],
       );
     }
