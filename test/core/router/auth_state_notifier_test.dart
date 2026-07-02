@@ -10,7 +10,8 @@ class MockAuthRepository extends Mock implements AuthRepository {}
 void main() {
   late MockAuthRepository repo;
 
-  /// authRepository 만 스텁으로 갈아끼운 컨테이너. (recoverSession 결과로 로그인 판별)
+  /// authRepository 만 스텁으로 갈아끼운 컨테이너.
+  /// (build 는 로컬 액세스 토큰 존재 여부로 낙관적 로그인 상태를 확정한다)
   ProviderContainer makeContainer() {
     final container = ProviderContainer(
       overrides: [authRepositoryProvider.overrideWithValue(repo)],
@@ -23,9 +24,9 @@ void main() {
     repo = MockAuthRepository();
   });
 
-  group('build (세션 복구 → 로그인 여부)', () {
-    test('recoverSession 이 토큰을 주면 로그인(true)', () async {
-      when(() => repo.recoverSession()).thenAnswer((_) async => 'fresh-token');
+  group('build (로컬 토큰으로 낙관적 로그인 확정)', () {
+    test('로컬 액세스 토큰이 있으면 로그인(true)', () async {
+      when(() => repo.getAccessToken()).thenAnswer((_) async => 'local-token');
       final container = makeContainer();
 
       final isLoggedIn = await container.read(authStateProvider.future);
@@ -33,8 +34,8 @@ void main() {
       expect(isLoggedIn, isTrue);
     });
 
-    test('recoverSession 이 null 이면 비로그인(false)', () async {
-      when(() => repo.recoverSession()).thenAnswer((_) async => null);
+    test('로컬 액세스 토큰이 없으면(null) 비로그인(false)', () async {
+      when(() => repo.getAccessToken()).thenAnswer((_) async => null);
       final container = makeContainer();
 
       final isLoggedIn = await container.read(authStateProvider.future);
@@ -42,20 +43,30 @@ void main() {
       expect(isLoggedIn, isFalse);
     });
 
-    test('recoverSession 이 예외(타임아웃·네트워크 등)면 비로그인(false)', () async {
-      // build 의 timeout(15초)·기타 오류는 동일한 catch 로 흡수되어 false 가 된다.
-      when(() => repo.recoverSession()).thenThrow(Exception('network'));
+    test('로컬 액세스 토큰이 빈 문자열이면 비로그인(false)', () async {
+      when(() => repo.getAccessToken()).thenAnswer((_) async => '');
       final container = makeContainer();
 
       final isLoggedIn = await container.read(authStateProvider.future);
 
       expect(isLoggedIn, isFalse);
+    });
+
+    test('build 는 네트워크 세션 복구(recoverSession)를 호출하지 않는다', () async {
+      // 스플래시를 붙잡지 않도록 build 는 로컬 확인만 한다.
+      // 실제 복구는 진입 후 백그라운드(MyApp._recoverSession)에서 수행한다.
+      when(() => repo.getAccessToken()).thenAnswer((_) async => 'local-token');
+      final container = makeContainer();
+
+      await container.read(authStateProvider.future);
+
+      verifyNever(() => repo.recoverSession());
     });
   });
 
   group('markLoggedOut (세션 만료·로그아웃 시 동기 확정)', () {
     test('로그인 상태에서 호출하면 인증 상태가 즉시 false 가 된다', () async {
-      when(() => repo.recoverSession()).thenAnswer((_) async => 'fresh-token');
+      when(() => repo.getAccessToken()).thenAnswer((_) async => 'local-token');
       final container = makeContainer();
 
       // 로그인 상태로 확정.
@@ -71,23 +82,23 @@ void main() {
       expect(state.valueOrNull, isFalse);
     });
 
-    test('markLoggedOut 은 recoverSession 을 다시 호출하지 않는다(재계산 없음)', () async {
-      when(() => repo.recoverSession()).thenAnswer((_) async => 'fresh-token');
+    test('markLoggedOut 은 build 를 다시 실행하지 않는다(재계산 없음)', () async {
+      when(() => repo.getAccessToken()).thenAnswer((_) async => 'local-token');
       final container = makeContainer();
 
-      await container.read(authStateProvider.future); // 최초 1회 복구.
+      await container.read(authStateProvider.future); // 최초 1회 build.
       container.read(authStateProvider.notifier).markLoggedOut();
       // 상태 변화가 재빌드를 유발하지 않는지 이벤트 큐를 비운 뒤 확인.
       await pumpEventQueue();
 
-      verify(() => repo.recoverSession()).called(1);
+      verify(() => repo.getAccessToken()).called(1);
       expect(container.read(authStateProvider).valueOrNull, isFalse);
     });
   });
 
   group('markLoggedIn (재로그인 시 로그인 상태 복귀)', () {
     test('로그아웃(false) 후 markLoggedIn 하면 다시 true 로 돌아온다', () async {
-      when(() => repo.recoverSession()).thenAnswer((_) async => 'fresh-token');
+      when(() => repo.getAccessToken()).thenAnswer((_) async => 'local-token');
       final container = makeContainer();
       final notifier = container.read(authStateProvider.notifier);
 
@@ -107,18 +118,18 @@ void main() {
       expect(state.valueOrNull, isTrue);
     });
 
-    test('markLoggedIn 은 recoverSession 재계산 없이 동기로 확정한다', () async {
-      when(() => repo.recoverSession()).thenAnswer((_) async => null);
+    test('markLoggedIn 은 build 재실행 없이 동기로 확정한다', () async {
+      when(() => repo.getAccessToken()).thenAnswer((_) async => null);
       final container = makeContainer();
 
-      // 미로그인(null)으로 시작.
+      // 미로그인(로컬 토큰 없음)으로 시작.
       expect(await container.read(authStateProvider.future), isFalse);
 
       container.read(authStateProvider.notifier).markLoggedIn();
       await pumpEventQueue();
 
-      // 최초 build 1회 외에 추가 복구 호출이 없어야 한다.
-      verify(() => repo.recoverSession()).called(1);
+      // 최초 build 1회 외에 추가 실행이 없어야 한다.
+      verify(() => repo.getAccessToken()).called(1);
       expect(container.read(authStateProvider).valueOrNull, isTrue);
     });
   });

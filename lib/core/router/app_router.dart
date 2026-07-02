@@ -32,19 +32,14 @@ final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
 class AuthStateNotifier extends AsyncNotifier<bool> {
   @override
   Future<bool> build() async {
-    final repo = ref.read(authRepositoryProvider);
-
-    // 세션 복구(재발급 → 실패 시 소셜 무중단 재인증)를 시도. 토큰을 얻으면 로그인.
-    // 콜드 스타트 스플래시가 오래 잡히지 않도록 타임아웃 후 비로그인으로 떨어뜨린다.
-    try {
-      final token = await repo.recoverSession().timeout(
-        const Duration(seconds: 15),
-      );
-      return token != null;
-    } catch (_) {
-      // 타임아웃·네트워크 오류 등 → 비로그인 처리.
-      return false;
-    }
+    // 콜드 스타트 스플래시를 네트워크에 묶지 않도록, 여기서는 로컬 액세스 토큰
+    // 존재 여부만 빠르게 확인해 **낙관적으로** 로그인 상태를 확정한다.
+    //
+    // 실제 세션 복구(재발급 → 실패 시 소셜 무중단 재인증)는 진입 후 백그라운드에서
+    // 수행한다. (main → MyApp._recoverSession). 복구가 불가능(만료 확정)하면 거기서
+    // 강제 로그아웃해 로그인 화면으로 보내고, 일시 오류면 로그인 상태를 유지한다.
+    final token = await ref.read(authRepositoryProvider).getAccessToken();
+    return token != null && token.isNotEmpty;
   }
 
   /// 로그아웃·회원탈퇴·세션 만료 등으로 로컬 인증 정보가 이미 비워진 뒤 호출한다.
