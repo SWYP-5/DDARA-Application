@@ -4,8 +4,10 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_detail.dart';
 import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/feature/group/detail/widget/header/started_header.dart';
+import 'package:ddara/feature/group/gallery/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/widget/member_photo_card.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 /// 따라찍기 사이클에서 멤버 한 명의 사진 카드 데이터.
@@ -27,7 +29,7 @@ typedef CycleMemberPhoto = ({
 ///
 /// 스타터의 사진을 멤버들이 따라찍은 결과 사진을 모아 보여준다.
 /// (헤더 + 모임명 + 멤버 사진 그리드 — 아래 본문은 추후 구현)
-class CyclePhotoGallery extends StatelessWidget {
+class CyclePhotoGallery extends ConsumerWidget {
   const CyclePhotoGallery({
     super.key,
     required this.groupId,
@@ -36,9 +38,6 @@ class CyclePhotoGallery extends StatelessWidget {
 
   final int groupId;
   final int cycleId;
-
-  // TODO: 모임 조회 API 응답의 모임 이름으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
-  static const _dummyGroupName = '마라탕 걸즈';
 
   // TODO: 멤버 목록은 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
   static const _dummyMembers = ['지원', '도윤', '민주', '보현'];
@@ -56,7 +55,12 @@ class CyclePhotoGallery extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 모임 이름을 조회해 AppBar 제목으로 쓴다. (조회 전엔 빈 문자열)
+    final groupName = ref.watch(
+      cyclePhotoGalleryNotifierProvider(groupId).select((s) => s.groupName),
+    );
+
     // TODO: 실제 멤버/업로드 상태로 대체. (현재 더미)
     // 첫 카드를 본인으로 보고, 본인이 아직 업로드하지 않았다고 가정한다.
     final members = <CycleMemberPhoto>[
@@ -72,10 +76,7 @@ class CyclePhotoGallery extends StatelessWidget {
     ];
 
     return CupertinoPageScaffold(
-      navigationBar: AppBar(
-        title: _dummyGroupName,
-        onBack: () => context.pop(),
-      ),
+      navigationBar: AppBar(title: groupName, onBack: () => context.pop()),
       child: SafeArea(
         child: SingleChildScrollView(
           // 끝에서 더 당겨지는 바운스(overscroll)를 막고 가장자리에서 멈춘다.
@@ -96,7 +97,7 @@ class CyclePhotoGallery extends StatelessWidget {
               StartedHeader(imageUri: '', progress: _dummyGroupCycle),
               // 헤더↔제목 간격 s14(56): Column spacing(s4)×2 + 이 SizedBox(s6).
               const SizedBox(height: AppSpacing.s6),
-              AppText.headlineLarge(_dummyGroupName),
+              AppText.headlineLarge(groupName),
               // 제목↔그리드 간격 s4 는 Column spacing 으로 처리.
               // 멤버 사진 카드 2칸 그리드. (카드 높이는 225 고정)
               GridView.builder(
