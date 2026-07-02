@@ -209,7 +209,7 @@ class GroupPage extends ConsumerWidget {
               if (cycleId == null) return;
               context.push(
                 RoutePath.started,
-                extra: (groupId: groupId, cycleId: cycleId),
+                extra: cycleId,
               );
             },
           ),

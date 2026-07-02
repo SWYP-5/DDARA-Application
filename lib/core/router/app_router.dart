@@ -204,11 +204,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.started,
         builder: (_, state) {
-          final args = state.extra as ({int groupId, int cycleId});
-          return CyclePhotoGallery(
-            groupId: args.groupId,
-            cycleId: args.cycleId,
-          );
+          return CyclePhotoGallery(cycleId: state.extra! as int);
         },
       ),
       GoRoute(

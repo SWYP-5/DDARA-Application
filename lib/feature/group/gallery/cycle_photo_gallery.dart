@@ -32,11 +32,9 @@ typedef CycleMemberPhoto = ({
 class CyclePhotoGallery extends ConsumerWidget {
   const CyclePhotoGallery({
     super.key,
-    required this.groupId,
     required this.cycleId,
   });
 
-  final int groupId;
   final int cycleId;
 
   // TODO: 멤버 목록은 모임 조회 API 응답으로 대체. (백엔드 스펙 대기 — 임시 더미)
@@ -58,7 +56,7 @@ class CyclePhotoGallery extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // 모임 이름을 조회해 AppBar 제목으로 쓴다. (조회 전엔 빈 문자열)
     final groupName = ref.watch(
-      cyclePhotoGalleryNotifierProvider(groupId).select((s) => s.groupName),
+      cyclePhotoGalleryNotifierProvider(cycleId).select((s) => s.groupName),
     );
 
     // TODO: 실제 멤버/업로드 상태로 대체. (현재 더미)

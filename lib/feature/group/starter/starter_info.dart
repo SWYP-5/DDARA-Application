@@ -59,7 +59,7 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
         // 게시 후에는 스타터로 돌아가지 않도록 화면을 교체한다.
         context.pushReplacement(
           RoutePath.started,
-          extra: (groupId: widget.groupId, cycleId: cycleId),
+          extra: cycleId,
         );
       }
     });
