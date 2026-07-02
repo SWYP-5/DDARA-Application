@@ -55,11 +55,39 @@ class AuthStateNotifier extends AsyncNotifier<bool> {
   void markLoggedOut() {
     state = const AsyncData(false);
   }
+
+  /// 로그인·회원가입 성공(routeAfterAuth) 시 호출해 로그인 상태를 확정한다.
+  ///
+  /// markLoggedOut 과 대칭. 이렇게 해야 같은 세션에서 로그아웃 후 재로그인해도
+  /// isLoggedIn 이 다시 true 가 되어, 이후 redirect(로그인 화면 재진입 → 홈) 가드가
+  /// 정상 동작한다. (예전엔 로그인 흐름이 인증 상태를 갱신하지 않아 false 로 남았다)
+  void markLoggedIn() {
+    state = const AsyncData(true);
+  }
 }
 
 final authStateProvider = AsyncNotifierProvider<AuthStateNotifier, bool>(
   AuthStateNotifier.new,
 );
+
+/// 콜드 스타트 시 진입할 초기 위치를 결정한다. (스플래시 단계에서 확정된 값 기준)
+///
+/// 우선순위: 온보딩 미완료 → 온보딩, 미로그인 → 로그인, 보관된 초대코드 있으면
+/// 곧바로 landing, 그 외 → 홈.
+String resolveInitialLocation({
+  required bool hasSeenOnboarding,
+  required bool isLoggedIn,
+  required String? pendingInvite,
+  String loginRoute = RoutePath.login,
+}) {
+  if (!hasSeenOnboarding) return RoutePath.onboarding;
+  if (!isLoggedIn) return loginRoute;
+
+  final hasPendingInvite = pendingInvite != null && pendingInvite.isNotEmpty;
+  return hasPendingInvite
+      ? '${RoutePath.inviteLanding}?code=$pendingInvite'
+      : RoutePath.home;
+}
 
 /// authStateProvider 변화를 GoRouter 의 refreshListenable 로 잇는 브리지.
 /// 인증 상태가 바뀌면 라우터를 재생성하지 않고 redirect 만 다시 평가하게 한다.
@@ -84,16 +112,14 @@ final routerProvider = Provider<GoRouter>((ref) {
   // 콜드 스타트 초대 딥링크(main 에서 보관). 로그인 상태면 홈을 거치지 않고
   // 곧바로 landing 으로 진입한다. (미로그인이면 로그인 후 routeAfterAuth 가 소비)
   final pendingInvite = ref.read(pendingInviteCodeProvider);
-  final hasPendingInvite = pendingInvite != null && pendingInvite.isNotEmpty;
 
   // 앱 최초 실행이면 온보딩, 그 외에는 인증·초대코드 상태에 따라 분기한다.
-  final initialLocation = !hasSeenOnboarding
-      ? RoutePath.onboarding
-      : !isLoggedIn
-      ? loginRoute
-      : (hasPendingInvite
-            ? '${RoutePath.inviteLanding}?code=$pendingInvite'
-            : RoutePath.home);
+  final initialLocation = resolveInitialLocation(
+    hasSeenOnboarding: hasSeenOnboarding,
+    isLoggedIn: isLoggedIn,
+    pendingInvite: pendingInvite,
+    loginRoute: loginRoute,
+  );
 
   return GoRouter(
     initialLocation: initialLocation,
