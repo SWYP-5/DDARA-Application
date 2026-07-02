@@ -711,6 +711,228 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{month}월 {day}일'**
   String historyDate(int month, int day);
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필'**
+  String get profileTitle;
+
+  /// No description provided for @profileSectionBasicInfo.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본 정보'**
+  String get profileSectionBasicInfo;
+
+  /// No description provided for @profileJoinedAt.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입일'**
+  String get profileJoinedAt;
+
+  /// No description provided for @profileSectionNotification.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림'**
+  String get profileSectionNotification;
+
+  /// No description provided for @profileSectionSupport.
+  ///
+  /// In ko, this message translates to:
+  /// **'지원'**
+  String get profileSectionSupport;
+
+  /// No description provided for @profileTermsPolicy.
+  ///
+  /// In ko, this message translates to:
+  /// **'약관 및 정책'**
+  String get profileTermsPolicy;
+
+  /// No description provided for @profileContact.
+  ///
+  /// In ko, this message translates to:
+  /// **'문의하기'**
+  String get profileContact;
+
+  /// No description provided for @profileAppVersion.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱 버전'**
+  String get profileAppVersion;
+
+  /// No description provided for @profileSectionAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정'**
+  String get profileSectionAccount;
+
+  /// No description provided for @profileLinkedAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'연동 계정'**
+  String get profileLinkedAccount;
+
+  /// No description provided for @profileLogout.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그아웃'**
+  String get profileLogout;
+
+  /// No description provided for @profileWithdraw.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원 탈퇴'**
+  String get profileWithdraw;
+
+  /// No description provided for @profileLogoutFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그아웃에 실패했어요.'**
+  String get profileLogoutFailed;
+
+  /// No description provided for @profileWithdrawFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원 탈퇴에 실패했어요.'**
+  String get profileWithdrawFailed;
+
+  /// No description provided for @profileNotImplemented.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 구현되지 않았습니다.'**
+  String get profileNotImplemented;
+
+  /// No description provided for @profileLogoutConfirmTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그아웃 할까요?'**
+  String get profileLogoutConfirmTitle;
+
+  /// No description provided for @profileWithdrawConfirmTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'정말 탈퇴할까요?'**
+  String get profileWithdrawConfirmTitle;
+
+  /// No description provided for @profileWithdrawConfirmAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'탈퇴'**
+  String get profileWithdrawConfirmAction;
+
+  /// No description provided for @profileContactMailSubject.
+  ///
+  /// In ko, this message translates to:
+  /// **'[따라] 문의하기'**
+  String get profileContactMailSubject;
+
+  /// 문의 메일 본문. (앱 버전 포함)
+  ///
+  /// In ko, this message translates to:
+  /// **'문의 내용을 작성해 주세요.\n\n------------------\n앱 버전: {appVersion}\n------------------'**
+  String profileContactMailBody(String appVersion);
+
+  /// 문의 메일 앱 실행 실패 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'메일 앱을 열 수 없어요. ({email})'**
+  String profileContactMailFailed(String email);
+
+  /// No description provided for @profileImageSourceTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로필 사진 변경'**
+  String get profileImageSourceTitle;
+
+  /// No description provided for @profileImageSourceCamera.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진 촬영'**
+  String get profileImageSourceCamera;
+
+  /// No description provided for @profileImageSourceGallery.
+  ///
+  /// In ko, this message translates to:
+  /// **'갤러리에서 선택'**
+  String get profileImageSourceGallery;
+
+  /// No description provided for @notificationSettingsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 설정'**
+  String get notificationSettingsTitle;
+
+  /// No description provided for @notificationAllow.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 허용'**
+  String get notificationAllow;
+
+  /// No description provided for @notificationSectionActivity.
+  ///
+  /// In ko, this message translates to:
+  /// **'활동'**
+  String get notificationSectionActivity;
+
+  /// No description provided for @notificationFollowShot.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍기 차례'**
+  String get notificationFollowShot;
+
+  /// No description provided for @notificationFollowShotCaption.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 따라찍기가 열리거나 내 차례일 때'**
+  String get notificationFollowShotCaption;
+
+  /// No description provided for @notificationDeadlineVote.
+  ///
+  /// In ko, this message translates to:
+  /// **'마감·투표 알림'**
+  String get notificationDeadlineVote;
+
+  /// No description provided for @notificationDeadlineVoteCaption.
+  ///
+  /// In ko, this message translates to:
+  /// **'따라찍기 마감 · 베스트 투표'**
+  String get notificationDeadlineVoteCaption;
+
+  /// No description provided for @notificationSectionEtc.
+  ///
+  /// In ko, this message translates to:
+  /// **'기타'**
+  String get notificationSectionEtc;
+
+  /// No description provided for @notificationMemberJoin.
+  ///
+  /// In ko, this message translates to:
+  /// **'친구 참여 알림'**
+  String get notificationMemberJoin;
+
+  /// No description provided for @notificationMemberJoinCaption.
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 보낸 초대를 친구가 받았을 때'**
+  String get notificationMemberJoinCaption;
+
+  /// No description provided for @notificationPermissionDialogTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 권한 필요'**
+  String get notificationPermissionDialogTitle;
+
+  /// No description provided for @notificationPermissionDialogBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림을 받으려면 설정에서 알림 권한을 허용해 주세요.'**
+  String get notificationPermissionDialogBody;
+
+  /// No description provided for @notificationOpenSettings.
+  ///
+  /// In ko, this message translates to:
+  /// **'설정으로 이동'**
+  String get notificationOpenSettings;
 }
 
 class _AppLocalizationsDelegate
