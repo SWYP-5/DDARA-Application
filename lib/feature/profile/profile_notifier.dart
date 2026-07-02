@@ -2,6 +2,7 @@ import 'package:ddara/core/router/app_router.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/profile/util/profile_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
   @override
@@ -18,13 +19,19 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
     // TODO: 프로필 조회 API/UseCase 연동 후 더미 데이터를 대체한다.
     //       (실제 구현 시 아래 await 자리에 API 호출이 들어간다)
     await Future<void>.delayed(Duration.zero);
+    final appVersion = await _getAppVersion();
     state = state.copyWith(
       isLoading: false,
       name: '따라쟁이',
       joinedAt: DateTime(2026, 6, 16),
-      appVersion: 'v1.0.0',
+      appVersion: appVersion,
       linkedAccount: '카카오',
     );
+  }
+
+  Future<String> _getAppVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return 'v${info.version}';
   }
 
   /// 로그아웃. 토큰·소셜 정보를 비우고(UseCase) 인증 상태를 무효화한다.
