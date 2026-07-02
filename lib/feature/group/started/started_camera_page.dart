@@ -49,7 +49,7 @@ class _StartedCameraPageState extends State<StartedCameraPage> {
                 // TODO: 따라찍기 사진 업로드. (백엔드 스펙 대기)
                 if (!context.mounted) return;
                 // 스택을 유지한 채(go 로 초기화하지 않고) 바로 아래의
-                // StartedPage(/group/started) 로 돌아간다.
+                // CyclePhotoGallery(/group/started) 로 돌아간다.
                 // TODO: provider 연동 시 업로드한 사진이 반영되도록 갱신 추가.
                 context.pop();
               },

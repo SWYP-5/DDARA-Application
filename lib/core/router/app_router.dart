@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
 import '../../feature/group/started/started_camera_page.dart';
-import '../../feature/group/started/started_page.dart';
+import '../../feature/group/gallery/cycle_photo_gallery.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
 import '../../feature/group/join/join_group_page.dart';
@@ -205,7 +205,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: RoutePath.started,
         builder: (_, state) {
           final args = state.extra as ({int groupId, int cycleId});
-          return StartedPage(groupId: args.groupId, cycleId: args.cycleId);
+          return CyclePhotoGallery(
+            groupId: args.groupId,
+            cycleId: args.cycleId,
+          );
         },
       ),
       GoRoute(
