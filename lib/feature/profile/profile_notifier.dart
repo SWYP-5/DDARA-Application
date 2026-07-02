@@ -72,4 +72,27 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
       logoutStatus: success ? LogoutStatus.success : LogoutStatus.fail,
     );
   }
+
+  /// 회원 탈퇴. 서버 탈퇴 성공 시 로컬 인증 정보가 정리되고(UseCase),
+  /// 인증 상태를 무효화해 로그인 화면으로 보낸다.
+  /// 실패 시 상태를 fail 로 두면 화면에서 토스트로 안내한다.
+  Future<void> withdraw() async {
+    if (state.withdrawStatus == WithdrawStatus.loading) return;
+
+    state = state.copyWith(withdrawStatus: WithdrawStatus.loading);
+
+    try {
+      // 서버 회원 탈퇴 + 소셜·로컬 인증 정보 정리는 UseCase가 담당한다.
+      await ref.read(deleteAccountUseCaseProvider).call();
+
+      // 로컬 인증 정보가 비워졌으므로, 라우터가 인증 상태를 다시 계산하도록
+      // 무효화한다. (isLoggedIn → false)
+      ref.invalidate(authStateProvider);
+
+      state = state.copyWith(withdrawStatus: WithdrawStatus.success);
+    } catch (_) {
+      // 서버 탈퇴 실패 등. (로컬 인증 정보는 그대로 유지된다)
+      state = state.copyWith(withdrawStatus: WithdrawStatus.fail);
+    }
+  }
 }

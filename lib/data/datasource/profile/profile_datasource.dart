@@ -15,6 +15,11 @@ class ProfileDataSource {
     return ProfileResponse.fromJson(response.data);
   }
 
+  /// 회원 탈퇴. (요청 body·응답 body 없음)
+  Future<void> deleteAccount() async {
+    await _dio.delete(_baseUrl);
+  }
+
   Future<NotificationSettingsResponse> changeNotificationSettings(
     NotificationSettingsRequest request,
   ) async {

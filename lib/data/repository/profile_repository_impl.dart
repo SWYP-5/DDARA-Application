@@ -36,6 +36,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<void> deleteAccount() async {
+    await _profileDataSource.deleteAccount();
+  }
+
+  @override
   Future<NotificationSettings> changeNotificationSettings(
     NotificationSettings settings,
   ) async {

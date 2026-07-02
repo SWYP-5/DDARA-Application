@@ -38,6 +38,23 @@ class ProfilePage extends ConsumerWidget {
       }
     });
 
+    // 회원 탈퇴 결과에 따라 분기: 성공 시 로그인 화면으로 이동, 실패 시 안내.
+    ref.listen(profileNotifierProvider.select((s) => s.withdrawStatus), (
+      _,
+      status,
+    ) {
+      if (!context.mounted) return;
+      switch (status) {
+        case WithdrawStatus.success:
+          context.go(RoutePath.login);
+        case WithdrawStatus.fail:
+          Toast.showToast(context, '회원 탈퇴에 실패했어요.', type: ToastType.error);
+        case WithdrawStatus.idle:
+        case WithdrawStatus.loading:
+          break;
+      }
+    });
+
     return CupertinoPageScaffold(
       navigationBar: AppBar(title: '프로필', onBack: () => context.pop()),
       child: SafeArea(
@@ -102,12 +119,8 @@ class ProfilePage extends ConsumerWidget {
                   ),
                   ProfileRow(
                     label: '회원 탈퇴',
-                    // TODO: 회원 탈퇴 처리. (현재는 미구현 안내 토스트)
-                    onTap: () => Toast.showToast(
-                      context,
-                      '아직 구현되지 않았습니다.',
-                      type: ToastType.error,
-                    ),
+                    labelColor: AppColors.statusDanger,
+                    onTap: () => _confirmWithdraw(context, ref),
                   ),
                 ],
               ),
@@ -171,5 +184,17 @@ class ProfilePage extends ConsumerWidget {
       confirmLabel: '로그아웃',
     );
     if (ok) await ref.read(profileNotifierProvider.notifier).logout();
+  }
+
+  /// 회원 탈퇴 확인 다이얼로그를 띄우고, 확인 시에만 탈퇴를 진행한다.
+  Future<void> _confirmWithdraw(BuildContext context, WidgetRef ref) async {
+    final ok = await AppDialog.show(
+      context,
+      title: '정말 탈퇴할까요?',
+      confirmLabel: '탈퇴',
+      confirmColor: AppColors.statusDanger,
+      confirmLabelColor: AppColors.textPrimary,
+    );
+    if (ok) await ref.read(profileNotifierProvider.notifier).withdraw();
   }
 }
