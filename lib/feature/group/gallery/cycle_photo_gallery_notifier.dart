@@ -1,3 +1,5 @@
+import 'package:ddara/core/exception/group_exception.dart';
+import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/group/gallery/util/cycle_photo_gallery_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,15 +7,42 @@ class CyclePhotoGalleryNotifier
     extends AutoDisposeFamilyNotifier<CyclePhotoGalleryState, int> {
   @override
   CyclePhotoGalleryState build(int cycleId) {
-    // 진입 시 cycleId 로 모임 이름을 조회한다. (build 는 동기라 fire-and-forget)
-    _loadGroupName(cycleId);
+    // 진입 시 cycleId 로 갤러리를 조회한다. (build 는 동기라 fire-and-forget)
+    _loadGallery(cycleId);
 
     return const CyclePhotoGalleryState(isLoading: true);
   }
 
-  /// 사이클 정보를 조회해 이름만 state 에 담는다.
-  /// (멤버별 사이클 사진은 별도 API 로 로드하므로 여기서는 이름만 다룬다)
-  Future<void> _loadGroupName(int cycleId) async {
+  /// 사이클 갤러리(모임 이름·멤버별 사진)와 내 프로필을 조회해 state 에 담는다.
+  /// (내 id 로 멤버의 userId 를 비교해 본인 카드를 판별한다)
+  Future<void> _loadGallery(int cycleId) async {
+    final getCycleGalleryUseCase = ref.read(getCycleGalleryUseCaseProvider);
+    final getProfileUseCase = ref.read(getProfileUseCaseProvider);
 
+    try {
+      final gallery = await getCycleGalleryUseCase.getCycleGallery(cycleId);
+      final profile = await getProfileUseCase.call();
+      state = state.copyWith(
+        isLoading: false,
+        gallery: gallery,
+        myUserId: profile.id,
+      );
+    } on NotGroupMemberException {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '해당 모임의 멤버가 아니에요.',
+      );
+    } on GroupNotFoundException {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '존재하지 않는 사이클이에요.',
+      );
+    } catch (_) {
+      // NetworkException 및 기타 예기치 못한 오류.
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '사진을 불러오지 못했어요.',
+      );
+    }
   }
 }

@@ -3,12 +3,14 @@ import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/exception/starter_upload_error_code.dart';
 import 'package:ddara/core/model/camera/starter_upload.dart';
+import 'package:ddara/core/model/group/cycle_gallery.dart';
 import 'package:ddara/core/network/dto/camera/presign_response.dart';
 import 'package:ddara/domain/repository/camera_repository.dart';
 import 'package:dio/dio.dart';
 
 import '../datasource/camera/camera_datasource.dart';
 import 'mapper/camera_mapper.dart';
+import 'mapper/group_mapper.dart';
 
 class CameraRepositoryImpl implements CameraRepository {
   CameraRepositoryImpl(this._cameraDataSource);
@@ -82,6 +84,27 @@ class CameraRepositoryImpl implements CameraRepository {
         case StarterUploadErrorCode.cycleAlreadyInProgress:
           // 409 — 이미 진행 중인 회차 존재
           throw CycleAlreadyInProgressException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<CycleGallery> getCycleGallery(int cycleId) async {
+    try {
+      final response = await _cameraDataSource.getCycleGallery(cycleId);
+      return response.toDomain();
+    } on DioException catch (e) {
+      switch (e.response?.statusCode) {
+        case 403:
+          // 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case 404:
+          // 사이클(또는 모임) 없음
+          throw GroupNotFoundException();
 
         default:
           throw NetworkException();

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:ddara/core/network/dto/camera/presign_response.dart';
 import 'package:ddara/core/network/dto/camera/starter_upload_response.dart';
+import 'package:ddara/core/network/dto/group/cycle_gallery_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
@@ -68,5 +69,12 @@ class CameraDataSource {
     );
 
     return StarterUploadResponse.fromJson(response.data);
+  }
+
+  /// 사이클의 멤버별 따라찍기 사진(shots)을 조회한다.
+  Future<CycleGalleryResponse> getCycleGallery(int cycleId) async {
+    final response = await _dio.get('/api/cycles/$cycleId/shots');
+
+    return CycleGalleryResponse.fromJson(response.data);
   }
 }
