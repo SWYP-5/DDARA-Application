@@ -22,6 +22,7 @@ _GroupResponse _$GroupResponseFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       ownerNickname: json['ownerNickname'] as String,
       memberCount: (json['memberCount'] as num).toInt(),
+      thumbnailUrl: json['thumbnailUrl'] as String?,
       currentCycle: json['currentCycle'] == null
           ? null
           : CurrentCycleResponse.fromJson(
@@ -36,6 +37,7 @@ Map<String, dynamic> _$GroupResponseToJson(_GroupResponse instance) =>
       'name': instance.name,
       'ownerNickname': instance.ownerNickname,
       'memberCount': instance.memberCount,
+      'thumbnailUrl': instance.thumbnailUrl,
       'currentCycle': instance.currentCycle,
       'createdAt': instance.createdAt.toIso8601String(),
     };
@@ -45,9 +47,7 @@ _CurrentCycleResponse _$CurrentCycleResponseFromJson(
 ) => _CurrentCycleResponse(
   cycleId: (json['cycleId'] as num).toInt(),
   topic: json['topic'] as String,
-  status: json['status'] as String,
-  startedAt: DateTime.parse(json['startedAt'] as String),
-  thumbnailUrl: json['thumbnailUrl'] as String?,
+  deadlineAt: DateTime.parse(json['deadlineAt'] as String),
 );
 
 Map<String, dynamic> _$CurrentCycleResponseToJson(
@@ -55,7 +55,5 @@ Map<String, dynamic> _$CurrentCycleResponseToJson(
 ) => <String, dynamic>{
   'cycleId': instance.cycleId,
   'topic': instance.topic,
-  'status': instance.status,
-  'startedAt': instance.startedAt.toIso8601String(),
-  'thumbnailUrl': instance.thumbnailUrl,
+  'deadlineAt': instance.deadlineAt.toIso8601String(),
 };

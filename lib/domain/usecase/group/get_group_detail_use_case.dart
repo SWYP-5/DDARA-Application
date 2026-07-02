@@ -7,7 +7,7 @@ class GetGroupDetailUseCase {
 
   GetGroupDetailUseCase(this._groupRepository);
 
-  Future<GroupDetail> getGroupDetail(int groupId) async {
+  Future<GroupDetail> call(int groupId) async {
     final response = await _groupRepository.getGroupDetail(groupId);
     return response;
   }

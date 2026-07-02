@@ -57,8 +57,12 @@ class GroupRepositoryImpl implements GroupRepository {
 
   @override
   Future<GroupList> getGroupList() async {
-    final response = await _groupDataSource.getGroupList();
-    return response.toDomain();
+    try {
+      final response = await _groupDataSource.getGroupList();
+      return response.toDomain();
+    } on DioException {
+      throw NetworkException();
+    }
   }
 
   @override

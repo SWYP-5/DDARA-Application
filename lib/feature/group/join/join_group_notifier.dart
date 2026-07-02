@@ -25,7 +25,7 @@ class JoinGroupNotifier extends AutoDisposeNotifier<JoinGroupState> {
     final joinGroupUseCase = ref.read(joinGroupUseCaseProvider);
 
     try {
-      final joined = await joinGroupUseCase.joinGroup(
+      final joined = await joinGroupUseCase(
         inviteCode,
         state.nickname,
       );

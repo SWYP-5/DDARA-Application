@@ -7,7 +7,7 @@ class JoinGroupUseCase {
 
   JoinGroupUseCase(this._groupRepository);
 
-  Future<JoinGroup> joinGroup(String inviteCode, String nickName) async {
+  Future<JoinGroup> call(String inviteCode, String nickName) async {
 
     return await _groupRepository.joinGroup(inviteCode, nickName);
   }

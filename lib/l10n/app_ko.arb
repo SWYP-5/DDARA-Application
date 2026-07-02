@@ -107,6 +107,24 @@
       "others": { "type": "int" }
     }
   },
+  "meetingRemainingHours": "{hours}시간 남음",
+  "@meetingRemainingHours": {
+    "description": "마감까지 1시간 이상 남았을 때 (시간 단위)",
+    "placeholders": {
+      "hours": { "type": "int" }
+    }
+  },
+  "meetingRemainingMinutes": "{minutes}분 남음",
+  "@meetingRemainingMinutes": {
+    "description": "마감까지 1시간 미만 남았을 때 (분 단위)",
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "meetingClosed": "마감",
+  "@meetingClosed": {
+    "description": "마감 시각이 지난 사이클"
+  },
 
   "commonConfirm": "확인",
   "@commonConfirm": {

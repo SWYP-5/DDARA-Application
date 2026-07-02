@@ -35,6 +35,9 @@ class GroupPage extends ConsumerWidget {
   /// 초대 시트를 자동으로 띄우는 인원 기준. (이 수 미만이면 띄운다)
   static const _inviteThreshold = 3;
 
+  /// 따라찍기를 시작할 수 있는 최소 인원. (이 수 미만이면 시작 버튼 비활성화)
+  static const _minMembersToStart = 3;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // groupId 를 그대로 provider 에 넘기면 notifier.build(int groupId) 가 받아 로드한다.
@@ -201,8 +204,19 @@ class GroupPage extends ConsumerWidget {
           GroupHeader(
             // 진행 중인 사이클을 그대로 전달. null 이면 헤더가 빈 상태를 보여준다.
             progress: groupDetail.currentCycle,
-            navigateToStart: () => context.push(RoutePath.starter),
-            onTakePhoto: () => context.push(RoutePath.started),
+            // 멤버가 최소 인원 미만이면 시작 버튼을 비활성화한다.
+            canStart: groupDetail.members.length >= _minMembersToStart,
+            navigateToStart: () =>
+                context.push(RoutePath.starter, extra: groupId),
+            // 촬영 버튼은 진행 중 사이클이 있을 때만 노출되므로 cycleId 가 존재한다.
+            onTakePhoto: () {
+              final cycleId = groupDetail.currentCycle?.cycleId;
+              if (cycleId == null) return;
+              context.push(
+                RoutePath.started,
+                extra: cycleId,
+              );
+            },
           ),
           GroupSection(
             title: AppText.headlineLarge(l10n.groupMembersTitle),

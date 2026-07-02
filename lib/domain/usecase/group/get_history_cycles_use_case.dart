@@ -6,7 +6,7 @@ class GetHistoryCyclesUseCase {
 
   GetHistoryCyclesUseCase(this._groupRepository);
 
-  Future<HistoryCycles> getHistoryCycles(int groupId) async {
+  Future<HistoryCycles> call(int groupId) async {
     return await _groupRepository.getHistoryCycles(groupId);
   }
 }

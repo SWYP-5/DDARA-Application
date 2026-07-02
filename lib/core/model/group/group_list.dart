@@ -14,6 +14,8 @@ abstract class Group with _$Group {
     required String name,
     required String ownerNickname,
     required int memberCount,
+    // 모임 대표 썸네일(진행 사이클 스타터 샷). 아직 없으면 null.
+    required String? thumbnailUrl,
     // 진행 중인 사이클이 없으면 null.
     required CurrentCycle? currentCycle,
   }) = _Group;
@@ -24,8 +26,6 @@ abstract class CurrentCycle with _$CurrentCycle {
   const factory CurrentCycle({
     required int cycleId,
     required String topic,
-    required String status,
-    required DateTime startedAt,
-    required String? thumbnailUrl,
+    required DateTime deadlineAt,
   }) = _CurrentCycle;
 }

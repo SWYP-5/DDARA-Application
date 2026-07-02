@@ -6,7 +6,7 @@ class ChangeNicknameUseCase {
 
   ChangeNicknameUseCase(this._groupRepository);
 
-  Future<ChangeNickName> changeNickName(int groupId, String nickName) async {
+  Future<ChangeNickName> call(int groupId, String nickName) async {
     return await _groupRepository.changeNickName(groupId, nickName);
   }
 }

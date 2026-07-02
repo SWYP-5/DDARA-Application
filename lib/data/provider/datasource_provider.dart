@@ -1,4 +1,5 @@
 import 'package:ddara/core/local/provider/local_provider.dart';
+import 'package:ddara/data/datasource/camera/camera_datasource.dart';
 import 'package:ddara/data/datasource/profile/profile_datasource.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,4 +20,8 @@ final groupDataSourceProvider = Provider<GroupDataSource>((ref) {
 
 final profileDataSourceProvider = Provider<ProfileDataSource>((ref) {
   return ProfileDataSource(ref.read(dioProvider));
+});
+
+final cameraDataSourceProvider = Provider<CameraDataSource>((ref) {
+  return CameraDataSource(ref.read(dioProvider));
 });

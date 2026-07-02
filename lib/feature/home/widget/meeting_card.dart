@@ -35,11 +35,11 @@ class MeetingCard extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              // 대표 이미지(진행 사이클 썸네일). 없거나 로드 실패면 갤러리 아이콘.
+              // 대표 이미지(모임 썸네일). 없거나 로드 실패면 갤러리 아이콘.
               Positioned.fill(
-                child: cycle?.thumbnailUrl != null
+                child: group.thumbnailUrl != null
                     ? Image.network(
-                        cycle!.thumbnailUrl!,
+                        group.thumbnailUrl!,
                         fit: BoxFit.cover,
                         errorBuilder: (_, _, _) => const EmptyThumbnail(),
                       )
@@ -47,14 +47,14 @@ class MeetingCard extends StatelessWidget {
               ),
               // 하단 스크림. (텍스트 가독성 + 하단 경계를 배경과 자연스럽게 잇기)
               const BottomScrim(),
-              // 상단: 시작일 · 진행 상태 (진행 중인 사이클이 있을 때만)
+              // 상단: 마감까지 남은 시간 (진행 중인 사이클이 있을 때만)
               if (cycle != null)
                 Positioned(
                   top: AppSpacing.s3,
                   left: AppSpacing.s3,
                   right: AppSpacing.s3,
                   child: AppText.caption(
-                    '${_formatDate(cycle.startedAt)} · ${_statusLabel(l10n, cycle.status)}',
+                    _remainingLabel(l10n, cycle.deadlineAt),
                     color: AppColors.textPrimary,
                     textAlign: TextAlign.right,
                   ),
@@ -100,21 +100,11 @@ String _memberSummary(AppLocalizations l10n, Group group) {
   return l10n.meetingMemberOthers(group.ownerNickname, group.memberCount - 1);
 }
 
-/// 사이클 상태 문자열을 한국어 라벨로. (TODO: 서버 status 값 확정 후 보완)
-String _statusLabel(AppLocalizations l10n, String status) {
-  switch (status) {
-    case 'in_progress':
-      return l10n.meetingStatusInProgress;
-    case 'completed':
-      return l10n.meetingStatusCompleted;
-    default:
-      return status;
-  }
-}
-
-/// DateTime → 'MM.dd'.
-String _formatDate(DateTime date) {
-  final month = date.month.toString().padLeft(2, '0');
-  final day = date.day.toString().padLeft(2, '0');
-  return '$month.$day';
+/// 마감까지 남은 시간 라벨.
+/// 1시간 이상이면 시간 단위(분은 버림), 1시간 미만이면 분 단위, 이미 지났으면 '마감'.
+String _remainingLabel(AppLocalizations l10n, DateTime deadline) {
+  final remaining = deadline.difference(DateTime.now());
+  if (remaining.inMinutes <= 0) return l10n.meetingClosed;
+  if (remaining.inHours >= 1) return l10n.meetingRemainingHours(remaining.inHours);
+  return l10n.meetingRemainingMinutes(remaining.inMinutes);
 }

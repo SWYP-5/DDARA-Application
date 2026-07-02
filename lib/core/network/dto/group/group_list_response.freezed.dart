@@ -284,7 +284,8 @@ as List<GroupResponse>,
 /// @nodoc
 mixin _$GroupResponse {
 
- int get groupId; String get name; String get ownerNickname; int get memberCount;// 진행 중인 사이클이 없으면 null.
+ int get groupId; String get name; String get ownerNickname; int get memberCount;// 모임 대표 썸네일(진행 사이클 스타터 샷). 아직 없으면 null.
+ String? get thumbnailUrl;// 진행 중인 사이클이 없으면 null.
  CurrentCycleResponse? get currentCycle; DateTime get createdAt;
 /// Create a copy of GroupResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -298,16 +299,16 @@ $GroupResponseCopyWith<GroupResponse> get copyWith => _$GroupResponseCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupResponse&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerNickname, ownerNickname) || other.ownerNickname == ownerNickname)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.currentCycle, currentCycle) || other.currentCycle == currentCycle)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupResponse&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerNickname, ownerNickname) || other.ownerNickname == ownerNickname)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.currentCycle, currentCycle) || other.currentCycle == currentCycle)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,groupId,name,ownerNickname,memberCount,currentCycle,createdAt);
+int get hashCode => Object.hash(runtimeType,groupId,name,ownerNickname,memberCount,thumbnailUrl,currentCycle,createdAt);
 
 @override
 String toString() {
-  return 'GroupResponse(groupId: $groupId, name: $name, ownerNickname: $ownerNickname, memberCount: $memberCount, currentCycle: $currentCycle, createdAt: $createdAt)';
+  return 'GroupResponse(groupId: $groupId, name: $name, ownerNickname: $ownerNickname, memberCount: $memberCount, thumbnailUrl: $thumbnailUrl, currentCycle: $currentCycle, createdAt: $createdAt)';
 }
 
 
@@ -318,7 +319,7 @@ abstract mixin class $GroupResponseCopyWith<$Res>  {
   factory $GroupResponseCopyWith(GroupResponse value, $Res Function(GroupResponse) _then) = _$GroupResponseCopyWithImpl;
 @useResult
 $Res call({
- int groupId, String name, String ownerNickname, int memberCount, CurrentCycleResponse? currentCycle, DateTime createdAt
+ int groupId, String name, String ownerNickname, int memberCount, String? thumbnailUrl, CurrentCycleResponse? currentCycle, DateTime createdAt
 });
 
 
@@ -335,13 +336,14 @@ class _$GroupResponseCopyWithImpl<$Res>
 
 /// Create a copy of GroupResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? groupId = null,Object? name = null,Object? ownerNickname = null,Object? memberCount = null,Object? currentCycle = freezed,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupId = null,Object? name = null,Object? ownerNickname = null,Object? memberCount = null,Object? thumbnailUrl = freezed,Object? currentCycle = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,ownerNickname: null == ownerNickname ? _self.ownerNickname : ownerNickname // ignore: cast_nullable_to_non_nullable
 as String,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
-as int,currentCycle: freezed == currentCycle ? _self.currentCycle : currentCycle // ignore: cast_nullable_to_non_nullable
+as int,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+as String?,currentCycle: freezed == currentCycle ? _self.currentCycle : currentCycle // ignore: cast_nullable_to_non_nullable
 as CurrentCycleResponse?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -440,10 +442,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int groupId,  String name,  String ownerNickname,  int memberCount,  CurrentCycleResponse? currentCycle,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int groupId,  String name,  String ownerNickname,  int memberCount,  String? thumbnailUrl,  CurrentCycleResponse? currentCycle,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GroupResponse() when $default != null:
-return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_that.currentCycle,_that.createdAt);case _:
+return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_that.thumbnailUrl,_that.currentCycle,_that.createdAt);case _:
   return orElse();
 
 }
@@ -461,10 +463,10 @@ return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int groupId,  String name,  String ownerNickname,  int memberCount,  CurrentCycleResponse? currentCycle,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int groupId,  String name,  String ownerNickname,  int memberCount,  String? thumbnailUrl,  CurrentCycleResponse? currentCycle,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _GroupResponse():
-return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_that.currentCycle,_that.createdAt);case _:
+return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_that.thumbnailUrl,_that.currentCycle,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -481,10 +483,10 @@ return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int groupId,  String name,  String ownerNickname,  int memberCount,  CurrentCycleResponse? currentCycle,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int groupId,  String name,  String ownerNickname,  int memberCount,  String? thumbnailUrl,  CurrentCycleResponse? currentCycle,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _GroupResponse() when $default != null:
-return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_that.currentCycle,_that.createdAt);case _:
+return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_that.thumbnailUrl,_that.currentCycle,_that.createdAt);case _:
   return null;
 
 }
@@ -496,13 +498,15 @@ return $default(_that.groupId,_that.name,_that.ownerNickname,_that.memberCount,_
 @JsonSerializable()
 
 class _GroupResponse implements GroupResponse {
-  const _GroupResponse({required this.groupId, required this.name, required this.ownerNickname, required this.memberCount, required this.currentCycle, required this.createdAt});
+  const _GroupResponse({required this.groupId, required this.name, required this.ownerNickname, required this.memberCount, required this.thumbnailUrl, required this.currentCycle, required this.createdAt});
   factory _GroupResponse.fromJson(Map<String, dynamic> json) => _$GroupResponseFromJson(json);
 
 @override final  int groupId;
 @override final  String name;
 @override final  String ownerNickname;
 @override final  int memberCount;
+// 모임 대표 썸네일(진행 사이클 스타터 샷). 아직 없으면 null.
+@override final  String? thumbnailUrl;
 // 진행 중인 사이클이 없으면 null.
 @override final  CurrentCycleResponse? currentCycle;
 @override final  DateTime createdAt;
@@ -520,16 +524,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroupResponse&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerNickname, ownerNickname) || other.ownerNickname == ownerNickname)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.currentCycle, currentCycle) || other.currentCycle == currentCycle)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroupResponse&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerNickname, ownerNickname) || other.ownerNickname == ownerNickname)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.currentCycle, currentCycle) || other.currentCycle == currentCycle)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,groupId,name,ownerNickname,memberCount,currentCycle,createdAt);
+int get hashCode => Object.hash(runtimeType,groupId,name,ownerNickname,memberCount,thumbnailUrl,currentCycle,createdAt);
 
 @override
 String toString() {
-  return 'GroupResponse(groupId: $groupId, name: $name, ownerNickname: $ownerNickname, memberCount: $memberCount, currentCycle: $currentCycle, createdAt: $createdAt)';
+  return 'GroupResponse(groupId: $groupId, name: $name, ownerNickname: $ownerNickname, memberCount: $memberCount, thumbnailUrl: $thumbnailUrl, currentCycle: $currentCycle, createdAt: $createdAt)';
 }
 
 
@@ -540,7 +544,7 @@ abstract mixin class _$GroupResponseCopyWith<$Res> implements $GroupResponseCopy
   factory _$GroupResponseCopyWith(_GroupResponse value, $Res Function(_GroupResponse) _then) = __$GroupResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int groupId, String name, String ownerNickname, int memberCount, CurrentCycleResponse? currentCycle, DateTime createdAt
+ int groupId, String name, String ownerNickname, int memberCount, String? thumbnailUrl, CurrentCycleResponse? currentCycle, DateTime createdAt
 });
 
 
@@ -557,13 +561,14 @@ class __$GroupResponseCopyWithImpl<$Res>
 
 /// Create a copy of GroupResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? groupId = null,Object? name = null,Object? ownerNickname = null,Object? memberCount = null,Object? currentCycle = freezed,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupId = null,Object? name = null,Object? ownerNickname = null,Object? memberCount = null,Object? thumbnailUrl = freezed,Object? currentCycle = freezed,Object? createdAt = null,}) {
   return _then(_GroupResponse(
 groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,ownerNickname: null == ownerNickname ? _self.ownerNickname : ownerNickname // ignore: cast_nullable_to_non_nullable
 as String,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
-as int,currentCycle: freezed == currentCycle ? _self.currentCycle : currentCycle // ignore: cast_nullable_to_non_nullable
+as int,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+as String?,currentCycle: freezed == currentCycle ? _self.currentCycle : currentCycle // ignore: cast_nullable_to_non_nullable
 as CurrentCycleResponse?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -588,7 +593,7 @@ $CurrentCycleResponseCopyWith<$Res>? get currentCycle {
 /// @nodoc
 mixin _$CurrentCycleResponse {
 
- int get cycleId; String get topic; String get status; DateTime get startedAt; String? get thumbnailUrl;
+ int get cycleId; String get topic; DateTime get deadlineAt;
 /// Create a copy of CurrentCycleResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -601,16 +606,16 @@ $CurrentCycleResponseCopyWith<CurrentCycleResponse> get copyWith => _$CurrentCyc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.status, status) || other.status == status)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CurrentCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.deadlineAt, deadlineAt) || other.deadlineAt == deadlineAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,cycleId,topic,status,startedAt,thumbnailUrl);
+int get hashCode => Object.hash(runtimeType,cycleId,topic,deadlineAt);
 
 @override
 String toString() {
-  return 'CurrentCycleResponse(cycleId: $cycleId, topic: $topic, status: $status, startedAt: $startedAt, thumbnailUrl: $thumbnailUrl)';
+  return 'CurrentCycleResponse(cycleId: $cycleId, topic: $topic, deadlineAt: $deadlineAt)';
 }
 
 
@@ -621,7 +626,7 @@ abstract mixin class $CurrentCycleResponseCopyWith<$Res>  {
   factory $CurrentCycleResponseCopyWith(CurrentCycleResponse value, $Res Function(CurrentCycleResponse) _then) = _$CurrentCycleResponseCopyWithImpl;
 @useResult
 $Res call({
- int cycleId, String topic, String status, DateTime startedAt, String? thumbnailUrl
+ int cycleId, String topic, DateTime deadlineAt
 });
 
 
@@ -638,14 +643,12 @@ class _$CurrentCycleResponseCopyWithImpl<$Res>
 
 /// Create a copy of CurrentCycleResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? cycleId = null,Object? topic = null,Object? status = null,Object? startedAt = null,Object? thumbnailUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? cycleId = null,Object? topic = null,Object? deadlineAt = null,}) {
   return _then(_self.copyWith(
 cycleId: null == cycleId ? _self.cycleId : cycleId // ignore: cast_nullable_to_non_nullable
 as int,topic: null == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,startedAt: null == startedAt ? _self.startedAt : startedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,deadlineAt: null == deadlineAt ? _self.deadlineAt : deadlineAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 
@@ -730,10 +733,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int cycleId,  String topic,  String status,  DateTime startedAt,  String? thumbnailUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int cycleId,  String topic,  DateTime deadlineAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CurrentCycleResponse() when $default != null:
-return $default(_that.cycleId,_that.topic,_that.status,_that.startedAt,_that.thumbnailUrl);case _:
+return $default(_that.cycleId,_that.topic,_that.deadlineAt);case _:
   return orElse();
 
 }
@@ -751,10 +754,10 @@ return $default(_that.cycleId,_that.topic,_that.status,_that.startedAt,_that.thu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int cycleId,  String topic,  String status,  DateTime startedAt,  String? thumbnailUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int cycleId,  String topic,  DateTime deadlineAt)  $default,) {final _that = this;
 switch (_that) {
 case _CurrentCycleResponse():
-return $default(_that.cycleId,_that.topic,_that.status,_that.startedAt,_that.thumbnailUrl);case _:
+return $default(_that.cycleId,_that.topic,_that.deadlineAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -771,10 +774,10 @@ return $default(_that.cycleId,_that.topic,_that.status,_that.startedAt,_that.thu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int cycleId,  String topic,  String status,  DateTime startedAt,  String? thumbnailUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int cycleId,  String topic,  DateTime deadlineAt)?  $default,) {final _that = this;
 switch (_that) {
 case _CurrentCycleResponse() when $default != null:
-return $default(_that.cycleId,_that.topic,_that.status,_that.startedAt,_that.thumbnailUrl);case _:
+return $default(_that.cycleId,_that.topic,_that.deadlineAt);case _:
   return null;
 
 }
@@ -786,14 +789,12 @@ return $default(_that.cycleId,_that.topic,_that.status,_that.startedAt,_that.thu
 @JsonSerializable()
 
 class _CurrentCycleResponse implements CurrentCycleResponse {
-  const _CurrentCycleResponse({required this.cycleId, required this.topic, required this.status, required this.startedAt, required this.thumbnailUrl});
+  const _CurrentCycleResponse({required this.cycleId, required this.topic, required this.deadlineAt});
   factory _CurrentCycleResponse.fromJson(Map<String, dynamic> json) => _$CurrentCycleResponseFromJson(json);
 
 @override final  int cycleId;
 @override final  String topic;
-@override final  String status;
-@override final  DateTime startedAt;
-@override final  String? thumbnailUrl;
+@override final  DateTime deadlineAt;
 
 /// Create a copy of CurrentCycleResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -808,16 +809,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.status, status) || other.status == status)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CurrentCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.deadlineAt, deadlineAt) || other.deadlineAt == deadlineAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,cycleId,topic,status,startedAt,thumbnailUrl);
+int get hashCode => Object.hash(runtimeType,cycleId,topic,deadlineAt);
 
 @override
 String toString() {
-  return 'CurrentCycleResponse(cycleId: $cycleId, topic: $topic, status: $status, startedAt: $startedAt, thumbnailUrl: $thumbnailUrl)';
+  return 'CurrentCycleResponse(cycleId: $cycleId, topic: $topic, deadlineAt: $deadlineAt)';
 }
 
 
@@ -828,7 +829,7 @@ abstract mixin class _$CurrentCycleResponseCopyWith<$Res> implements $CurrentCyc
   factory _$CurrentCycleResponseCopyWith(_CurrentCycleResponse value, $Res Function(_CurrentCycleResponse) _then) = __$CurrentCycleResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int cycleId, String topic, String status, DateTime startedAt, String? thumbnailUrl
+ int cycleId, String topic, DateTime deadlineAt
 });
 
 
@@ -845,14 +846,12 @@ class __$CurrentCycleResponseCopyWithImpl<$Res>
 
 /// Create a copy of CurrentCycleResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? cycleId = null,Object? topic = null,Object? status = null,Object? startedAt = null,Object? thumbnailUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? cycleId = null,Object? topic = null,Object? deadlineAt = null,}) {
   return _then(_CurrentCycleResponse(
 cycleId: null == cycleId ? _self.cycleId : cycleId // ignore: cast_nullable_to_non_nullable
 as int,topic: null == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,startedAt: null == startedAt ? _self.startedAt : startedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,deadlineAt: null == deadlineAt ? _self.deadlineAt : deadlineAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 
