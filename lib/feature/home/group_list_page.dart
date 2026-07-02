@@ -1,7 +1,7 @@
-import 'package:ddara/core/designsystem/component/button/app_pill_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/model/group/group_list.dart';
 import 'package:ddara/core/router/route_path.dart';
+import 'package:ddara/feature/home/util/fab_speed_dial.dart';
 import 'package:ddara/feature/home/widget/group_list_widget.dart';
 import 'package:ddara/feature/home/widget/meeting_card.dart';
 import 'package:ddara/l10n/app_localizations.dart';
@@ -29,11 +29,6 @@ class GroupListPage extends StatefulWidget {
 }
 
 class _GroupListPageState extends State<GroupListPage> {
-  /// FAB(추가 버튼) 열림 여부. true 면 + 아이콘이 x 로 바뀐다.
-  bool _isMenuOpen = false;
-
-  void _toggleMenu() => setState(() => _isMenuOpen = !_isMenuOpen);
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -90,38 +85,20 @@ class _GroupListPageState extends State<GroupListPage> {
             ],
           ),
         ),
-        // 우측 하단 고정 FAB. 열리면 바로 위에 액션 버튼 2개가 나타난다.
-        Positioned(
-          right: AppSpacing.s5,
-          bottom: AppSpacing.s5,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            spacing: AppSpacing.s3,
-            children: [
-              // 열린 상태에서만 액션 버튼을 보여준다.
-              // IntrinsicWidth + stretch 로 두 버튼 너비를 더 넓은 쪽에 맞춘다.
-              if (_isMenuOpen)
-                IntrinsicWidth(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: AppSpacing.s3,
-                    children: [
-                      AppPillButton(
-                        label: l10n.groupCreate,
-                        onPressed: () => context.push(RoutePath.groupCreate),
-                      ),
-                      AppPillButton.outline(
-                        label: l10n.groupEnter,
-                        onPressed: () =>
-                            context.push(RoutePath.inviteCodeInput),
-                      ),
-                    ],
-                  ),
-                ),
-              _FloatingAddButton(isOpen: _isMenuOpen, onPressed: _toggleMenu),
-            ],
-          ),
+        // 백드롭 + FAB + 펼침 모션을 모두 내장한 완결형 위젯.
+        // Stack 의 맨 위(마지막 자식)에 얹어 콘텐츠 위를 덮도록 한다.
+        SpeedDialFab(
+          actions: [
+            SpeedDialAction(
+              label: l10n.groupCreate,
+              filled: true,
+              onTap: () => context.push(RoutePath.groupCreate),
+            ),
+            SpeedDialAction(
+              label: l10n.groupEnter,
+              onTap: () => context.push(RoutePath.inviteCodeInput),
+            ),
+          ],
         ),
       ],
     );
@@ -129,44 +106,5 @@ class _GroupListPageState extends State<GroupListPage> {
 
   void _openGroup(BuildContext context, int groupId) {
     context.push(RoutePath.group, extra: groupId);
-  }
-}
-
-/// 우측 하단에 떠 있는 원형 추가 버튼.
-/// [isOpen] 이면 + 대신 x(닫기) 아이콘을 보여준다.
-class _FloatingAddButton extends StatelessWidget {
-  const _FloatingAddButton({required this.onPressed, required this.isOpen});
-
-  final VoidCallback onPressed;
-  final bool isOpen;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      minimumSize: Size.zero,
-      onPressed: onPressed,
-      child: Container(
-        width: _fabSize,
-        height: _fabSize,
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: AppColors.accentDefault,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: AppColorPrimitives.black40,
-              blurRadius: 8,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Icon(
-          isOpen ? CupertinoIcons.xmark : CupertinoIcons.add,
-          size: 28,
-          color: AppColors.textOnAccent,
-        ),
-      ),
-    );
   }
 }
