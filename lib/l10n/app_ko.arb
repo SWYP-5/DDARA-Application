@@ -291,5 +291,57 @@
       "month": { "type": "int" },
       "day": { "type": "int" }
     }
-  }
+  },
+
+  "profileTitle": "프로필",
+  "profileSectionBasicInfo": "기본 정보",
+  "profileJoinedAt": "가입일",
+  "profileSectionNotification": "알림",
+  "profileSectionSupport": "지원",
+  "profileTermsPolicy": "약관 및 정책",
+  "profileContact": "문의하기",
+  "profileAppVersion": "앱 버전",
+  "profileSectionAccount": "계정",
+  "profileLinkedAccount": "연동 계정",
+  "profileLogout": "로그아웃",
+  "profileWithdraw": "회원 탈퇴",
+  "profileLogoutFailed": "로그아웃에 실패했어요.",
+  "profileWithdrawFailed": "회원 탈퇴에 실패했어요.",
+  "profileNotImplemented": "아직 구현되지 않았습니다.",
+  "profileLogoutConfirmTitle": "로그아웃 할까요?",
+  "profileWithdrawConfirmTitle": "정말 탈퇴할까요?",
+  "profileWithdrawConfirmAction": "탈퇴",
+  "profileContactMailSubject": "[따라] 문의하기",
+  "profileContactMailBody": "문의 내용을 작성해 주세요.\n\n------------------\n앱 버전: {appVersion}\n------------------",
+  "@profileContactMailBody": {
+    "description": "문의 메일 본문. (앱 버전 포함)",
+    "placeholders": {
+      "appVersion": { "type": "String" }
+    }
+  },
+  "profileContactMailFailed": "메일 앱을 열 수 없어요. ({email})",
+  "@profileContactMailFailed": {
+    "description": "문의 메일 앱 실행 실패 안내",
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+
+  "profileImageSourceTitle": "프로필 사진 변경",
+  "profileImageSourceCamera": "사진 촬영",
+  "profileImageSourceGallery": "갤러리에서 선택",
+
+  "notificationSettingsTitle": "알림 설정",
+  "notificationAllow": "알림 허용",
+  "notificationSectionActivity": "활동",
+  "notificationFollowShot": "따라찍기 차례",
+  "notificationFollowShotCaption": "새 따라찍기가 열리거나 내 차례일 때",
+  "notificationDeadlineVote": "마감·투표 알림",
+  "notificationDeadlineVoteCaption": "따라찍기 마감 · 베스트 투표",
+  "notificationSectionEtc": "기타",
+  "notificationMemberJoin": "친구 참여 알림",
+  "notificationMemberJoinCaption": "내가 보낸 초대를 친구가 받았을 때",
+  "notificationPermissionDialogTitle": "알림 권한 필요",
+  "notificationPermissionDialogBody": "알림을 받으려면 설정에서 알림 권한을 허용해 주세요.",
+  "notificationOpenSettings": "설정으로 이동"
 }

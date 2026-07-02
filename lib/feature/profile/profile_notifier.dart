@@ -1,7 +1,10 @@
+import 'package:ddara/core/exception/profile_exception.dart';
+import 'package:ddara/core/model/auth/social_login_type.dart';
 import 'package:ddara/core/router/app_router.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';
 import 'package:ddara/feature/profile/util/profile_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
   @override
@@ -14,17 +17,42 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
 
   /// 서버에서 사용자 프로필·앱 버전·연동 계정 정보를 가져와 상태에 저장한다.
   Future<void> _load() async {
-    // build() 동기 실행 중 state 가 덮어써지지 않도록 await 로 한 틱 미룬다.
-    // TODO: 프로필 조회 API/UseCase 연동 후 더미 데이터를 대체한다.
-    //       (실제 구현 시 아래 await 자리에 API 호출이 들어간다)
-    await Future<void>.delayed(Duration.zero);
-    state = state.copyWith(
-      isLoading: false,
-      name: '따라쟁이',
-      joinedAt: DateTime(2026, 6, 16),
-      appVersion: 'v1.0.0',
-      linkedAccount: '카카오',
-    );
+    // 앱 버전은 서버 응답과 무관하므로 프로필 조회와 함께 미리 읽어둔다.
+    final appVersion = await _getAppVersion();
+
+    try {
+      final profile = await ref.read(getProfileUseCaseProvider).call();
+
+      state = state.copyWith(
+        isLoading: false,
+        name: profile.name,
+        profileImageUrl: profile.profileImageUrl,
+        joinedAt: profile.createdAt,
+        appVersion: appVersion,
+        // 서버 provider 코드('KAKAO')를 한글 표시명('카카오')으로 변환한다.
+        linkedAccount:
+            SocialLoginType.fromValue(profile.provider)?.label ??
+            profile.provider,
+      );
+    } on UserNotFoundException {
+      state = state.copyWith(
+        isLoading: false,
+        appVersion: appVersion,
+        errorMessage: '사용자를 찾을 수 없어요.',
+      );
+    } catch (_) {
+      // NetworkException 및 기타 예기치 못한 오류.
+      state = state.copyWith(
+        isLoading: false,
+        appVersion: appVersion,
+        errorMessage: '프로필 정보를 불러오지 못했어요.',
+      );
+    }
+  }
+
+  Future<String> _getAppVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return 'v${info.version}';
   }
 
   /// 로그아웃. 토큰·소셜 정보를 비우고(UseCase) 인증 상태를 무효화한다.
@@ -43,5 +71,28 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
     state = state.copyWith(
       logoutStatus: success ? LogoutStatus.success : LogoutStatus.fail,
     );
+  }
+
+  /// 회원 탈퇴. 서버 탈퇴 성공 시 로컬 인증 정보가 정리되고(UseCase),
+  /// 인증 상태를 무효화해 로그인 화면으로 보낸다.
+  /// 실패 시 상태를 fail 로 두면 화면에서 토스트로 안내한다.
+  Future<void> withdraw() async {
+    if (state.withdrawStatus == WithdrawStatus.loading) return;
+
+    state = state.copyWith(withdrawStatus: WithdrawStatus.loading);
+
+    try {
+      // 서버 회원 탈퇴 + 소셜·로컬 인증 정보 정리는 UseCase가 담당한다.
+      await ref.read(deleteAccountUseCaseProvider).call();
+
+      // 로컬 인증 정보가 비워졌으므로, 라우터가 인증 상태를 다시 계산하도록
+      // 무효화한다. (isLoggedIn → false)
+      ref.invalidate(authStateProvider);
+
+      state = state.copyWith(withdrawStatus: WithdrawStatus.success);
+    } catch (_) {
+      // 서버 탈퇴 실패 등. (로컬 인증 정보는 그대로 유지된다)
+      state = state.copyWith(withdrawStatus: WithdrawStatus.fail);
+    }
   }
 }

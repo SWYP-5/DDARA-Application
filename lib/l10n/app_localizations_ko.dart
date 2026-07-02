@@ -340,4 +340,120 @@ class AppLocalizationsKo extends AppLocalizations {
   String historyDate(int month, int day) {
     return '$month월 $day일';
   }
+
+  @override
+  String get profileTitle => '프로필';
+
+  @override
+  String get profileSectionBasicInfo => '기본 정보';
+
+  @override
+  String get profileJoinedAt => '가입일';
+
+  @override
+  String get profileSectionNotification => '알림';
+
+  @override
+  String get profileSectionSupport => '지원';
+
+  @override
+  String get profileTermsPolicy => '약관 및 정책';
+
+  @override
+  String get profileContact => '문의하기';
+
+  @override
+  String get profileAppVersion => '앱 버전';
+
+  @override
+  String get profileSectionAccount => '계정';
+
+  @override
+  String get profileLinkedAccount => '연동 계정';
+
+  @override
+  String get profileLogout => '로그아웃';
+
+  @override
+  String get profileWithdraw => '회원 탈퇴';
+
+  @override
+  String get profileLogoutFailed => '로그아웃에 실패했어요.';
+
+  @override
+  String get profileWithdrawFailed => '회원 탈퇴에 실패했어요.';
+
+  @override
+  String get profileNotImplemented => '아직 구현되지 않았습니다.';
+
+  @override
+  String get profileLogoutConfirmTitle => '로그아웃 할까요?';
+
+  @override
+  String get profileWithdrawConfirmTitle => '정말 탈퇴할까요?';
+
+  @override
+  String get profileWithdrawConfirmAction => '탈퇴';
+
+  @override
+  String get profileContactMailSubject => '[따라] 문의하기';
+
+  @override
+  String profileContactMailBody(String appVersion) {
+    return '문의 내용을 작성해 주세요.\n\n------------------\n앱 버전: $appVersion\n------------------';
+  }
+
+  @override
+  String profileContactMailFailed(String email) {
+    return '메일 앱을 열 수 없어요. ($email)';
+  }
+
+  @override
+  String get profileImageSourceTitle => '프로필 사진 변경';
+
+  @override
+  String get profileImageSourceCamera => '사진 촬영';
+
+  @override
+  String get profileImageSourceGallery => '갤러리에서 선택';
+
+  @override
+  String get notificationSettingsTitle => '알림 설정';
+
+  @override
+  String get notificationAllow => '알림 허용';
+
+  @override
+  String get notificationSectionActivity => '활동';
+
+  @override
+  String get notificationFollowShot => '따라찍기 차례';
+
+  @override
+  String get notificationFollowShotCaption => '새 따라찍기가 열리거나 내 차례일 때';
+
+  @override
+  String get notificationDeadlineVote => '마감·투표 알림';
+
+  @override
+  String get notificationDeadlineVoteCaption => '따라찍기 마감 · 베스트 투표';
+
+  @override
+  String get notificationSectionEtc => '기타';
+
+  @override
+  String get notificationMemberJoin => '친구 참여 알림';
+
+  @override
+  String get notificationMemberJoinCaption => '내가 보낸 초대를 친구가 받았을 때';
+
+  @override
+  String get notificationPermissionDialogTitle => '알림 권한 필요';
+
+  @override
+  String get notificationPermissionDialogBody =>
+      '알림을 받으려면 설정에서 알림 권한을 허용해 주세요.';
+
+  @override
+  String get notificationOpenSettings => '설정으로 이동';
 }
