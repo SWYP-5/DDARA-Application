@@ -117,6 +117,19 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String meetingRemainingHours(int hours) {
+    return '$hours시간 남음';
+  }
+
+  @override
+  String meetingRemainingMinutes(int minutes) {
+    return '$minutes분 남음';
+  }
+
+  @override
+  String get meetingClosed => '마감';
+
+  @override
   String get commonConfirm => '확인';
 
   @override

@@ -298,6 +298,24 @@ abstract class AppLocalizations {
   /// **'{name}님 외 {others}명'**
   String meetingMemberOthers(String name, int others);
 
+  /// 마감까지 1시간 이상 남았을 때 (시간 단위)
+  ///
+  /// In ko, this message translates to:
+  /// **'{hours}시간 남음'**
+  String meetingRemainingHours(int hours);
+
+  /// 마감까지 1시간 미만 남았을 때 (분 단위)
+  ///
+  /// In ko, this message translates to:
+  /// **'{minutes}분 남음'**
+  String meetingRemainingMinutes(int minutes);
+
+  /// 마감 시각이 지난 사이클
+  ///
+  /// In ko, this message translates to:
+  /// **'마감'**
+  String get meetingClosed;
+
   /// 공용 다이얼로그 확인 버튼
   ///
   /// In ko, this message translates to:

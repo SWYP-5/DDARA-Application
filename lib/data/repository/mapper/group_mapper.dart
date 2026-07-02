@@ -111,14 +111,13 @@ extension GroupListMapper on GroupListResponse {
               name: group.name,
               ownerNickname: group.ownerNickname,
               memberCount: group.memberCount,
+              thumbnailUrl: group.thumbnailUrl,
               currentCycle: group.currentCycle == null
                   ? null
                   : CurrentCycle(
                       cycleId: group.currentCycle!.cycleId,
                       topic: group.currentCycle!.topic,
-                      status: group.currentCycle!.status,
-                      startedAt: group.currentCycle!.startedAt,
-                      thumbnailUrl: group.currentCycle!.thumbnailUrl,
+                      deadlineAt: group.currentCycle!.deadlineAt,
                     ),
             ),
           )

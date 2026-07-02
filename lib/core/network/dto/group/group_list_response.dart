@@ -19,6 +19,8 @@ abstract class GroupResponse with _$GroupResponse {
     required String name,
     required String ownerNickname,
     required int memberCount,
+    // 모임 대표 썸네일(진행 사이클 스타터 샷). 아직 없으면 null.
+    required String? thumbnailUrl,
     // 진행 중인 사이클이 없으면 null.
     required CurrentCycleResponse? currentCycle,
     required DateTime createdAt,
@@ -33,9 +35,7 @@ abstract class CurrentCycleResponse with _$CurrentCycleResponse {
   const factory CurrentCycleResponse({
     required int cycleId,
     required String topic,
-    required String status,
-    required DateTime startedAt,
-    required String? thumbnailUrl,
+    required DateTime deadlineAt,
   }) = _CurrentCycleResponse;
 
   factory CurrentCycleResponse.fromJson(Map<String, dynamic> json) =>
