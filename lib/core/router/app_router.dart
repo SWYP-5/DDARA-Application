@@ -29,21 +29,37 @@ import '../../feature/sign/signup/sign_up_page.dart';
 
 final initialRouteProvider = Provider<String>((ref) => RoutePath.login);
 
-final authStateProvider = FutureProvider<bool>((ref) async {
-  final repo = ref.read(authRepositoryProvider);
+class AuthStateNotifier extends AsyncNotifier<bool> {
+  @override
+  Future<bool> build() async {
+    final repo = ref.read(authRepositoryProvider);
 
-  // 세션 복구(재발급 → 실패 시 소셜 무중단 재인증)를 시도. 토큰을 얻으면 로그인.
-  // 콜드 스타트 스플래시가 오래 잡히지 않도록 타임아웃 후 비로그인으로 떨어뜨린다.
-  try {
-    final token = await repo.recoverSession().timeout(
-      const Duration(seconds: 15),
-    );
-    return token != null;
-  } catch (_) {
-    // 타임아웃·네트워크 오류 등 → 비로그인 처리.
-    return false;
+    // 세션 복구(재발급 → 실패 시 소셜 무중단 재인증)를 시도. 토큰을 얻으면 로그인.
+    // 콜드 스타트 스플래시가 오래 잡히지 않도록 타임아웃 후 비로그인으로 떨어뜨린다.
+    try {
+      final token = await repo.recoverSession().timeout(
+        const Duration(seconds: 15),
+      );
+      return token != null;
+    } catch (_) {
+      // 타임아웃·네트워크 오류 등 → 비로그인 처리.
+      return false;
+    }
   }
-});
+
+  /// 로그아웃·회원탈퇴·세션 만료 등으로 로컬 인증 정보가 이미 비워진 뒤 호출한다.
+  ///
+  /// recoverSession 재계산(비동기) 대신 비로그인 상태를 **동기적으로 확정**한다.
+  /// 이렇게 해야 이어지는 redirect 평가가 stale 값(로그인=true)을 읽고 로그인
+  /// 화면 진입을 홈으로 바운스시키는 경합을 피할 수 있다.
+  void markLoggedOut() {
+    state = const AsyncData(false);
+  }
+}
+
+final authStateProvider = AsyncNotifierProvider<AuthStateNotifier, bool>(
+  AuthStateNotifier.new,
+);
 
 /// authStateProvider 변화를 GoRouter 의 refreshListenable 로 잇는 브리지.
 /// 인증 상태가 바뀌면 라우터를 재생성하지 않고 redirect 만 다시 평가하게 한다.

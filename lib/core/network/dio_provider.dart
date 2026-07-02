@@ -40,10 +40,11 @@ final Provider<Dio> dioProvider = Provider<Dio>((ref) {
         await storage.delete(key: StorageKey.refreshToken);
         await storage.delete(key: StorageKey.socialLoginType);
 
-        // 인증 상태 무효화(라우터 redirect 재평가용) 후, 로그인 화면으로 직접 이동.
-        // 라우터를 재생성하지 않으므로 명시적으로 보낸다. (invalidate 를 먼저 해야
-        // isLoggedIn=false 가 되어 login→home 바운스가 일어나지 않는다)
-        ref.invalidate(authStateProvider);
+        // 인증 상태를 비로그인으로 즉시 확정(라우터 redirect 재평가용)한 뒤, 로그인
+        // 화면으로 직접 이동. 라우터를 재생성하지 않으므로 명시적으로 보낸다.
+        // (markLoggedOut 으로 동기 확정해야 isLoggedIn=false 가 되어 login→home
+        //  바운스가 일어나지 않는다. invalidate 는 재계산 사이 stale=true 를 남긴다)
+        ref.read(authStateProvider.notifier).markLoggedOut();
         ref.read(routerProvider).go(RoutePath.login);
       },
     ),
