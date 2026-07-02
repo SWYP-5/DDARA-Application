@@ -284,7 +284,7 @@ as List<HistoryCycleResponse>,
 /// @nodoc
 mixin _$HistoryCycleResponse {
 
- int get cycleId; int get cycleNumber; String get topic; String get starterNickname;// 대표 썸네일. 없으면 null.
+ int get cycleId; String get topic;// 대표 썸네일. 없으면 null.
  String? get thumbnailUrl; int get participantCount; DateTime get date;
 /// Create a copy of HistoryCycleResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -298,16 +298,16 @@ $HistoryCycleResponseCopyWith<HistoryCycleResponse> get copyWith => _$HistoryCyc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HistoryCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.cycleNumber, cycleNumber) || other.cycleNumber == cycleNumber)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.starterNickname, starterNickname) || other.starterNickname == starterNickname)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.participantCount, participantCount) || other.participantCount == participantCount)&&(identical(other.date, date) || other.date == date));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HistoryCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.participantCount, participantCount) || other.participantCount == participantCount)&&(identical(other.date, date) || other.date == date));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,cycleId,cycleNumber,topic,starterNickname,thumbnailUrl,participantCount,date);
+int get hashCode => Object.hash(runtimeType,cycleId,topic,thumbnailUrl,participantCount,date);
 
 @override
 String toString() {
-  return 'HistoryCycleResponse(cycleId: $cycleId, cycleNumber: $cycleNumber, topic: $topic, starterNickname: $starterNickname, thumbnailUrl: $thumbnailUrl, participantCount: $participantCount, date: $date)';
+  return 'HistoryCycleResponse(cycleId: $cycleId, topic: $topic, thumbnailUrl: $thumbnailUrl, participantCount: $participantCount, date: $date)';
 }
 
 
@@ -318,7 +318,7 @@ abstract mixin class $HistoryCycleResponseCopyWith<$Res>  {
   factory $HistoryCycleResponseCopyWith(HistoryCycleResponse value, $Res Function(HistoryCycleResponse) _then) = _$HistoryCycleResponseCopyWithImpl;
 @useResult
 $Res call({
- int cycleId, int cycleNumber, String topic, String starterNickname, String? thumbnailUrl, int participantCount, DateTime date
+ int cycleId, String topic, String? thumbnailUrl, int participantCount, DateTime date
 });
 
 
@@ -335,12 +335,10 @@ class _$HistoryCycleResponseCopyWithImpl<$Res>
 
 /// Create a copy of HistoryCycleResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? cycleId = null,Object? cycleNumber = null,Object? topic = null,Object? starterNickname = null,Object? thumbnailUrl = freezed,Object? participantCount = null,Object? date = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? cycleId = null,Object? topic = null,Object? thumbnailUrl = freezed,Object? participantCount = null,Object? date = null,}) {
   return _then(_self.copyWith(
 cycleId: null == cycleId ? _self.cycleId : cycleId // ignore: cast_nullable_to_non_nullable
-as int,cycleNumber: null == cycleNumber ? _self.cycleNumber : cycleNumber // ignore: cast_nullable_to_non_nullable
 as int,topic: null == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
-as String,starterNickname: null == starterNickname ? _self.starterNickname : starterNickname // ignore: cast_nullable_to_non_nullable
 as String,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
 as String?,participantCount: null == participantCount ? _self.participantCount : participantCount // ignore: cast_nullable_to_non_nullable
 as int,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
@@ -429,10 +427,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int cycleId,  int cycleNumber,  String topic,  String starterNickname,  String? thumbnailUrl,  int participantCount,  DateTime date)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int cycleId,  String topic,  String? thumbnailUrl,  int participantCount,  DateTime date)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HistoryCycleResponse() when $default != null:
-return $default(_that.cycleId,_that.cycleNumber,_that.topic,_that.starterNickname,_that.thumbnailUrl,_that.participantCount,_that.date);case _:
+return $default(_that.cycleId,_that.topic,_that.thumbnailUrl,_that.participantCount,_that.date);case _:
   return orElse();
 
 }
@@ -450,10 +448,10 @@ return $default(_that.cycleId,_that.cycleNumber,_that.topic,_that.starterNicknam
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int cycleId,  int cycleNumber,  String topic,  String starterNickname,  String? thumbnailUrl,  int participantCount,  DateTime date)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int cycleId,  String topic,  String? thumbnailUrl,  int participantCount,  DateTime date)  $default,) {final _that = this;
 switch (_that) {
 case _HistoryCycleResponse():
-return $default(_that.cycleId,_that.cycleNumber,_that.topic,_that.starterNickname,_that.thumbnailUrl,_that.participantCount,_that.date);case _:
+return $default(_that.cycleId,_that.topic,_that.thumbnailUrl,_that.participantCount,_that.date);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -470,10 +468,10 @@ return $default(_that.cycleId,_that.cycleNumber,_that.topic,_that.starterNicknam
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int cycleId,  int cycleNumber,  String topic,  String starterNickname,  String? thumbnailUrl,  int participantCount,  DateTime date)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int cycleId,  String topic,  String? thumbnailUrl,  int participantCount,  DateTime date)?  $default,) {final _that = this;
 switch (_that) {
 case _HistoryCycleResponse() when $default != null:
-return $default(_that.cycleId,_that.cycleNumber,_that.topic,_that.starterNickname,_that.thumbnailUrl,_that.participantCount,_that.date);case _:
+return $default(_that.cycleId,_that.topic,_that.thumbnailUrl,_that.participantCount,_that.date);case _:
   return null;
 
 }
@@ -485,13 +483,11 @@ return $default(_that.cycleId,_that.cycleNumber,_that.topic,_that.starterNicknam
 @JsonSerializable()
 
 class _HistoryCycleResponse implements HistoryCycleResponse {
-  const _HistoryCycleResponse({required this.cycleId, required this.cycleNumber, required this.topic, required this.starterNickname, required this.thumbnailUrl, required this.participantCount, required this.date});
+  const _HistoryCycleResponse({required this.cycleId, required this.topic, required this.thumbnailUrl, required this.participantCount, required this.date});
   factory _HistoryCycleResponse.fromJson(Map<String, dynamic> json) => _$HistoryCycleResponseFromJson(json);
 
 @override final  int cycleId;
-@override final  int cycleNumber;
 @override final  String topic;
-@override final  String starterNickname;
 // 대표 썸네일. 없으면 null.
 @override final  String? thumbnailUrl;
 @override final  int participantCount;
@@ -510,16 +506,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HistoryCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.cycleNumber, cycleNumber) || other.cycleNumber == cycleNumber)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.starterNickname, starterNickname) || other.starterNickname == starterNickname)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.participantCount, participantCount) || other.participantCount == participantCount)&&(identical(other.date, date) || other.date == date));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HistoryCycleResponse&&(identical(other.cycleId, cycleId) || other.cycleId == cycleId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.participantCount, participantCount) || other.participantCount == participantCount)&&(identical(other.date, date) || other.date == date));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,cycleId,cycleNumber,topic,starterNickname,thumbnailUrl,participantCount,date);
+int get hashCode => Object.hash(runtimeType,cycleId,topic,thumbnailUrl,participantCount,date);
 
 @override
 String toString() {
-  return 'HistoryCycleResponse(cycleId: $cycleId, cycleNumber: $cycleNumber, topic: $topic, starterNickname: $starterNickname, thumbnailUrl: $thumbnailUrl, participantCount: $participantCount, date: $date)';
+  return 'HistoryCycleResponse(cycleId: $cycleId, topic: $topic, thumbnailUrl: $thumbnailUrl, participantCount: $participantCount, date: $date)';
 }
 
 
@@ -530,7 +526,7 @@ abstract mixin class _$HistoryCycleResponseCopyWith<$Res> implements $HistoryCyc
   factory _$HistoryCycleResponseCopyWith(_HistoryCycleResponse value, $Res Function(_HistoryCycleResponse) _then) = __$HistoryCycleResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int cycleId, int cycleNumber, String topic, String starterNickname, String? thumbnailUrl, int participantCount, DateTime date
+ int cycleId, String topic, String? thumbnailUrl, int participantCount, DateTime date
 });
 
 
@@ -547,12 +543,10 @@ class __$HistoryCycleResponseCopyWithImpl<$Res>
 
 /// Create a copy of HistoryCycleResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? cycleId = null,Object? cycleNumber = null,Object? topic = null,Object? starterNickname = null,Object? thumbnailUrl = freezed,Object? participantCount = null,Object? date = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? cycleId = null,Object? topic = null,Object? thumbnailUrl = freezed,Object? participantCount = null,Object? date = null,}) {
   return _then(_HistoryCycleResponse(
 cycleId: null == cycleId ? _self.cycleId : cycleId // ignore: cast_nullable_to_non_nullable
-as int,cycleNumber: null == cycleNumber ? _self.cycleNumber : cycleNumber // ignore: cast_nullable_to_non_nullable
 as int,topic: null == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
-as String,starterNickname: null == starterNickname ? _self.starterNickname : starterNickname // ignore: cast_nullable_to_non_nullable
 as String,thumbnailUrl: freezed == thumbnailUrl ? _self.thumbnailUrl : thumbnailUrl // ignore: cast_nullable_to_non_nullable
 as String?,participantCount: null == participantCount ? _self.participantCount : participantCount // ignore: cast_nullable_to_non_nullable
 as int,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
