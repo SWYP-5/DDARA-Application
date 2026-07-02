@@ -20,8 +20,8 @@ class CyclePhotoGalleryNotifier
     final getProfileUseCase = ref.read(getProfileUseCaseProvider);
 
     try {
-      final gallery = await getCycleGalleryUseCase.getCycleGallery(cycleId);
-      final profile = await getProfileUseCase.call();
+      final gallery = await getCycleGalleryUseCase(cycleId);
+      final profile = await getProfileUseCase();
       state = state.copyWith(
         isLoading: false,
         gallery: gallery,

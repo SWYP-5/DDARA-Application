@@ -7,7 +7,7 @@ class StarterUploadUseCase {
 
   final CameraRepository _cameraRepository;
 
-  Future<StarterUpload> uploadStarter(
+  Future<StarterUpload> call(
     int groupId,
     String topic,
     String path,

@@ -21,8 +21,8 @@ class GroupPageNotifier extends AutoDisposeFamilyNotifier<GroupPageState, int> {
     try {
       // 모임 상세와 히스토리를 함께(병렬) 조회한다.
       final results = await Future.wait([
-        getGroupDetailUseCase.getGroupDetail(groupId),
-        getHistoryCyclesUseCase.getHistoryCycles(groupId),
+        getGroupDetailUseCase(groupId),
+        getHistoryCyclesUseCase(groupId),
       ]);
       state = state.copyWith(
         isLoading: false,
@@ -63,7 +63,7 @@ class GroupPageNotifier extends AutoDisposeFamilyNotifier<GroupPageState, int> {
     final exitGroupUseCase = ref.read(exitGroupUseCaseProvider);
 
     try {
-      await exitGroupUseCase.exitGroup(arg);
+      await exitGroupUseCase(arg);
       return true;
     } on NotGroupMemberException {
       state = state.copyWith(isLoading: false, errorMessage: '해당 모임의 멤버가 아니에요.');
@@ -86,7 +86,7 @@ class GroupPageNotifier extends AutoDisposeFamilyNotifier<GroupPageState, int> {
     final changeNicknameUseCase = ref.read(changeNicknameUseCaseProvider);
 
     try {
-      await changeNicknameUseCase.changeNickName(arg, nickName);
+      await changeNicknameUseCase(arg, nickName);
       // 변경된 닉네임을 반영하기 위해 상세를 다시 조회한다. (isLoading 은 _load 가 내린다)
       await _load(arg);
       return true;

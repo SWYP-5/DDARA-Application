@@ -7,7 +7,7 @@ class GetGroupListUseCase {
 
   GetGroupListUseCase(this._groupRepository);
 
-  Future<GroupList> getGroupList() async {
+  Future<GroupList> call() async {
     return await _groupRepository.getGroupList();
   }
 }

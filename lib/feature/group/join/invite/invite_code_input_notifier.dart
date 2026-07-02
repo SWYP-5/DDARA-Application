@@ -25,7 +25,7 @@ class InviteCodeInputNotifier
     final getInviteGroupUseCase = ref.read(getInviteGroupUseCaseProvider);
 
     try {
-      final inviteGroup = await getInviteGroupUseCase.getInviteGroup(
+      final inviteGroup = await getInviteGroupUseCase(
         state.inviteCode,
       );
 

@@ -21,7 +21,7 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
     final appVersion = await _getAppVersion();
 
     try {
-      final profile = await ref.read(getProfileUseCaseProvider).call();
+      final profile = await ref.read(getProfileUseCaseProvider)();
 
       state = state.copyWith(
         isLoading: false,
@@ -62,7 +62,7 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
     state = state.copyWith(logoutStatus: LogoutStatus.loading);
 
     // 토큰·소셜타입 정리와 로그아웃 API 호출은 UseCase가 담당한다.
-    final success = await ref.read(logoutUseCaseProvider).call();
+    final success = await ref.read(logoutUseCaseProvider)();
 
     // 로컬 인증 정보는 이미 비워졌으므로, 라우터가 인증 상태를 다시 계산하도록
     // 무효화한다. (isLoggedIn → false)
@@ -83,7 +83,7 @@ class ProfileNotifier extends AutoDisposeNotifier<ProfileState> {
 
     try {
       // 서버 회원 탈퇴 + 소셜·로컬 인증 정보 정리는 UseCase가 담당한다.
-      await ref.read(deleteAccountUseCaseProvider).call();
+      await ref.read(deleteAccountUseCaseProvider)();
 
       // 로컬 인증 정보가 비워졌으므로, 라우터가 인증 상태를 다시 계산하도록
       // 무효화한다. (isLoggedIn → false)

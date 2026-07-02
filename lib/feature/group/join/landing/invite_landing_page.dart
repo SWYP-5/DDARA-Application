@@ -64,8 +64,7 @@ class _InviteLandingPageState extends ConsumerState<InviteLandingPage> {
   Future<void> _fetchGroup() async {
     try {
       _group = await ref
-          .read(getInviteGroupUseCaseProvider)
-          .getInviteGroup(widget.inviteCode);
+          .read(getInviteGroupUseCaseProvider)(widget.inviteCode);
     } catch (_) {
       // 실패해도 같은 화면으로 넘어간다. (_group 은 null 로 둔다)
       _group = null;

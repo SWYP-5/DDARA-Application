@@ -44,7 +44,7 @@ class StarterNotifier extends AutoDisposeNotifier<StarterState> {
     final useCase = ref.read(starterUploadUseCase);
 
     try {
-      final result = await useCase.uploadStarter(
+      final result = await useCase(
         groupId,
         state.concept,
         photoPath,

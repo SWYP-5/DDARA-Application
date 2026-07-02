@@ -7,7 +7,7 @@ class GetCycleGalleryUseCase {
 
   final CameraRepository _cameraRepository;
 
-  Future<CycleGallery> getCycleGallery(int cycleId) async {
+  Future<CycleGallery> call(int cycleId) async {
     return await _cameraRepository.getCycleGallery(cycleId);
   }
 }

@@ -5,7 +5,7 @@ class ExitGroupUseCase {
 
   ExitGroupUseCase(this._groupRepository);
 
-  Future<void> exitGroup(int groupId) async {
+  Future<void> call(int groupId) async {
     await _groupRepository.exitGroup(groupId);
   }
 }
