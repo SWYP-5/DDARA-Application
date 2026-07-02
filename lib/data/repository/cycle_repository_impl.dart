@@ -1,7 +1,9 @@
 import 'package:ddara/core/exception/cycle_exception.dart';
+import 'package:ddara/core/exception/follower_upload_error_code.dart';
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/exception/starter_upload_error_code.dart';
+import 'package:ddara/core/model/cycle/follower_upload.dart';
 import 'package:ddara/core/model/cycle/starter_upload.dart';
 import 'package:ddara/core/model/group/cycle_gallery.dart';
 import 'package:ddara/core/network/dto/cycle/presign_response.dart';
@@ -84,6 +86,38 @@ class CycleRepositoryImpl implements CycleRepository {
         case StarterUploadErrorCode.cycleAlreadyInProgress:
           // 409 — 이미 진행 중인 회차 존재
           throw CycleAlreadyInProgressException();
+
+        default:
+          throw NetworkException();
+      }
+    }
+  }
+
+  @override
+  Future<FollowerUpload> uploadFollower(int cycleId, String path) async {
+    final presign = await uploadImage(path);
+
+    // 업로드된 imageUrl로 따라찍기 사진을 등록한다.
+    try {
+      final response = await _cycleDataSource.uploadFollower(
+        cycleId,
+        presign.imageUrl,
+      );
+
+      return response.toDomain();
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? FollowerUploadErrorCode.fromValue(e.response?.data['code'])
+          : null;
+
+      switch (code) {
+        case FollowerUploadErrorCode.notGroupMember:
+          // 403 — 해당 모임의 멤버가 아님
+          throw NotGroupMemberException();
+
+        case FollowerUploadErrorCode.cycleNotFound:
+          // 404 — 회차 없음
+          throw CycleNotFoundException();
 
         default:
           throw NetworkException();

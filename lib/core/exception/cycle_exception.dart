@@ -6,6 +6,9 @@ class InvalidStarterInputException extends CycleException {}
 /// presigned URL 발급 또는 S3 업로드 실패.
 class StarterImageUploadException extends CycleException {}
 
+/// 404 — 회차(사이클) 없음.
+class CycleNotFoundException extends CycleException {}
+
 /// 409 — 활동 멤버 3명 미만이라 사이클을 시작할 수 없음.
 class NotEnoughMembersException extends CycleException {}
 

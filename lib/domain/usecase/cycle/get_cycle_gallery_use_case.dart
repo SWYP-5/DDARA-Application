@@ -8,6 +8,8 @@ class GetCycleGalleryUseCase {
   final CycleRepository _cycleRepository;
 
   Future<CycleGallery> call(int cycleId) async {
-    return await _cycleRepository.getCycleGallery(cycleId);
+    final test = await _cycleRepository.getCycleGallery(cycleId);
+    print("테스트 사이클: $test");
+    return test;
   }
 }

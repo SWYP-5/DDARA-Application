@@ -213,8 +213,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RoutePath.followerCamera,
-        builder: (_, state) =>
-            FollowerCameraPage(guideImageUrl: state.extra! as String),
+        builder: (_, state) {
+          final args = state.extra as ({int cycleId, String guideImageUrl});
+          return FollowerCameraPage(
+            cycleId: args.cycleId,
+            guideImageUrl: args.guideImageUrl,
+          );
+        },
       ),
     ],
   );
