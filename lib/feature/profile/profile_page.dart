@@ -52,7 +52,10 @@ class ProfilePage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: AppSpacing.s5,
             children: [
-              ProfileHeader(name: state.name),
+              ProfileHeader(
+                name: state.name,
+                imageUrl: state.profileImageUrl,
+              ),
               ProfileSection(
                 label: '기본 정보',
                 children: [

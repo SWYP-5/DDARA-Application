@@ -4,6 +4,7 @@ import 'package:ddara/domain/usecase/group/get_group_list_use_case.dart';
 import 'package:ddara/domain/usecase/auth/login_use_case.dart';
 import 'package:ddara/domain/usecase/auth/logout_use_case.dart';
 import 'package:ddara/domain/usecase/auth/signup_use_case.dart';
+import 'package:ddara/domain/usecase/profile/get_profile_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/provider/repository_provider.dart';
@@ -64,4 +65,8 @@ final getHistoryCyclesUseCaseProvider = Provider<GetHistoryCyclesUseCase>((ref) 
 
 final changeNicknameUseCaseProvider = Provider<ChangeNicknameUseCase>((ref) {
   return ChangeNicknameUseCase(ref.read(groupRepositoryProvider));
+});
+
+final getProfileUseCaseProvider = Provider<GetProfileUseCase>((ref) {
+  return GetProfileUseCase(ref.read(profileRepositoryProvider));
 });

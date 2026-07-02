@@ -1,4 +1,5 @@
 import 'package:ddara/core/local/provider/local_provider.dart';
+import 'package:ddara/data/datasource/profile/profile_datasource.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/network/dio_provider.dart';
@@ -13,8 +14,9 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
 });
 
 final groupDataSourceProvider = Provider<GroupDataSource>((ref) {
-  return GroupDataSource(
-    ref.read(dioProvider),
-  );
+  return GroupDataSource(ref.read(dioProvider));
 });
 
+final profileDataSourceProvider = Provider<ProfileDataSource>((ref) {
+  return ProfileDataSource(ref.read(dioProvider));
+});

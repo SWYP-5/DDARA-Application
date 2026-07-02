@@ -21,6 +21,9 @@ class ProfileState {
   /// 사용자 이름(닉네임).
   final String name;
 
+  /// 프로필 이미지 URL. 미등록 시 null.
+  final String? profileImageUrl;
+
   /// 가입일.
   final DateTime? joinedAt;
 
@@ -41,6 +44,7 @@ class ProfileState {
 
   const ProfileState({
     this.name = '',
+    this.profileImageUrl,
     this.joinedAt,
     this.appVersion = '',
     this.linkedAccount = '',
@@ -51,6 +55,7 @@ class ProfileState {
 
   ProfileState copyWith({
     String? name,
+    String? profileImageUrl,
     DateTime? joinedAt,
     String? appVersion,
     String? linkedAccount,
@@ -60,6 +65,7 @@ class ProfileState {
   }) {
     return ProfileState(
       name: name ?? this.name,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       joinedAt: joinedAt ?? this.joinedAt,
       appVersion: appVersion ?? this.appVersion,
       linkedAccount: linkedAccount ?? this.linkedAccount,
