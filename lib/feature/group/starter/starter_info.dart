@@ -58,7 +58,7 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
       if (prev?.uploadedCycleId == null && cycleId != null) {
         // 게시 후에는 스타터로 돌아가지 않도록 화면을 교체한다.
         context.pushReplacement(
-          RoutePath.started,
+          RoutePath.follower,
           extra: cycleId,
         );
       }

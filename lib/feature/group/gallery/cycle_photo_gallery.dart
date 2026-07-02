@@ -117,9 +117,12 @@ class CyclePhotoGallery extends ConsumerWidget {
                 // 본인 카드만 촬영 콜백을 연결한다. (타인은 null)
                 onTakePhoto: isMe
                     ? () => context.push(
-                        RoutePath.startedCamera,
-                        // 가이드로 스타터 사진 URL 을 넘긴다.
-                        extra: cycle.starterImageUrl ?? '',
+                        RoutePath.followerCamera,
+                        // 대상 사이클 id 와 가이드용 스타터 사진 URL 을 넘긴다.
+                        extra: (
+                          cycleId: cycle.cycleId,
+                          guideImageUrl: cycle.starterImageUrl ?? '',
+                        ),
                       )
                     : null,
                 // 모든 사진을 볼 수 없는 상태면 사진이 있는 멤버를 블러+자물쇠로 가린다.

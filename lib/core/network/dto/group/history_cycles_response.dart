@@ -17,9 +17,7 @@ abstract class HistoryCyclesResponse with _$HistoryCyclesResponse {
 abstract class HistoryCycleResponse with _$HistoryCycleResponse {
   const factory HistoryCycleResponse({
     required int cycleId,
-    required int cycleNumber,
     required String topic,
-    required String starterNickname,
     // 대표 썸네일. 없으면 null.
     required String? thumbnailUrl,
     required int participantCount,

@@ -193,7 +193,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get starterConceptLengthError => '20자 이내로 입력해 주세요';
 
   @override
-  String get startedCameraTitle => '따라찍기';
+  String get followerCameraTitle => '따라찍기';
 
   @override
   String get groupHeaderStart => '내가 먼저 시작하기';

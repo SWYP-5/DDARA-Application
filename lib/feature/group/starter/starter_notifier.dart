@@ -1,4 +1,4 @@
-import 'package:ddara/core/exception/camera_exception.dart';
+import 'package:ddara/core/exception/cycle_exception.dart';
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/domain/provider/use_case_provider.dart';

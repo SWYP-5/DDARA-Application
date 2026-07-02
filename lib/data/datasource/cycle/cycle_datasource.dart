@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:ddara/core/network/dto/camera/presign_response.dart';
-import 'package:ddara/core/network/dto/camera/starter_upload_response.dart';
+import 'package:ddara/core/network/dto/cycle/follower_upload_response.dart';
+import 'package:ddara/core/network/dto/cycle/presign_response.dart';
+import 'package:ddara/core/network/dto/cycle/starter_upload_response.dart';
 import 'package:ddara/core/network/dto/group/cycle_gallery_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-class CameraDataSource {
-  CameraDataSource(this._dio);
+class CycleDataSource {
+  CycleDataSource(this._dio);
 
   final Dio _dio;
   static final String _baseUrl = '/api/groups';
@@ -76,5 +77,18 @@ class CameraDataSource {
     final response = await _dio.get('/api/cycles/$cycleId/shots');
 
     return CycleGalleryResponse.fromJson(response.data);
+  }
+
+  /// 업로드된 이미지 URL로 따라찍기(팔로워) 사진을 등록한다.
+  Future<FollowerUploadResponse> uploadFollower(
+    int cycleId,
+    String imageUrl,
+  ) async {
+    final response = await _dio.post(
+      '/api/cycles/$cycleId/shots',
+      data: {'imageUrl': imageUrl},
+    );
+
+    return FollowerUploadResponse.fromJson(response.data);
   }
 }
