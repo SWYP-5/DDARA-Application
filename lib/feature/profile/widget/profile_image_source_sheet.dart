@@ -1,5 +1,6 @@
 import 'package:ddara/core/designsystem/component/text/app_text.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 
 /// 프로필 사진 변경 시 선택할 이미지 소스.
@@ -33,6 +34,7 @@ class ProfileImageSourceSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.bgSurface,
@@ -63,17 +65,17 @@ class ProfileImageSourceSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              const AppText.headlineMedium('프로필 사진 변경'),
+              AppText.headlineMedium(l10n.profileImageSourceTitle),
               const SizedBox(height: AppSpacing.s3),
               _SourceTile(
                 icon: CupertinoIcons.camera,
-                label: '사진 촬영',
+                label: l10n.profileImageSourceCamera,
                 onTap: () =>
                     Navigator.of(context).pop(ProfileImageSource.camera),
               ),
               _SourceTile(
                 icon: CupertinoIcons.photo,
-                label: '갤러리에서 선택',
+                label: l10n.profileImageSourceGallery,
                 onTap: () =>
                     Navigator.of(context).pop(ProfileImageSource.gallery),
               ),

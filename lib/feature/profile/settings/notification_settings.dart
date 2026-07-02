@@ -5,6 +5,7 @@ import 'package:ddara/core/designsystem/design_system.dart';
 import 'package:ddara/core/permission/permission_service.dart';
 import 'package:ddara/core/permission/provider/permission_provider.dart';
 import 'package:ddara/feature/profile/provider/notifier_provider.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -57,15 +58,16 @@ class _NotificationSettingsState extends ConsumerState<NotificationSettings>
 
   /// 알림 권한이 영구 거부됐을 때, 설정 이동을 안내하는 다이얼로그.
   void _showOpenSettingsDialog() {
+    final l10n = AppLocalizations.of(context);
     showCupertinoDialog<void>(
       context: context,
       builder: (dialogContext) => CupertinoAlertDialog(
-        title: const Text('알림 권한 필요'),
-        content: const Text('알림을 받으려면 설정에서 알림 권한을 허용해 주세요.'),
+        title: Text(l10n.notificationPermissionDialogTitle),
+        content: Text(l10n.notificationPermissionDialogBody),
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('취소'),
+            child: Text(l10n.commonCancel),
           ),
           CupertinoDialogAction(
             isDefaultAction: true,
@@ -73,7 +75,7 @@ class _NotificationSettingsState extends ConsumerState<NotificationSettings>
               Navigator.of(dialogContext).pop();
               ref.read(permissionServiceProvider).openSettings();
             },
-            child: const Text('설정으로 이동'),
+            child: Text(l10n.notificationOpenSettings),
           ),
         ],
       ),
@@ -82,13 +84,17 @@ class _NotificationSettingsState extends ConsumerState<NotificationSettings>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final state = ref.watch(notificationSettingsNotifierProvider);
     final notifier = ref.read(
       notificationSettingsNotifierProvider.notifier,
     );
 
     return CupertinoPageScaffold(
-      navigationBar: AppBar(title: '알림 설정', onBack: () => context.pop()),
+      navigationBar: AppBar(
+        title: l10n.notificationSettingsTitle,
+        onBack: () => context.pop(),
+      ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -105,7 +111,7 @@ class _NotificationSettingsState extends ConsumerState<NotificationSettings>
               _SettingCard(
                 children: [
                   _ToggleRow(
-                    label: '알림 허용',
+                    label: l10n.notificationAllow,
                     value: state.notificationEnabled,
                     onChanged: _onAllowChanged,
                   ),
@@ -115,16 +121,16 @@ class _NotificationSettingsState extends ConsumerState<NotificationSettings>
               if (state.notificationEnabled) ...[
                 _SettingCard(
                   children: [
-                    AppText.caption('활동'),
+                    AppText.caption(l10n.notificationSectionActivity),
                     _ToggleRow(
-                      label: '따라찍기 차례',
-                      caption: '새 따라찍기가 열리거나 내 차례일 때',
+                      label: l10n.notificationFollowShot,
+                      caption: l10n.notificationFollowShotCaption,
                       value: state.followShot,
                       onChanged: notifier.changeFollowShot,
                     ),
                     _ToggleRow(
-                      label: '마감·투표 알림',
-                      caption: '따라찍기 마감 · 베스트 투표',
+                      label: l10n.notificationDeadlineVote,
+                      caption: l10n.notificationDeadlineVoteCaption,
                       value: state.deadlineVote,
                       onChanged: notifier.changeDeadlineVote,
                     ),
@@ -132,10 +138,10 @@ class _NotificationSettingsState extends ConsumerState<NotificationSettings>
                 ),
                 _SettingCard(
                   children: [
-                    AppText.caption('기타'),
+                    AppText.caption(l10n.notificationSectionEtc),
                     _ToggleRow(
-                      label: '친구 참여 알림',
-                      caption: '내가 보낸 초대를 친구가 받았을 때',
+                      label: l10n.notificationMemberJoin,
+                      caption: l10n.notificationMemberJoinCaption,
                       value: state.memberJoin,
                       onChanged: notifier.changeMemberJoin,
                     ),

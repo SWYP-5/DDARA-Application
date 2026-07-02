@@ -8,6 +8,7 @@ import 'package:ddara/feature/profile/widget/profile_header.dart';
 import 'package:ddara/feature/profile/widget/profile_image_source_sheet.dart';
 import 'package:ddara/feature/profile/widget/profile_section.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
+import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,7 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final state = ref.watch(profileNotifierProvider);
 
     // 로그아웃 결과에 따라 분기: 성공 시 로그인 화면으로 이동, 실패 시 안내.
@@ -31,7 +33,7 @@ class ProfilePage extends ConsumerWidget {
         case LogoutStatus.success:
           context.go(RoutePath.login);
         case LogoutStatus.fail:
-          Toast.showToast(context, '로그아웃에 실패했어요.', type: ToastType.error);
+          Toast.showToast(context, l10n.profileLogoutFailed, type: ToastType.error);
         case LogoutStatus.idle:
         case LogoutStatus.loading:
           break;
@@ -48,7 +50,7 @@ class ProfilePage extends ConsumerWidget {
         case WithdrawStatus.success:
           context.go(RoutePath.login);
         case WithdrawStatus.fail:
-          Toast.showToast(context, '회원 탈퇴에 실패했어요.', type: ToastType.error);
+          Toast.showToast(context, l10n.profileWithdrawFailed, type: ToastType.error);
         case WithdrawStatus.idle:
         case WithdrawStatus.loading:
           break;
@@ -56,7 +58,7 @@ class ProfilePage extends ConsumerWidget {
     });
 
     return CupertinoPageScaffold(
-      navigationBar: AppBar(title: '프로필', onBack: () => context.pop()),
+      navigationBar: AppBar(title: l10n.profileTitle, onBack: () => context.pop()),
       child: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(
@@ -77,48 +79,51 @@ class ProfilePage extends ConsumerWidget {
                     _onImageSourceSelected(context, source),
               ),
               ProfileSection(
-                label: '기본 정보',
+                label: l10n.profileSectionBasicInfo,
                 children: [
-                  ProfileRow(label: '가입일', value: _formatDate(state.joinedAt)),
+                  ProfileRow(
+                    label: l10n.profileJoinedAt,
+                    value: _formatDate(state.joinedAt),
+                  ),
                 ],
               ),
               ProfileSection(
-                label: '알림',
+                label: l10n.profileSectionNotification,
                 children: [
                   ProfileRow(
-                    label: '알림 설정',
+                    label: l10n.notificationSettingsTitle,
                     trailing: const ProfileChevron(),
                     onTap: () => context.push(RoutePath.notificationSettings),
                   ),
                 ],
               ),
               ProfileSection(
-                label: '지원',
+                label: l10n.profileSectionSupport,
                 children: [
                   ProfileRow(
-                    label: '약관 및 정책',
+                    label: l10n.profileTermsPolicy,
                     trailing: const ProfileChevron(),
                     onTap: () => context.push(RoutePath.termsPolicy),
                   ),
                   ProfileRow(
-                    label: '문의하기',
+                    label: l10n.profileContact,
                     trailing: const ProfileChevron(),
                     onTap: () => _contact(context, state.appVersion),
                   ),
-                  ProfileRow(label: '앱 버전', value: state.appVersion),
+                  ProfileRow(label: l10n.profileAppVersion, value: state.appVersion),
                 ],
               ),
               ProfileSection(
-                label: '계정',
+                label: l10n.profileSectionAccount,
                 children: [
-                  ProfileRow(label: '연동 계정', value: state.linkedAccount),
+                  ProfileRow(label: l10n.profileLinkedAccount, value: state.linkedAccount),
                   ProfileRow(
-                    label: '로그아웃',
+                    label: l10n.profileLogout,
                     labelColor: AppColors.statusDanger,
                     onTap: () => _confirmLogout(context, ref),
                   ),
                   ProfileRow(
-                    label: '회원 탈퇴',
+                    label: l10n.profileWithdraw,
                     labelColor: AppColors.statusDanger,
                     onTap: () => _confirmWithdraw(context, ref),
                   ),
@@ -134,7 +139,11 @@ class ProfilePage extends ConsumerWidget {
   /// 프로필 사진 소스(카메라/갤러리) 선택 후 처리.
   // TODO: 카메라 촬영/갤러리 선택으로 이미지를 받아 업로드하고, 프로필 이미지를 갱신한다.
   void _onImageSourceSelected(BuildContext context, ProfileImageSource source) {
-    Toast.showToast(context, '아직 구현되지 않았습니다.', type: ToastType.error);
+    Toast.showToast(
+      context,
+      AppLocalizations.of(context).profileNotImplemented,
+      type: ToastType.error,
+    );
   }
 
   /// 문의 메일 수신 주소.
@@ -142,12 +151,12 @@ class ProfilePage extends ConsumerWidget {
 
   /// 기본 메일 앱으로 문의 메일 작성 화면을 띄운다. (제목·본문 미리 채움)
   Future<void> _contact(BuildContext context, String appVersion) async {
+    final l10n = AppLocalizations.of(context);
     // mailto 쿼리는 공백을 '+' 가 아닌 '%20' 으로 인코딩해야 메일 앱이 제대로 읽는다.
     final query =
         <String, String>{
-              'subject': '[따라] 문의하기',
-              'body':
-                  '문의 내용을 작성해 주세요.\n\n------------------\n앱 버전: $appVersion\n------------------',
+              'subject': l10n.profileContactMailSubject,
+              'body': l10n.profileContactMailBody(appVersion),
             }.entries
             .map(
               (e) =>
@@ -162,7 +171,7 @@ class ProfilePage extends ConsumerWidget {
     if (!launched && context.mounted) {
       Toast.showToast(
         context,
-        '메일 앱을 열 수 없어요. ($_contactEmail)',
+        l10n.profileContactMailFailed(_contactEmail),
         type: ToastType.error,
       );
     }
@@ -178,20 +187,22 @@ class ProfilePage extends ConsumerWidget {
 
   /// 로그아웃 확인 다이얼로그를 띄우고, 확인 시에만 로그아웃을 진행한다.
   Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final ok = await AppDialog.show(
       context,
-      title: '로그아웃 할까요?',
-      confirmLabel: '로그아웃',
+      title: l10n.profileLogoutConfirmTitle,
+      confirmLabel: l10n.profileLogout,
     );
     if (ok) await ref.read(profileNotifierProvider.notifier).logout();
   }
 
   /// 회원 탈퇴 확인 다이얼로그를 띄우고, 확인 시에만 탈퇴를 진행한다.
   Future<void> _confirmWithdraw(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final ok = await AppDialog.show(
       context,
-      title: '정말 탈퇴할까요?',
-      confirmLabel: '탈퇴',
+      title: l10n.profileWithdrawConfirmTitle,
+      confirmLabel: l10n.profileWithdrawConfirmAction,
       confirmColor: AppColors.statusDanger,
       confirmLabelColor: AppColors.textPrimary,
     );
