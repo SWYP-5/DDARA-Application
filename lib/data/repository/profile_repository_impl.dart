@@ -1,6 +1,7 @@
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/exception/profile_error_code.dart';
 import 'package:ddara/core/exception/profile_exception.dart';
+import 'package:ddara/core/model/profile/notification_settings.dart';
 import 'package:ddara/core/model/profile/profile.dart';
 import 'package:ddara/data/datasource/profile/profile_datasource.dart';
 import 'package:ddara/data/repository/mapper/profile_mapper.dart';
@@ -32,5 +33,21 @@ class ProfileRepositoryImpl implements ProfileRepository {
           throw NetworkException();
       }
     }
+  }
+
+  @override
+  Future<NotificationSettings> changeNotificationSettings(
+    NotificationSettings settings,
+  ) async {
+    final response = await _profileDataSource.changeNotificationSettings(
+      settings.toRequest(),
+    );
+    return response.toDomain();
+  }
+
+  @override
+  Future<NotificationSettings> getNotificationSettings() async {
+    final response = await _profileDataSource.getNotificationSettings();
+    return response.toDomain();
   }
 }
