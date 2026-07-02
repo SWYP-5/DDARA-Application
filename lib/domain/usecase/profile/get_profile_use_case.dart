@@ -6,8 +6,6 @@ class GetProfileUseCase {
   final ProfileRepository _profileRepository;
 
   Future<Profile> call() async {
-    final test = await _profileRepository.getProfile();
-    print("테스트 프로필 : $test");
-    return test;
+    return await _profileRepository.getProfile();
   }
 }
