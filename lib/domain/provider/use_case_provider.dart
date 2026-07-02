@@ -1,4 +1,5 @@
 import 'package:ddara/core/auth/provider/auth_provider.dart';
+import 'package:ddara/domain/usecase/camera/starter_upload_use_case.dart';
 import 'package:ddara/domain/usecase/group/create_group_use_case.dart';
 import 'package:ddara/domain/usecase/group/get_group_list_use_case.dart';
 import 'package:ddara/domain/usecase/auth/login_use_case.dart';
@@ -64,4 +65,8 @@ final getHistoryCyclesUseCaseProvider = Provider<GetHistoryCyclesUseCase>((ref) 
 
 final changeNicknameUseCaseProvider = Provider<ChangeNicknameUseCase>((ref) {
   return ChangeNicknameUseCase(ref.read(groupRepositoryProvider));
+});
+
+final starterUploadUseCase = Provider<StarterUploadUseCase>((ref) {
+  return StarterUploadUseCase(ref.read(cameraRepositoryProvider));
 });

@@ -3,16 +3,22 @@ import 'dart:io';
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
+import 'package:ddara/core/router/route_path.dart';
 import 'package:ddara/core/widget/app_dialog.dart';
+import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:ddara/feature/group/starter/provider/notifier_provider.dart';
 import 'package:ddara/feature/group/widget/take_photo_button.dart';
 import 'package:ddara/l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 /// 스타터 시작 화면 본문. (촬영 카드 · 컨셉 설명 입력 · 전송 버튼)
 class StarterInfo extends ConsumerStatefulWidget {
-  const StarterInfo({super.key});
+  const StarterInfo({super.key, required this.groupId});
+
+  /// 업로드 대상 모임 식별자.
+  final int groupId;
 
   @override
   ConsumerState<StarterInfo> createState() => _StarterInfoState();
@@ -40,10 +46,32 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final notifier = ref.read(starterNotifierProvider.notifier);
+
+    // 업로드 결과를 감지해 에러는 토스트로, 성공은 시작 화면 이동으로 처리한다.
+    ref.listen(starterNotifierProvider, (prev, next) {
+      if (next.errorMessage.isNotEmpty) {
+        Toast.showToast(context, next.errorMessage, type: ToastType.error);
+        notifier.clearError();
+      }
+
+      final cycleId = next.uploadedCycleId;
+      if (prev?.uploadedCycleId == null && cycleId != null) {
+        // 게시 후에는 스타터로 돌아가지 않도록 화면을 교체한다.
+        context.pushReplacement(
+          RoutePath.started,
+          extra: (groupId: widget.groupId, cycleId: cycleId),
+        );
+      }
+    });
+
     final photoPath = ref.watch(
       starterNotifierProvider.select((s) => s.photoPath),
     );
     final hasPhoto = photoPath != null;
+
+    final isLoading = ref.watch(
+      starterNotifierProvider.select((s) => s.isLoading),
+    );
 
     final concept = ref.watch(
       starterNotifierProvider.select((s) => s.concept),
@@ -120,11 +148,12 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                             child: AppButton(
                               label: l10n.photoUpload,
                               // 사진이 없거나 컨셉이 비어 있거나(공백 포함) 20자를
-                              // 넘으면 비활성화.
+                              // 넘거나, 업로드 중이면 비활성화.
                               onPressed:
                                   hasPhoto &&
                                       concept.trim().isNotEmpty &&
-                                      conceptError == null
+                                      conceptError == null &&
+                                      !isLoading
                                   ? () async {
                                       // 게시는 되돌릴 수 없으므로 확인을 한 번 받는다.
                                       final ok = await AppDialog.show(
@@ -133,7 +162,7 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                                         confirmLabel: l10n.commonConfirm,
                                       );
                                       if (!ok) return;
-                                      // TODO: 스타터 컨셉을 멤버들에게 전송. (백엔드 스펙 대기)
+                                      await notifier.upload(widget.groupId);
                                     }
                                   : null,
                             ),

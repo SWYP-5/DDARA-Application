@@ -10,7 +10,10 @@ import 'package:go_router/go_router.dart';
 
 /// 스타터 시작 화면. 본문(촬영 · 정보 입력)만 단계별로 교체한다.
 class StarterPage extends ConsumerWidget {
-  const StarterPage({super.key});
+  const StarterPage({super.key, required this.groupId});
+
+  /// 스타터를 시작할 모임 식별자. (업로드 시 사이클 생성 대상)
+  final int groupId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +23,7 @@ class StarterPage extends ConsumerWidget {
 
     final body = switch (step) {
       StarterStep.camera => const StarterCamera(),
-      StarterStep.info => const StarterInfo(),
+      StarterStep.info => StarterInfo(groupId: groupId),
     };
 
     return CupertinoPageScaffold(

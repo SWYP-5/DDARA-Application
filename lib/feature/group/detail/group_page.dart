@@ -201,7 +201,8 @@ class GroupPage extends ConsumerWidget {
           GroupHeader(
             // 진행 중인 사이클을 그대로 전달. null 이면 헤더가 빈 상태를 보여준다.
             progress: groupDetail.currentCycle,
-            navigateToStart: () => context.push(RoutePath.starter),
+            navigateToStart: () =>
+                context.push(RoutePath.starter, extra: groupId),
             onTakePhoto: () => context.push(RoutePath.started),
           ),
           GroupSection(
