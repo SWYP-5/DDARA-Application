@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ddara/core/designsystem/component/app_text_field.dart';
 import 'package:ddara/core/designsystem/component/button/app_button.dart';
 import 'package:ddara/core/designsystem/design_system.dart';
@@ -38,8 +40,10 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final notifier = ref.read(starterNotifierProvider.notifier);
-    final photo = ref.watch(starterNotifierProvider.select((s) => s.photo));
-    final hasPhoto = photo != null;
+    final photoPath = ref.watch(
+      starterNotifierProvider.select((s) => s.photoPath),
+    );
+    final hasPhoto = photoPath != null;
 
     final concept = ref.watch(
       starterNotifierProvider.select((s) => s.concept),
@@ -75,7 +79,10 @@ class _StarterInfoState extends ConsumerState<StarterInfo> {
                           borderRadius: BorderRadius.circular(AppRadius.lg),
                           // 사진이 있으면 카드를 가득 채워 보여준다.
                           image: hasPhoto
-                              ? DecorationImage(image: photo, fit: BoxFit.cover)
+                              ? DecorationImage(
+                                  image: FileImage(File(photoPath)),
+                                  fit: BoxFit.cover,
+                                )
                               : null,
                         ),
                         // 사진이 없을 때만 가운데에 촬영 버튼을 표시한다.

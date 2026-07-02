@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:ddara/feature/group/starter/util/starter_state.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StarterNotifier extends AutoDisposeNotifier<StarterState> {
@@ -23,7 +20,7 @@ class StarterNotifier extends AutoDisposeNotifier<StarterState> {
   void capture(String path) {
     state = state.copyWith(
       step: StarterStep.info,
-      photo: FileImage(File(path)),
+      photoPath: path,
     );
   }
 }
