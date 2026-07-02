@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/provider/repository_provider.dart';
 import '../../feature/group/create/group_create_page.dart';
-import '../../feature/group/started/started_camera_page.dart';
+import '../../feature/group/follower/follower_camera_page.dart';
 import '../../feature/group/gallery/cycle_photo_gallery.dart';
 import '../../feature/group/starter/starter_page.dart';
 import '../../feature/group/detail/group_page.dart';
@@ -202,7 +202,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        path: RoutePath.started,
+        path: RoutePath.follower,
         builder: (_, state) {
           return CyclePhotoGallery(cycleId: state.extra! as int);
         },
@@ -212,9 +212,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => StarterPage(groupId: state.extra! as int),
       ),
       GoRoute(
-        path: RoutePath.startedCamera,
+        path: RoutePath.followerCamera,
         builder: (_, state) =>
-            StartedCameraPage(guideImageUrl: state.extra! as String),
+            FollowerCameraPage(guideImageUrl: state.extra! as String),
       ),
     ],
   );

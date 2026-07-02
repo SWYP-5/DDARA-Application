@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 /// 따라찍기 촬영 본문. (가이드 사진 위에 투명도·모드 컨트롤 포함)
 ///
 /// 촬영하면 [onCapture] 로 사진 경로를 넘기고, 단계 전환은 상위에서 처리한다.
-class StartedCamera extends StatelessWidget {
-  const StartedCamera({
+class FollowerCamera extends StatelessWidget {
+  const FollowerCamera({
     super.key,
     required this.onCapture,
     required this.guideImageUrl,

@@ -10,9 +10,9 @@ class RoutePath {
   static const inviteCodeInput = '/group/join/code';
   static const inviteLanding = '/group/join/landing';
   static const joinGroup = '/group/join/confirm';
-  static const started = '/group/started';
+  static const follower = '/group/follower';
   static const starter = '/group/starter';
-  static const startedCamera = '/group/camera';
+  static const followerCamera = '/group/camera';
   static const profile = '/profile';
   static const notificationSettings = '/profile/notification-settings';
   static const termsPolicy = '/profile/terms-policy';

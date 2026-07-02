@@ -12,8 +12,8 @@ import 'package:flutter/cupertino.dart';
 /// 카메라와 동일한 구조를 쓰되, 프리뷰 영역만 촬영 이미지로 바꾸고
 /// 나머지 컨트롤(헤더 · 하단 영역)은 영역만 남긴 채 숨긴다.
 /// 하단에는 '다시 찍기'(테두리) · '올리기'(채움) 버튼을 둔다.
-class StartedPhotoCheck extends StatelessWidget {
-  const StartedPhotoCheck({
+class FollowerPhotoCheck extends StatelessWidget {
+  const FollowerPhotoCheck({
     super.key,
     required this.imagePath,
     required this.onRetake,

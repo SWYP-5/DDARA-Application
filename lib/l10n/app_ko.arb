@@ -167,7 +167,7 @@
   "starterConceptPlaceholder": "예) 마라탕 또 먹기",
   "starterConceptLengthError": "20자 이내로 입력해 주세요",
 
-  "startedCameraTitle": "따라찍기",
+  "followerCameraTitle": "따라찍기",
 
   "groupHeaderStart": "내가 먼저 시작하기",
   "groupHeaderTakePhoto": "따라찍으러 가기",

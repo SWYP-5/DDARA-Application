@@ -442,11 +442,11 @@ abstract class AppLocalizations {
   /// **'20자 이내로 입력해 주세요'**
   String get starterConceptLengthError;
 
-  /// No description provided for @startedCameraTitle.
+  /// No description provided for @followerCameraTitle.
   ///
   /// In ko, this message translates to:
   /// **'따라찍기'**
-  String get startedCameraTitle;
+  String get followerCameraTitle;
 
   /// No description provided for @groupHeaderStart.
   ///
