@@ -2,8 +2,8 @@ import 'package:ddara/core/auth/provider/auth_provider.dart';
 import 'package:ddara/domain/usecase/auth/login_use_case.dart';
 import 'package:ddara/domain/usecase/auth/logout_use_case.dart';
 import 'package:ddara/domain/usecase/auth/signup_use_case.dart';
-import 'package:ddara/domain/usecase/camera/get_cycle_gallery_use_case.dart';
-import 'package:ddara/domain/usecase/camera/starter_upload_use_case.dart';
+import 'package:ddara/domain/usecase/cycle/get_cycle_gallery_use_case.dart';
+import 'package:ddara/domain/usecase/cycle/starter_upload_use_case.dart';
 import 'package:ddara/domain/usecase/group/create_group_use_case.dart';
 import 'package:ddara/domain/usecase/group/get_group_list_use_case.dart';
 import 'package:ddara/domain/usecase/profile/change_notification_settings_use_case.dart';
@@ -75,11 +75,11 @@ final changeNicknameUseCaseProvider = Provider<ChangeNicknameUseCase>((ref) {
 });
 
 final starterUploadUseCase = Provider<StarterUploadUseCase>((ref) {
-  return StarterUploadUseCase(ref.read(cameraRepositoryProvider));
+  return StarterUploadUseCase(ref.read(cycleRepositoryProvider));
 });
 
 final getCycleGalleryUseCaseProvider = Provider<GetCycleGalleryUseCase>((ref) {
-  return GetCycleGalleryUseCase(ref.read(cameraRepositoryProvider));
+  return GetCycleGalleryUseCase(ref.read(cycleRepositoryProvider));
 });
 
 final getProfileUseCaseProvider = Provider<GetProfileUseCase>((ref) {

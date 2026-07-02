@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:ddara/core/network/dto/camera/presign_response.dart';
-import 'package:ddara/core/network/dto/camera/starter_upload_response.dart';
+import 'package:ddara/core/network/dto/cycle/presign_response.dart';
+import 'package:ddara/core/network/dto/cycle/starter_upload_response.dart';
 import 'package:ddara/core/network/dto/group/cycle_gallery_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-class CameraDataSource {
-  CameraDataSource(this._dio);
+class CycleDataSource {
+  CycleDataSource(this._dio);
 
   final Dio _dio;
   static final String _baseUrl = '/api/groups';

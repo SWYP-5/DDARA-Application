@@ -1,33 +1,33 @@
-import 'package:ddara/core/exception/camera_exception.dart';
+import 'package:ddara/core/exception/cycle_exception.dart';
 import 'package:ddara/core/exception/group_exception.dart';
 import 'package:ddara/core/exception/login_exception.dart';
 import 'package:ddara/core/exception/starter_upload_error_code.dart';
-import 'package:ddara/core/model/camera/starter_upload.dart';
+import 'package:ddara/core/model/cycle/starter_upload.dart';
 import 'package:ddara/core/model/group/cycle_gallery.dart';
-import 'package:ddara/core/network/dto/camera/presign_response.dart';
-import 'package:ddara/domain/repository/camera_repository.dart';
+import 'package:ddara/core/network/dto/cycle/presign_response.dart';
+import 'package:ddara/domain/repository/cycle_repository.dart';
 import 'package:dio/dio.dart';
 
-import '../datasource/camera/camera_datasource.dart';
-import 'mapper/camera_mapper.dart';
+import '../datasource/cycle/cycle_datasource.dart';
+import 'mapper/cycle_mapper.dart';
 import 'mapper/group_mapper.dart';
 
-class CameraRepositoryImpl implements CameraRepository {
-  CameraRepositoryImpl(this._cameraDataSource);
+class CycleRepositoryImpl implements CycleRepository {
+  CycleRepositoryImpl(this._cycleDataSource);
 
-  final CameraDataSource _cameraDataSource;
+  final CycleDataSource _cycleDataSource;
 
   static const String _contentType = 'image/jpeg';
 
   Future<PresignResponse> uploadImage(String path) async {
-    final bytes = await _cameraDataSource.compress(path);
+    final bytes = await _cycleDataSource.compress(path);
 
     // 1) presigned URL 발급 → 2) S3 직접 업로드.
     // (둘 다 사이클 생성 전 단계이므로 상태코드로 구분하지 않고 업로드 실패로 묶는다)
     final PresignResponse presign;
     try {
-      presign = await _cameraDataSource.presign('shot', _contentType);
-      await _cameraDataSource.uploadToS3(
+      presign = await _cycleDataSource.presign('shot', _contentType);
+      await _cycleDataSource.uploadToS3(
         presign.uploadUrl,
         bytes,
         _contentType,
@@ -48,7 +48,7 @@ class CameraRepositoryImpl implements CameraRepository {
 
     // 3) 업로드된 imageUrl로 사이클 생성.
     try {
-      final response = await _cameraDataSource.createCycle(
+      final response = await _cycleDataSource.createCycle(
         groupId,
         topic,
         presign.imageUrl,
@@ -94,7 +94,7 @@ class CameraRepositoryImpl implements CameraRepository {
   @override
   Future<CycleGallery> getCycleGallery(int cycleId) async {
     try {
-      final response = await _cameraDataSource.getCycleGallery(cycleId);
+      final response = await _cycleDataSource.getCycleGallery(cycleId);
       return response.toDomain();
     } on DioException catch (e) {
       switch (e.response?.statusCode) {
