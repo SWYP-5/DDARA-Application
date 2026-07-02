@@ -5,6 +5,7 @@ import 'package:ddara/core/widget/app_dialog.dart';
 import 'package:ddara/feature/profile/provider/notifier_provider.dart';
 import 'package:ddara/feature/profile/util/profile_state.dart';
 import 'package:ddara/feature/profile/widget/profile_header.dart';
+import 'package:ddara/feature/profile/widget/profile_image_source_sheet.dart';
 import 'package:ddara/feature/profile/widget/profile_section.dart';
 import 'package:ddara/core/widget/toast/toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +56,8 @@ class ProfilePage extends ConsumerWidget {
               ProfileHeader(
                 name: state.name,
                 imageUrl: state.profileImageUrl,
+                onImageSourceSelected: (source) =>
+                    _onImageSourceSelected(context, source),
               ),
               ProfileSection(
                 label: '기본 정보',
@@ -113,6 +116,12 @@ class ProfilePage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// 프로필 사진 소스(카메라/갤러리) 선택 후 처리.
+  // TODO: 카메라 촬영/갤러리 선택으로 이미지를 받아 업로드하고, 프로필 이미지를 갱신한다.
+  void _onImageSourceSelected(BuildContext context, ProfileImageSource source) {
+    Toast.showToast(context, '아직 구현되지 않았습니다.', type: ToastType.error);
   }
 
   /// 문의 메일 수신 주소.
