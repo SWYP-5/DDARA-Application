@@ -203,7 +203,15 @@ class GroupPage extends ConsumerWidget {
             progress: groupDetail.currentCycle,
             navigateToStart: () =>
                 context.push(RoutePath.starter, extra: groupId),
-            onTakePhoto: () => context.push(RoutePath.started),
+            // 촬영 버튼은 진행 중 사이클이 있을 때만 노출되므로 cycleId 가 존재한다.
+            onTakePhoto: () {
+              final cycleId = groupDetail.currentCycle?.cycleId;
+              if (cycleId == null) return;
+              context.push(
+                RoutePath.started,
+                extra: (groupId: groupId, cycleId: cycleId),
+              );
+            },
           ),
           GroupSection(
             title: AppText.headlineLarge(l10n.groupMembersTitle),

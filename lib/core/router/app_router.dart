@@ -204,9 +204,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePath.started,
         builder: (_, state) {
-          // 스타터 업로드 성공 시 (groupId, cycleId) 를 담아 온다. 없으면 null.
-          final args = state.extra as ({int groupId, int cycleId})?;
-          return StartedPage(groupId: args?.groupId, cycleId: args?.cycleId);
+          final args = state.extra as ({int groupId, int cycleId});
+          return StartedPage(groupId: args.groupId, cycleId: args.cycleId);
         },
       ),
       GoRoute(

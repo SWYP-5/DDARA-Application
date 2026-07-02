@@ -7,14 +7,10 @@ import 'package:go_router/go_router.dart';
 
 /// 스타터(따라찍기 시작) 화면. (헤더만 잡아둔 상태 — 아래 본문은 추후 구현)
 class StartedPage extends StatelessWidget {
-  const StartedPage({super.key, this.groupId, this.cycleId});
+  const StartedPage({super.key, required this.groupId, required this.cycleId});
 
-  /// 방금 시작한 모임 식별자. (스타터 업로드 성공 시 전달)
-  // TODO: 실데이터 연결 시 groupId 로 모임/사이클을 조회해 더미를 대체.
-  final int? groupId;
-
-  /// 방금 생성된 사이클 식별자. (스타터 업로드 성공 시 전달)
-  final int? cycleId;
+  final int groupId;
+  final int cycleId;
 
   // TODO: 모임 조회 API 응답의 모임 이름으로 대체. (현재 백엔드 스펙 대기 — 임시 더미)
   static const _dummyGroupName = '마라탕 걸즈';
